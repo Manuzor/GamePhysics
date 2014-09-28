@@ -4,6 +4,9 @@
     <Filter Include="gp">
       <UniqueIdentifier>{62b12802-b8f6-43f9-8ed7-aaf27b10c973}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gp\Implementation">
+      <UniqueIdentifier>{5876c4a1-4641-4757-8900-13621b07aa57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
@@ -12,9 +15,15 @@
     <ClCompile Include="..\..\..\Code\gp\Main.cpp">
       <Filter>gp</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Implementation\Application.cpp">
+      <Filter>gp\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\PCH.h">
+      <Filter>gp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Application.h">
       <Filter>gp</Filter>
     </ClInclude>
   </ItemGroup>
