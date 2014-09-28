@@ -17,7 +17,8 @@ public:
 
     virtual ApplicationExecution Run() override
     {
-        return Continue;
+        printf("Hello World!");
+        return Quit;
     }
 
 private:

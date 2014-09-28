@@ -10,6 +10,7 @@
     <GP_Architecture>$(PlatformArchitecture)</GP_Architecture>
     <GP_VsToolset>$(PlatformToolsetVersion)</GP_VsToolset>
     <GP_UniqueOutputName>WinVs$(GP_VsToolset)$(GP_Config)$(GP_Architecture)</GP_UniqueOutputName>
+    <GP_Tool_CopyEzBinaries>$(SolutionDir)CopyEzBinaries.py</GP_Tool_CopyEzBinaries>
   </PropertyGroup>
   <PropertyGroup>
     <OutDir>$(GP_OutputRootDir)\Bin\$(GP_UniqueOutputName)\</OutDir>
@@ -56,6 +57,10 @@
     </BuildMacro>
     <BuildMacro Include="GP_VsToolset">
       <Value>$(GP_VsToolset)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="GP_Tool_CopyEzBinaries">
+      <Value>$(GP_Tool_CopyEzBinaries)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>
