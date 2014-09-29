@@ -13,6 +13,12 @@
     <Filter Include="gp\Memory\Implementation">
       <UniqueIdentifier>{d778e84f-b7bf-4bd0-9eb1-6882b6ee1e92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gp\Shapes">
+      <UniqueIdentifier>{b74a1553-fd7d-4d2e-bb01-66364fd0a754}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gp\Shapes\Implementation">
+      <UniqueIdentifier>{8a1721ab-7f25-45ef-be8c-63e64461bb0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
@@ -27,6 +33,9 @@
     <ClCompile Include="..\..\..\Code\gp\Memory\Implementation\Allocators.cpp">
       <Filter>gp\Memory\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Shapes\Implementation\Circle.cpp">
+      <Filter>gp\Shapes\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\PCH.h">
@@ -38,5 +47,16 @@
     <ClInclude Include="..\..\..\Code\gp\Memory\Allocators.h">
       <Filter>gp\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Shapes\Circle.h">
+      <Filter>gp\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Types.h">
+      <Filter>gp</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Code\gp\Shapes\Implementation\Circle.inl">
+      <Filter>gp\Shapes\Implementation</Filter>
+    </None>
   </ItemGroup>
 </Project>

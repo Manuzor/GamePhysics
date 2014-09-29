@@ -32,11 +32,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gp\PCH.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Shapes\Implementation\Circle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\Application.h" />
     <ClInclude Include="..\..\..\Code\gp\Memory\Allocators.h" />
     <ClInclude Include="..\..\..\Code\gp\PCH.h" />
+    <ClInclude Include="..\..\..\Code\gp\Shapes\Circle.h" />
+    <ClInclude Include="..\..\..\Code\gp\Types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Code\gp\Shapes\Implementation\Circle.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{64B962F4-03D4-491E-8FC7-C10C23595E83}</ProjectGuid>
