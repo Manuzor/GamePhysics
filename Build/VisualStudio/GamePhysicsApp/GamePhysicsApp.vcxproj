@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gp\Implementation\Application.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Main.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\Memory\Implementation\Allocators.cpp" />
     <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gp\PCH.h</PrecompiledHeaderFile>
@@ -34,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\Application.h" />
+    <ClInclude Include="..\..\..\Code\gp\Memory\Allocators.h" />
     <ClInclude Include="..\..\..\Code\gp\PCH.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

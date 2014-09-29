@@ -7,6 +7,12 @@
     <Filter Include="gp\Implementation">
       <UniqueIdentifier>{5876c4a1-4641-4757-8900-13621b07aa57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gp\Memory">
+      <UniqueIdentifier>{d2d03521-99e0-4cf8-8c19-911414d4baa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gp\Memory\Implementation">
+      <UniqueIdentifier>{d778e84f-b7bf-4bd0-9eb1-6882b6ee1e92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
@@ -18,6 +24,9 @@
     <ClCompile Include="..\..\..\Code\gp\Implementation\Application.cpp">
       <Filter>gp\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Memory\Implementation\Allocators.cpp">
+      <Filter>gp\Memory\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\PCH.h">
@@ -25,6 +34,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gp\Application.h">
       <Filter>gp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Memory\Allocators.h">
+      <Filter>gp\Memory</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
