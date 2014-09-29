@@ -36,6 +36,9 @@
     <ClCompile Include="..\..\..\Code\gp\Shapes\Implementation\Circle.cpp">
       <Filter>gp\Shapes\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Implementation\Window.cpp">
+      <Filter>gp\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\PCH.h">
@@ -51,6 +54,9 @@
       <Filter>gp\Shapes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gp\Types.h">
+      <Filter>gp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Window.h">
       <Filter>gp</Filter>
     </ClInclude>
   </ItemGroup>
