@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <GP_RootDir>$(SolutionDir)..\..</GP_RootDir>
+    <GP_OutputRootDir>$(GP_RootDir)\Output</GP_OutputRootDir>
+    <GP_CodeRootDir>$(GP_RootDir)\Code</GP_CodeRootDir>
+    <GP_TempRootDir>$(GP_RootDir)\Temp</GP_TempRootDir>
+    <GP_Config>$(Configuration)</GP_Config>
+    <GP_Architecture>$(PlatformArchitecture)</GP_Architecture>
+    <GP_VsToolset>$(PlatformToolsetVersion)</GP_VsToolset>
+    <GP_UniqueOutputName>WinVs$(GP_VsToolset)$(GP_Config)$(GP_Architecture)</GP_UniqueOutputName>
+    <GP_Tool_CopyEzBinaries>$(SolutionDir)CopyEzBinaries.py</GP_Tool_CopyEzBinaries>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutDir>$(GP_OutputRootDir)\Bin\$(GP_UniqueOutputName)\</OutDir>
+    <IntDir>$(GP_TempRootDir)\$(GP_UniqueOutputName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(GP_CodeRootDir);$(EZ_ENGINE_DIR)\Code\Engine</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <ImportLibrary>$(GP_OutputRootDir)\Bin\$(GP_UniqueOutputName)\$(TargetName).lib</ImportLibrary>
+      <AdditionalLibraryDirectories>$(GP_OutputRootDir)\Lib\$(GP_UniqueOutputName)\;$(EZ_ENGINE_DIR)Output\Lib\WinVs2013$(GP_Config)$(GP_Architecture)\;$(EZ_ENGINE_DIR)Output\Lib\WinVs2012$(GP_Config)$(GP_Architecture)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="GP_RootDir">
+      <Value>$(GP_RootDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="GP_OutputRootDir">
+      <Value>$(GP_OutputRootDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="GP_CodeRootDir">
+      <Value>$(GP_CodeRootDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="GP_TempRootDir">
+      <Value>$(GP_TempRootDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="GP_Config">
+      <Value>$(GP_Config)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="GP_Architecture">
+      <Value>$(GP_Architecture)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="GP_VsToolset">
+      <Value>$(GP_VsToolset)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="GP_Tool_CopyEzBinaries">
+      <Value>$(GP_Tool_CopyEzBinaries)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
