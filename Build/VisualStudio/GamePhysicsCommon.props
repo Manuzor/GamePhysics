@@ -27,7 +27,7 @@
     </ClCompile>
     <Link>
       <ImportLibrary>$(GP_OutputRootDir)\Bin\$(GP_UniqueOutputName)\$(TargetName).lib</ImportLibrary>
-      <AdditionalLibraryDirectories>$(GP_OutputRootDir)\Lib\$(GP_UniqueOutputName)\;$(EZ_ENGINE_DIR)Output\Lib\WinVs2013$(GP_Config)$(GP_Architecture)\;$(EZ_ENGINE_DIR)Output\Lib\WinVs2012$(GP_Config)$(GP_Architecture)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(GP_OutputRootDir)\Lib\$(GP_UniqueOutputName)\;$(EZ_ENGINE_DIR)\Output\Lib\WinVs2013$(GP_Config)$(GP_Architecture)\;$(EZ_ENGINE_DIR)\Output\Lib\WinVs2012$(GP_Config)$(GP_Architecture)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
