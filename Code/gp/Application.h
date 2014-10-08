@@ -21,9 +21,16 @@ public:
     void WindowEventHandler(gpWindow::EventData* pEventData);
 
 private:
+
+    void SetupInput();
+
+    void UpdateInput(ezTime dt);
+
+private:
     ezAllocatorBase* m_pMainAllocator;
     gpWindow* m_pWindow;
     ezDefaultTimeStepSmoothing m_TimeStepSmoother;
+    ezTime m_LastUpdate;
 
     bool m_bQuit;
 };

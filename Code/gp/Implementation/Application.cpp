@@ -5,6 +5,7 @@
 #include <Foundation/Logging/ConsoleWriter.h>
 #include <Foundation/Logging/VisualStudioWriter.h>
 #include <Foundation/Time/Clock.h>
+#include <Core/Input/InputManager.h>
 
 gpApplication::gpApplication() :
     m_pMainAllocator(nullptr),
@@ -34,6 +35,10 @@ void gpApplication::AfterEngineInit()
 
     ezClock::SetNumGlobalClocks();
     ezClock::Get()->SetTimeStepSmoothing(&m_TimeStepSmoother);
+
+    SetupInput();
+
+    m_LastUpdate = ezTime::Now();
 }
 
 void gpApplication::BeforeEngineShutdown()
@@ -52,6 +57,26 @@ ezApplication::ApplicationExecution gpApplication::Run()
         return Quit;
 
     ezClock::UpdateAllGlobalClocks();
+
+    const auto tUpdateInterval = ezTime::Seconds(1.0 / 60.0);
+    const auto tNow = ezTime::Now();
+
+    bool bInputUpdated = false;
+
+    while(tNow - m_LastUpdate > tUpdateInterval)
+    {
+        bInputUpdated = true;
+
+        UpdateInput(tUpdateInterval);
+
+        m_LastUpdate += tUpdateInterval;
+    }
+
+    if (!bInputUpdated)
+    {
+        ezInputManager::PollHardware();
+    }
+
     return Continue;
 }
 
