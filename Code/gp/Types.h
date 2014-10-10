@@ -22,3 +22,8 @@ using StringBuffer = Ptr<CharacterType>;
 #define Deref(x) (*x)
 
 using Scalar = float;
+
+class gpNotImplementedException : public std::exception
+{
+    const char* what() const override { return "Not implemented."; }
+};

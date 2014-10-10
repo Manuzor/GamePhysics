@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\Application.h" />
+    <ClInclude Include="..\..\..\Code\gp\Common.h" />
     <ClInclude Include="..\..\..\Code\gp\Memory\Allocators.h" />
     <ClInclude Include="..\..\..\Code\gp\PCH.h" />
     <ClInclude Include="..\..\..\Code\gp\Shapes\Circle.h" />

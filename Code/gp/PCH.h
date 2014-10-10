@@ -5,5 +5,4 @@
 
 #include <GL/glew.h>
 
-#include "gp/Types.h"
-#include "gp/Memory/Allocators.h"
+#include "gp/Common.h"

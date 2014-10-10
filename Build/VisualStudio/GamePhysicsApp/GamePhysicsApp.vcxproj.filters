@@ -65,6 +65,9 @@
     <ClInclude Include="..\..\..\Code\gp\Window.h">
       <Filter>gp</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Common.h">
+      <Filter>gp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gp\Shapes\Implementation\Circle.inl">

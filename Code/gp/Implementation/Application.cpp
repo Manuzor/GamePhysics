@@ -59,6 +59,21 @@ void gpApplication::AfterEngineInit()
     SetupInput();
 
     m_LastUpdate = ezTime::Now();
+
+    glGenVertexArrays(1, &m_uiVertexArrayID);
+    glBindVertexArray(m_uiVertexArrayID);
+
+    m_VertexBufferData.SetCountUninitialized(3);
+    m_VertexBufferData[0].Set(-1.0f, -1.0f, 0.0f);
+    m_VertexBufferData[1].Set( 1.0f, -1.0f, 0.0f);
+    m_VertexBufferData[2].Set( 0.0f,  1.0f, 0.0f);
+
+    glGenBuffers(1, &m_uiVertexBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_uiVertexBufferID);
+    glBufferData(GL_ARRAY_BUFFER,
+                 sizeof(ezVec3) * m_VertexBufferData.GetCount(),
+                 &m_VertexBufferData[0],
+                 GL_DYNAMIC_DRAW);
 }
 
 void gpApplication::BeforeEngineShutdown()
@@ -95,6 +110,13 @@ ezApplication::ApplicationExecution gpApplication::Run()
     if (!bInputUpdated)
     {
         ezInputManager::PollHardware();
+    }
+
+    auto& y = m_VertexBufferData[2].y;
+    if (y > 0.0f)
+    {
+        ezLog::Dev("Y: %f", y);
+        y -= 0.01f;
     }
 
     RenderFrame();

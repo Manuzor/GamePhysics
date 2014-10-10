@@ -116,6 +116,21 @@ ezResult gpWindow::CreateContextOpenGL()
 
     ezLog::Success("OpenGL graphics context is initialized.");
 
+    glewExperimental = GL_TRUE;
+    if (glewInit() != GLEW_OK)
+    {
+        ezLog::Error("Failed to initialize GLEW.");
+        goto failure;
+    }
+
+    ezLog::Success("GLEW is initialized.");
+
+    auto szRenderer = glGetString(GL_RENDERER);
+    auto szVersion = glGetString(GL_VERSION);
+
+    ezLog::Info("Render Device:  %s", szRenderer);
+    ezLog::Info("OpenGL Version: %s", szVersion);
+
     return EZ_SUCCESS;
 
 failure:
