@@ -6,6 +6,7 @@
 #include <Foundation/Logging/VisualStudioWriter.h>
 #include <Foundation/Time/Clock.h>
 #include <Core/Input/InputManager.h>
+#include <Foundation/System/SystemInformation.h>
 
 gpApplication::gpApplication() :
     m_pMainAllocator(nullptr),
@@ -26,6 +27,19 @@ void gpApplication::AfterEngineInit()
     ezGlobalLog::AddLogWriter(ezLogWriter::Console::LogMessageHandler);
     ezGlobalLog::AddLogWriter(ezLogWriter::VisualStudio::LogMessageHandler);
 
+    auto& SysInfo = ezSystemInformation::Get();
+    {
+        EZ_LOG_BLOCK("System Information");
+        ezLog::Info("Configuration:    %s", SysInfo.GetBuildConfiguration());
+        ezLog::Info("Host Name:        %s", SysInfo.GetHostName());
+        ezLog::Info("Platform:         %s %s", SysInfo.GetPlatformName(), SysInfo.Is64BitOS() ? "64 bit" : "32 bit");
+        ezLog::Info("CPU Cores:        %u", SysInfo.GetCPUCoreCount());
+        ezLog::Info("Main Memory:      %f GiB (%u Bytes)",
+                    SysInfo.GetInstalledMainMemory() / float(1024 * 1024 * 1024),
+                    SysInfo.GetInstalledMainMemory());
+        ezLog::Info("Memory Page Size: %u", SysInfo.GetMemoryPageSize());
+    }
+
     m_pMainAllocator = ezFoundation::GetDefaultAllocator();
 
     m_pWindow = EZ_DEFAULT_NEW(gpWindow);
@@ -39,6 +53,8 @@ void gpApplication::AfterEngineInit()
     SetupInput();
 
     m_LastUpdate = ezTime::Now();
+
+    ezLog::Success("Initialization complete.");
 }
 
 void gpApplication::BeforeEngineShutdown()

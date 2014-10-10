@@ -28,6 +28,9 @@ void gpApplication::SetupInput()
     m_pWindow->GetInputDevice()->SetMouseSpeed(ezVec2(0.002f));
 
     RegisterInputAction("Main", "Quit", ezInputSlot_KeyEscape);
+
+    // Poll once to complete input initialization
+    ezInputManager::PollHardware();
 }
 
 void gpApplication::UpdateInput(ezTime dt)
