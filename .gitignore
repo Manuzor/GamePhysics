@@ -8,3 +8,6 @@ Temp/
 *.suo
 *.user
 ipch/
+
+# Python specific
+__pycache__/

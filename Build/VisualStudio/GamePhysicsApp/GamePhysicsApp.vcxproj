@@ -135,8 +135,9 @@
       <AdditionalDependencies>ezFoundation.lib;ezCore.lib;ezSystem.lib;ezInputXBox360.lib;ezThirdParty.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>CopyDLLs.bat "$(OutDir) "</Command>
-      <Message>Copying required DLLs to OutDir</Message>
+      <Command>PostBuild.bat "$(OutDir)\ "</Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>
@@ -163,8 +164,9 @@
       <AdditionalDependencies>ezFoundation.lib;ezCore.lib;ezSystem.lib;ezInputXBox360.lib;ezThirdParty.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>CopyDLLs.bat "$(OutDir) "</Command>
-      <Message>Copying required DLLs to OutDir</Message>
+      <Command>PostBuild.bat "$(OutDir)\ "</Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>
@@ -194,8 +196,9 @@
       <AdditionalDependencies>ezFoundation.lib;ezCore.lib;ezSystem.lib;ezInputXBox360.lib;ezThirdParty.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>CopyDLLs.bat "$(OutDir) "</Command>
-      <Message>Copying required DLLs to OutDir</Message>
+      <Command>PostBuild.bat "$(OutDir)\ "</Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>
@@ -225,8 +228,9 @@
       <AdditionalDependencies>ezFoundation.lib;ezCore.lib;ezSystem.lib;ezInputXBox360.lib;ezThirdParty.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>CopyDLLs.bat "$(OutDir) "</Command>
-      <Message>Copying required DLLs to OutDir</Message>
+      <Command>PostBuild.bat "$(OutDir)\ "</Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>

@@ -2,15 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
+    <GP_UniqueOutputName>WinVs$(PlatformToolsetVersion)$(Configuration)$(PlatformArchitecture)</GP_UniqueOutputName>
     <GP_RootDir>$(SolutionDir)..\..</GP_RootDir>
     <GP_OutputRootDir>$(GP_RootDir)\Output</GP_OutputRootDir>
     <GP_CodeRootDir>$(GP_RootDir)\Code</GP_CodeRootDir>
     <GP_TempRootDir>$(GP_RootDir)\Temp</GP_TempRootDir>
+    <GP_ThirdPartyRootDir>$(GP_RootDir)\ThirdParty</GP_ThirdPartyRootDir>
     <GP_Config>$(Configuration)</GP_Config>
     <GP_Architecture>$(PlatformArchitecture)</GP_Architecture>
     <GP_VsToolset>$(PlatformToolsetVersion)</GP_VsToolset>
-    <GP_UniqueOutputName>WinVs$(GP_VsToolset)$(GP_Config)$(GP_Architecture)</GP_UniqueOutputName>
-    <GP_Tool_CopyEzBinaries>$(SolutionDir)CopyEzBinaries.py</GP_Tool_CopyEzBinaries>
+    <GP_Tool_CopyDependencies>$(SolutionDir)CopyDependencies.py</GP_Tool_CopyDependencies>
   </PropertyGroup>
   <PropertyGroup>
     <OutDir>$(GP_OutputRootDir)\Bin\$(GP_UniqueOutputName)\</OutDir>
@@ -47,6 +48,10 @@
       <Value>$(GP_TempRootDir)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
+    <BuildMacro Include="GP_ThirdPartyRootDir">
+      <Value>$(GP_ThirdPartyRootDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
     <BuildMacro Include="GP_Config">
       <Value>$(GP_Config)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
@@ -59,8 +64,12 @@
       <Value>$(GP_VsToolset)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
-    <BuildMacro Include="GP_Tool_CopyEzBinaries">
-      <Value>$(GP_Tool_CopyEzBinaries)</Value>
+    <BuildMacro Include="GP_UniqueOutputName">
+      <Value>$(GP_UniqueOutputName)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="GP_Tool_CopyDependencies">
+      <Value>$(GP_Tool_CopyDependencies)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>
