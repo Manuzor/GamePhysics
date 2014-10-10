@@ -42,6 +42,9 @@
     <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Input.cpp">
       <Filter>gp\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Rendering.cpp">
+      <Filter>gp\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\PCH.h">

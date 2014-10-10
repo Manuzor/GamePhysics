@@ -40,6 +40,12 @@ void gpApplication::AfterEngineInit()
         ezLog::Info("Memory Page Size: %u", SysInfo.GetMemoryPageSize());
     }
 
+    EZ_LOG_BLOCK("Initialization");
+
+    auto logLevel = ezLogMsgType::All;
+    ezGlobalLog::SetLogLevel(ezLogMsgType::All);
+    ezLog::Info("Log Level: %u", logLevel);
+
     m_pMainAllocator = ezFoundation::GetDefaultAllocator();
 
     m_pWindow = EZ_DEFAULT_NEW(gpWindow);
@@ -53,8 +59,6 @@ void gpApplication::AfterEngineInit()
     SetupInput();
 
     m_LastUpdate = ezTime::Now();
-
-    ezLog::Success("Initialization complete.");
 }
 
 void gpApplication::BeforeEngineShutdown()
@@ -92,6 +96,10 @@ ezApplication::ApplicationExecution gpApplication::Run()
     {
         ezInputManager::PollHardware();
     }
+
+    RenderFrame();
+
+    m_pWindow->PresentFrame();
 
     return Continue;
 }

@@ -23,7 +23,7 @@ static void RegisterInputAction(const char* szInputSet, const char* szInputActio
 
 void gpApplication::SetupInput()
 {
-    m_pWindow->GetInputDevice()->SetClipMouseCursor(true);
+    m_pWindow->GetInputDevice()->SetClipMouseCursor(false);
     m_pWindow->GetInputDevice()->SetShowMouseCursor(true);
     m_pWindow->GetInputDevice()->SetMouseSpeed(ezVec2(0.002f));
 
