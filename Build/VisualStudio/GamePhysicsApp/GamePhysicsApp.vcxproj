@@ -132,7 +132,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ezFoundation.lib;ezCore.lib;ezSystem.lib;ezInputXBox360.lib;ezThirdParty.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>PostBuild.bat "$(OutDir)\ "</Command>
@@ -161,7 +160,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ezFoundation.lib;ezCore.lib;ezSystem.lib;ezInputXBox360.lib;ezThirdParty.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>PostBuild.bat "$(OutDir)\ "</Command>
@@ -193,7 +191,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>ezFoundation.lib;ezCore.lib;ezSystem.lib;ezInputXBox360.lib;ezThirdParty.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>PostBuild.bat "$(OutDir)\ "</Command>
@@ -225,7 +222,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>ezFoundation.lib;ezCore.lib;ezSystem.lib;ezInputXBox360.lib;ezThirdParty.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>PostBuild.bat "$(OutDir)\ "</Command>

@@ -3,5 +3,7 @@
 #include <CoreUtils/PCH.h>
 #include <GameUtils/PCH.h>
 
+#include <GL/glew.h>
+
 #include "gp/Types.h"
 #include "gp/Memory/Allocators.h"
