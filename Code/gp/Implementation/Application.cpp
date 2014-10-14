@@ -1,12 +1,14 @@
 #include "gp/PCH.h"
 #include "gp/Application.h"
 #include "gp/Window.h"
+#include "gp/Task.h"
 
 #include <Foundation/Logging/ConsoleWriter.h>
 #include <Foundation/Logging/VisualStudioWriter.h>
 #include <Foundation/Time/Clock.h>
 #include <Core/Input/InputManager.h>
 #include <Foundation/System/SystemInformation.h>
+#include <Foundation/Threading/TaskSystem.h>
 
 gpApplication::gpApplication() :
     m_pMainAllocator(nullptr),
@@ -70,10 +72,22 @@ void gpApplication::AfterEngineInit()
 
     glGenBuffers(1, &m_uiVertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, m_uiVertexBufferID);
+    EZ_CHECK_AT_COMPILETIME(sizeof(ezVec3) == 3 * sizeof(float));
     glBufferData(GL_ARRAY_BUFFER,
                  sizeof(ezVec3) * m_VertexBufferData.GetCount(),
                  &m_VertexBufferData[0],
                  GL_DYNAMIC_DRAW);
+
+    static gpSimpleTask Task0([]{ ezThreadUtils::Sleep(200); ezLog::Success("Finished!"); });
+    static gpSimpleTask Task1([]{ ezThreadUtils::Sleep(200); ezLog::Success("First task done!"); });
+    static gpSimpleTask Task2([]{ ezThreadUtils::Sleep(200); ezLog::Success("Second task done!"); });
+
+    auto Group = ezTaskSystem::CreateTaskGroup(ezTaskPriority::LongRunning);
+    ezTaskSystem::AddTaskToGroup(Group, &Task1);
+    ezTaskSystem::AddTaskToGroup(Group, &Task2);
+
+    ezTaskSystem::StartSingleTask(&Task0, ezTaskPriority::LongRunning, Group);
+    ezTaskSystem::StartTaskGroup(Group);
 }
 
 void gpApplication::BeforeEngineShutdown()
@@ -122,6 +136,8 @@ ezApplication::ApplicationExecution gpApplication::Run()
     RenderFrame();
 
     m_pWindow->PresentFrame();
+
+    ezTaskSystem::FinishFrameTasks();
 
     return Continue;
 }
