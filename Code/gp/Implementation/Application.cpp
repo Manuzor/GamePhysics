@@ -23,6 +23,12 @@ gpApplication::~gpApplication()
     m_pMainAllocator = nullptr;
 }
 
+void gpApplication::BeforeEngineInit()
+{
+    auto iFailedTests = RunTests();
+    EZ_ASSERT(iFailedTests == 0, "Some unit tests failed.");
+}
+
 void gpApplication::AfterEngineInit()
 {
     // Setup the logging system
