@@ -1,13 +1,21 @@
 #pragma once
 
+using std::move;
+
+template<typename T>
+using Const = T const;
+
 template<typename T>
 using Ptr = T*;
+
+template<typename T>
+using ConstPtr = Const<Ptr<T>>;
 
 template<typename T>
 using Ref = T&;
 
 template<typename T>
-using Const = T const;
+using ConstRef = Const<Ref<T>>;
 
 template<typename T>
 using Volatile = T volatile;

@@ -22,6 +22,7 @@
     <ClCompile Include="..\..\..\Code\gp\Implementation\Application.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Input.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Rendering.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\Implementation\Task_Tests.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Implementation\Window.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Main.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Memory\Implementation\Allocators.cpp" />

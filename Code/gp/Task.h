@@ -19,7 +19,7 @@ private:
 };
 
 template<typename Type>
-using gpTaskFunction = void(*)(Type&);
+using gpTaskFunction = void(*)(Ref<Type>);
 
 /// \brief Class template to wrap a function with a bit of state which gets executed by the task system.
 template<typename UserDataType, typename FunctionType = gpTaskFunction<UserDataType>>
@@ -36,8 +36,8 @@ public:
 
     virtual auto Execute() -> void final { (*m_pFunction)(m_UserData); }
 
-    auto GetUserData()       ->       UserDataType& { return m_UserData; }
-    auto GetUserData() const -> const UserDataType& { return m_UserData; }
+    auto GetUserData()       ->      Ref<UserDataType> { return m_UserData; }
+    auto GetUserData() const -> ConstRef<UserDataType> { return m_UserData; }
 
 private:
     FunctionType m_pFunction;

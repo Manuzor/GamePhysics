@@ -1,7 +1,5 @@
 #pragma once
 
-using std::move;
-
 #include "gp/Types.h"
 
 #define GP_NotImplemented do {             \
