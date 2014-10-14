@@ -51,18 +51,18 @@ void gpApplication::AfterEngineInit()
     m_pMainAllocator = ezFoundation::GetDefaultAllocator();
 
     m_pWindow = EZ_DEFAULT_NEW(gpWindow);
-    m_pWindow->AddEventHandler(gpWindow::Event::Handler(&gpApplication::WindowEventHandler, this));
+    m_pWindow->AddEventHandler(gpWindow::Event::Handler(AddressOf(gpApplication::WindowEventHandler), this));
 
     ezStartup::StartupEngine();
 
     ezClock::SetNumGlobalClocks();
-    ezClock::Get()->SetTimeStepSmoothing(&m_TimeStepSmoother);
+    ezClock::Get()->SetTimeStepSmoothing(AddressOf(m_TimeStepSmoother));
 
     SetupInput();
 
     m_LastUpdate = ezTime::Now();
 
-    glGenVertexArrays(1, &m_uiVertexArrayID);
+    glGenVertexArrays(1, AddressOf(m_uiVertexArrayID));
     glBindVertexArray(m_uiVertexArrayID);
 
     m_VertexBufferData.SetCountUninitialized(3);
@@ -70,12 +70,12 @@ void gpApplication::AfterEngineInit()
     m_VertexBufferData[1].Set( 1.0f, -1.0f, 0.0f);
     m_VertexBufferData[2].Set( 0.0f,  1.0f, 0.0f);
 
-    glGenBuffers(1, &m_uiVertexBufferID);
+    glGenBuffers(1, AddressOf(m_uiVertexBufferID));
     glBindBuffer(GL_ARRAY_BUFFER, m_uiVertexBufferID);
     EZ_CHECK_AT_COMPILETIME(sizeof(ezVec3) == 3 * sizeof(float));
     glBufferData(GL_ARRAY_BUFFER,
                  sizeof(ezVec3) * m_VertexBufferData.GetCount(),
-                 &m_VertexBufferData[0],
+                 AddressOf(m_VertexBufferData[0]),
                  GL_DYNAMIC_DRAW);
 
     static gpSimpleTask Task0([]{ ezThreadUtils::Sleep(200); ezLog::Success("Finished!"); });
@@ -83,10 +83,10 @@ void gpApplication::AfterEngineInit()
     static gpSimpleTask Task2([]{ ezThreadUtils::Sleep(200); ezLog::Success("Second task done!"); });
 
     auto Group = ezTaskSystem::CreateTaskGroup(ezTaskPriority::LongRunning);
-    ezTaskSystem::AddTaskToGroup(Group, &Task1);
-    ezTaskSystem::AddTaskToGroup(Group, &Task2);
+    ezTaskSystem::AddTaskToGroup(Group, AddressOf(Task1));
+    ezTaskSystem::AddTaskToGroup(Group, AddressOf(Task2));
 
-    ezTaskSystem::StartSingleTask(&Task0, ezTaskPriority::LongRunning, Group);
+    ezTaskSystem::StartSingleTask(AddressOf(Task0), ezTaskPriority::LongRunning, Group);
     ezTaskSystem::StartTaskGroup(Group);
 }
 
@@ -126,7 +126,7 @@ ezApplication::ApplicationExecution gpApplication::Run()
         ezInputManager::PollHardware();
     }
 
-    auto& y = m_VertexBufferData[2].y;
+    Ref<float> y = m_VertexBufferData[2].y;
     if (y > 0.0f)
     {
         ezLog::Dev("Y: %f", y);
@@ -142,7 +142,7 @@ ezApplication::ApplicationExecution gpApplication::Run()
     return Continue;
 }
 
-void gpApplication::WindowEventHandler(gpWindow::EventData* pEventData)
+void gpApplication::WindowEventHandler(Ptr<gpWindow::EventData> pEventData)
 {
     switch(pEventData->m_Reason)
     {
