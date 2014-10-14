@@ -15,7 +15,7 @@ public:
     virtual void BeforeEngineShutdown() override;
     virtual ApplicationExecution Run() override;
 
-    void WindowEventHandler(Ptr<gpWindow::EventData> pEventData);
+    void WindowEventHandler(gpWindow::EventData* pEventData);
 
 private:
     void SetupInput();
@@ -25,8 +25,8 @@ private:
     void RenderFrame();
 
 private:
-    Ptr<ezAllocatorBase> m_pMainAllocator;
-    Ptr<gpWindow> m_pWindow;
+    ezAllocatorBase* m_pMainAllocator;
+    gpWindow* m_pWindow;
     ezDefaultTimeStepSmoothing m_TimeStepSmoother;
     ezTime m_LastUpdate;
 

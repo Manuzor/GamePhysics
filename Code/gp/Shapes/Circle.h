@@ -14,4 +14,4 @@ private:
 
 #include "gp/Shapes/Implementation/Circle.inl"
 
-using gpCircleShape = gpCircleShapeTemplate<Scalar>;
+using gpCircleShape = gpCircleShapeTemplate<gpScalar>;

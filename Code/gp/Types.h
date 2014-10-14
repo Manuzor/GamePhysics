@@ -2,34 +2,16 @@
 
 using std::move;
 
-template<typename T>
-using Const = T const;
-
-template<typename T>
-using Ptr = T*;
-
-template<typename T>
-using ConstPtr = Const<Ptr<T>>;
-
-template<typename T>
-using Ref = T&;
-
-template<typename T>
-using ConstRef = Const<Ref<T>>;
-
-template<typename T>
-using Volatile = T volatile;
+template<typename CharacterType = char>
+using gpStringData = const CharacterType*;
 
 template<typename CharacterType = char>
-using StringData = Ptr<Const<CharacterType>>;
-
-template<typename CharacterType = char>
-using StringBuffer = Ptr<CharacterType>;
+using gpStringBuffer = CharacterType*;
 
 #define AddressOf(x) (&x)
 #define Deref(x) (*x)
 
-using Scalar = float;
+using gpScalar = float;
 
 class gpNotImplementedException : public std::exception
 {

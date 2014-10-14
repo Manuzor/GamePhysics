@@ -126,7 +126,7 @@ ezApplication::ApplicationExecution gpApplication::Run()
         ezInputManager::PollHardware();
     }
 
-    Ref<float> y = m_VertexBufferData[2].y;
+    auto& y = m_VertexBufferData[2].y;
     if (y > 0.0f)
     {
         ezLog::Dev("Y: %f", y);
@@ -142,7 +142,7 @@ ezApplication::ApplicationExecution gpApplication::Run()
     return Continue;
 }
 
-void gpApplication::WindowEventHandler(Ptr<gpWindow::EventData> pEventData)
+void gpApplication::WindowEventHandler(gpWindow::EventData* pEventData)
 {
     switch(pEventData->m_Reason)
     {
