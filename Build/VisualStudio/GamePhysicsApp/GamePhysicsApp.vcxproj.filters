@@ -19,6 +19,9 @@
     <Filter Include="gp\Shapes\Implementation">
       <UniqueIdentifier>{8a1721ab-7f25-45ef-be8c-63e64461bb0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gp\Rendering">
+      <UniqueIdentifier>{93975fa6-4823-4957-9397-2b5ffae4fda0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
@@ -76,6 +79,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gp\Task.h">
       <Filter>gp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Config.h">
+      <Filter>gp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Rendering\OpenGL.h">
+      <Filter>gp\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

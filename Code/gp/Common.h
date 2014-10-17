@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gp/Config.h"
 #include "gp/Types.h"
 
 #define GP_NotImplemented do {             \

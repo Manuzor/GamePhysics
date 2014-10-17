@@ -42,8 +42,10 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\Application.h" />
     <ClInclude Include="..\..\..\Code\gp\Common.h" />
+    <ClInclude Include="..\..\..\Code\gp\Config.h" />
     <ClInclude Include="..\..\..\Code\gp\Memory\Allocators.h" />
     <ClInclude Include="..\..\..\Code\gp\PCH.h" />
+    <ClInclude Include="..\..\..\Code\gp\Rendering\OpenGL.h" />
     <ClInclude Include="..\..\..\Code\gp\Shapes\Circle.h" />
     <ClInclude Include="..\..\..\Code\gp\Task.h" />
     <ClInclude Include="..\..\..\Code\gp\Types.h" />
