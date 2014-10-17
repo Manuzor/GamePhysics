@@ -18,6 +18,9 @@ void gpApplication::RenderFrame()
     glClearColor(0, 0, 0.2f, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    GP_OpenGLScope_EnableDisable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
     auto dt = ezClock::Get()->GetAccumulatedTime().GetSeconds();
     auto angle = ezAngle::Radian(static_cast<float>(-dt));
     angle.NormalizeRange();
@@ -35,8 +38,8 @@ void gpApplication::RenderFrame()
 
     gpDrawData::Circle circle;
     circle.m_Position.Set(-0.5f, -0.5f, 0.0f);
-    circle.m_FillColor = ezColor(0.0f, 1.0f, 0.0f, 0.0f);
-    //circle.m_OutlineColor = ezColor(1.0f, 1.0f, 1.0f);
+    circle.m_FillColor = ezColor(0.0f, 1.0f, 0.0f, 0.75f);
+    circle.m_OutlineColor = ezColor(1.0f, 1.0f, 1.0f);
     circle.m_fRadius = 0.5f;
     circle.m_uiNumLineSegments = 100;
     gpDraw(circle);
