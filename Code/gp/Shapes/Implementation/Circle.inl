@@ -1,12 +1,10 @@
 
-template<typename ScalarType>
-gpCircleShapeTemplate<ScalarType>::gpCircleShapeTemplate() :
+gpCircleShape::gpCircleShape() :
     m_fRadius(0.0f)
 {
 }
 
-template<typename ScalarType>
-gpCircleShapeTemplate<ScalarType>::gpCircleShapeTemplate(ScalarType fRadius) :
+gpCircleShape::gpCircleShape(gpScalar fRadius) :
     m_fRadius(fRadius)
 {
 }

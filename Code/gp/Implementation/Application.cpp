@@ -25,6 +25,7 @@ gpApplication::~gpApplication()
 
 void gpApplication::BeforeEngineInit()
 {
+    return;
     auto iFailedTests = RunTests();
     EZ_ASSERT(iFailedTests == 0, "Some unit tests failed.");
 }
@@ -67,22 +68,6 @@ void gpApplication::AfterEngineInit()
     SetupInput();
 
     m_LastUpdate = ezTime::Now();
-
-    glGenVertexArrays(1, AddressOf(m_uiVertexArrayID));
-    glBindVertexArray(m_uiVertexArrayID);
-
-    m_VertexBufferData.SetCountUninitialized(3);
-    m_VertexBufferData[0].Set(-1.0f, -1.0f, 0.0f);
-    m_VertexBufferData[1].Set( 1.0f, -1.0f, 0.0f);
-    m_VertexBufferData[2].Set( 0.0f,  1.0f, 0.0f);
-
-    glGenBuffers(1, AddressOf(m_uiVertexBufferID));
-    glBindBuffer(GL_ARRAY_BUFFER, m_uiVertexBufferID);
-    EZ_CHECK_AT_COMPILETIME(sizeof(ezVec3) == 3 * sizeof(float));
-    glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(ezVec3) * m_VertexBufferData.GetCount(),
-                 AddressOf(m_VertexBufferData[0]),
-                 GL_DYNAMIC_DRAW);
 
     static gpSimpleTask Task0([]{ ezThreadUtils::Sleep(200); ezLog::Success("Finished!"); });
     static gpSimpleTask Task1([]{ ezThreadUtils::Sleep(200); ezLog::Success("First task done!"); });
@@ -130,13 +115,6 @@ ezApplication::ApplicationExecution gpApplication::Run()
     if (!bInputUpdated)
     {
         ezInputManager::PollHardware();
-    }
-
-    auto& y = m_VertexBufferData[2].y;
-    if (y > 0.0f)
-    {
-        ezLog::Dev("Y: %f", y);
-        y -= 0.01f;
     }
 
     RenderFrame();

@@ -1,5 +1,6 @@
 #include "gp/PCH.h"
 #include "gp/Application.h"
+#include "gp/Rendering/Rendering.h"
 
 void gpApplication::RenderFrame()
 {
@@ -14,25 +15,29 @@ void gpApplication::RenderFrame()
 
     glDisable(GL_CULL_FACE);
 
-    glClearColor(0, 0, 0.1f, 1);
+    glClearColor(0, 0, 0.2f, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, m_uiVertexBufferID);
-    glBufferSubData(GL_ARRAY_BUFFER,
-                    0,
-                    sizeof(ezVec3) * m_VertexBufferData.GetCount(),
-                    &m_VertexBufferData[0]);
-    glVertexAttribPointer(
-        0,                             // attribute 0. No particular reason for 0, but must match the layout in the shader.
-        3,
-        GL_FLOAT,                      // Type
-        GL_FALSE,                      // Normalized?
-        0,                             // Stride
-        nullptr                        // Array buffer offset.
-    );
+    auto dt = ezClock::Get()->GetAccumulatedTime().GetSeconds();
+    auto angle = ezAngle::Radian(static_cast<float>(-dt));
+    angle.NormalizeRange();
 
-    glDrawArrays(GL_TRIANGLES, 0, m_VertexBufferData.GetCount());
+    gpDrawData::Line line;
+    line.m_Start.SetZero();
+    line.m_End.Set(ezMath::Cos(angle), ezMath::Sin(angle), 0.0f);
+    gpDraw(line);
 
-    glDisableVertexAttribArray(0);
+    gpDrawData::Point point;
+    point.m_Position.Set(0.5f, 0.5f, 0.0f);
+    point.m_Color.SetRGB(ezVec3(1.0f, 0.0f, 0.0f));
+    point.m_fPointSize = 10.0f;
+    gpDraw(point);
+
+    gpDrawData::Circle circle;
+    circle.m_Position.Set(-0.5f, -0.5f, 0.0f);
+    circle.m_FillColor = ezColor(0.0f, 1.0f, 0.0f, 0.0f);
+    //circle.m_OutlineColor = ezColor(1.0f, 1.0f, 1.0f);
+    circle.m_fRadius = 0.5f;
+    circle.m_uiNumLineSegments = 100;
+    gpDraw(circle);
 }

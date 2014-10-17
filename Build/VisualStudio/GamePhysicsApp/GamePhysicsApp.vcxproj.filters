@@ -22,6 +22,12 @@
     <Filter Include="gp\Rendering">
       <UniqueIdentifier>{93975fa6-4823-4957-9397-2b5ffae4fda0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gp\Rendering\OpenGL">
+      <UniqueIdentifier>{7abafda6-0efe-45ed-ab1e-9d7a70ce544e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gp\Rendering\OpenGL\Implementation">
+      <UniqueIdentifier>{c724cc28-7730-4d85-af89-76da3930ec0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
@@ -54,6 +60,9 @@
     <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Tests.cpp">
       <Filter>gp\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Rendering\OpenGL\Implementation\OpenGL.cpp">
+      <Filter>gp\Rendering\OpenGL\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\PCH.h">
@@ -83,7 +92,10 @@
     <ClInclude Include="..\..\..\Code\gp\Config.h">
       <Filter>gp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gp\Rendering\OpenGL.h">
+    <ClInclude Include="..\..\..\Code\gp\Rendering\OpenGL\OpenGL.h">
+      <Filter>gp\Rendering\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Rendering\Rendering.h">
       <Filter>gp\Rendering</Filter>
     </ClInclude>
   </ItemGroup>

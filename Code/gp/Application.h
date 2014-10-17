@@ -37,6 +37,4 @@ private:
 
     GLuint m_uiVertexArrayID;
     GLuint m_uiVertexBufferID;
-
-    ezStaticArray<ezVec3, 3> m_VertexBufferData;
 };

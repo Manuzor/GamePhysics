@@ -1,17 +1,14 @@
 #pragma once
 
-template<typename ScalarType>
-class gpCircleShapeTemplate
+class gpCircleShape
 {
 public:
 
-    gpCircleShapeTemplate();
-    gpCircleShapeTemplate(ScalarType fRadius);
+    gpCircleShape();
+    gpCircleShape(gpScalar fRadius);
 
 private:
-    ScalarType m_fRadius;
+    gpScalar m_fRadius;
 };
 
 #include "gp/Shapes/Implementation/Circle.inl"
-
-using gpCircleShape = gpCircleShapeTemplate<gpScalar>;
