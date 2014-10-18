@@ -15,6 +15,8 @@ using gpScalar = float;
 
 using gpVec3 = ezVec3Template<gpScalar>;
 using gpRect = ezRectTemplate<gpScalar>;
+using gpMat3 = ezMat3Template<gpScalar>;
+using gpMat4 = ezMat4Template<gpScalar>;
 
 class gpNotImplementedException : public std::exception
 {

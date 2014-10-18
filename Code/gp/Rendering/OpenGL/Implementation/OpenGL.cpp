@@ -34,6 +34,44 @@ void gpDraw(const gpDrawData::Line& Data)
     glVertex3fv(&Data.m_End.x);
 }
 
+void gpDraw(const gpDrawData::Arrow& Data)
+{
+    if (IsEqual(Data.m_Color.a, 0.0f))
+        return;
+
+    auto line = Data.m_End - Data.m_Start;
+    auto fScale = line.GetLength();
+    line.Normalize();
+
+    auto LeftWing = gpVec3(Cos(Data.m_WingAngle), Sin(Data.m_WingAngle), 0.0f) * Data.m_fWingScale;
+    auto RightWing = gpVec3(Cos(Data.m_WingAngle), -Sin(Data.m_WingAngle), 0.0f) * Data.m_fWingScale;
+
+    LeftWing = LeftWing + Data.m_End;
+    RightWing = RightWing + Data.m_End;
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glColor4fv(&Data.m_Color.r);
+
+    glLineWidth(Data.m_fLineWidth);
+
+    {
+        GP_OpenGLScope_BeginEnd(GL_LINES);
+        glVertex3fv(&Data.m_Start.x); glVertex3fv(&Data.m_End.x);
+        //glVertex3fv(&Data.m_End.x);   glVertex3fv(&left.x);
+        //glVertex3fv(&Data.m_End.x);   glVertex3fv(&right.x);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3fv(&Data.m_End.x); glVertex3fv(&LeftWing.x);
+        glVertex3fv(&Data.m_End.x); glVertex3fv(&RightWing.x);
+    }
+    {
+        GP_OpenGLScope_BeginEnd(GL_POINTS);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3fv(&Data.m_Start.x);
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glVertex3fv(&Data.m_End.x);
+    }
+}
+
 static void gpDrawPolygonHelper(const gpDrawData::Polygon& Data, GLenum PolygonMode, const ezColor& Color)
 {
     glPolygonMode(GL_FRONT_AND_BACK, PolygonMode);

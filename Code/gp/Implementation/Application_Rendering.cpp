@@ -25,12 +25,19 @@ void gpApplication::RenderFrame()
     auto angle = ezAngle::Radian(static_cast<float>(-dt));
     angle.NormalizeRange();
 
-    gpDrawData::Line line;
+    gpDrawData::Arrow line;
     line.m_Start.SetZero();
     line.m_End.Set(ezMath::Cos(angle), ezMath::Sin(angle), 0.0f);
     line.m_fLineWidth = angle.GetRadian() * 2;
     line.m_Color = ezColor(1.0f, 1.0f, 1.0f, 1.0f);
     gpDraw(line);
+
+    gpDrawData::Arrow arrow;
+    arrow.m_Start.Set(-0.25f, 0.25f, 0.0f);
+    arrow.m_End.Set(-0.75f, 0.75f, 0.0f);
+    arrow.m_fLineWidth = 1;
+    arrow.m_Color = ezColor(0.0f, 1.0f, 1.0f, 1.0f);
+    gpDraw(arrow);
 
     gpDrawData::Point point;
     point.m_Position.Set(0.5f, 0.5f, 0.0f);

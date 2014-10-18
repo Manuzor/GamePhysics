@@ -18,6 +18,20 @@ namespace gpDrawData
         ezColor m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
     };
 
+    struct Arrow : public Line
+    {
+        /// \brief The angle from the arrow body to the arrow wings.
+        /// \example
+        ///   \
+        /// --->
+        ///   /
+        /// => The angle between --- and / but NOT \ and /
+        ezAngle m_WingAngle = ezAngle::Degree(45);
+
+        /// \brief The scale of the arrow wings shape in relation to the arrow body.
+        float m_fWingScale = 0.2f;
+    };
+
     struct Polygon
     {
         ezArrayPtr<gpVec3> m_Vertices;
@@ -50,6 +64,7 @@ namespace gpDrawData
 
 void gpDraw(const gpDrawData::Point& Data);
 void gpDraw(const gpDrawData::Line& Data);
+void gpDraw(const gpDrawData::Arrow& Data);
 void gpDraw(const gpDrawData::Polygon& Data);
 void gpDraw(const gpDrawData::Circle& Data);
 
