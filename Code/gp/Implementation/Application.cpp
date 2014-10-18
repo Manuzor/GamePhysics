@@ -23,37 +23,49 @@ gpApplication::~gpApplication()
     m_pMainAllocator = nullptr;
 }
 
-void gpApplication::BeforeEngineInit()
-{
-    return;
-    auto iFailedTests = RunTests();
-    EZ_ASSERT(iFailedTests == 0, "Some unit tests failed.");
-}
-
 void gpApplication::AfterEngineInit()
 {
-    // Setup the logging system
-    ezGlobalLog::AddLogWriter(ezLogWriter::Console::LogMessageHandler);
-    ezGlobalLog::AddLogWriter(ezLogWriter::VisualStudio::LogMessageHandler);
-
-    auto& SysInfo = ezSystemInformation::Get();
     {
-        EZ_LOG_BLOCK("System Information");
-        ezLog::Info("Configuration:    %s", SysInfo.GetBuildConfiguration());
-        ezLog::Info("Host Name:        %s", SysInfo.GetHostName());
-        ezLog::Info("Platform:         %s %s", SysInfo.GetPlatformName(), SysInfo.Is64BitOS() ? "64 bit" : "32 bit");
-        ezLog::Info("CPU Cores:        %u", SysInfo.GetCPUCoreCount());
-        ezLog::Info("Main Memory:      %f GiB (%u Bytes)",
-                    SysInfo.GetInstalledMainMemory() / float(1024 * 1024 * 1024),
-                    SysInfo.GetInstalledMainMemory());
-        ezLog::Info("Memory Page Size: %u", SysInfo.GetMemoryPageSize());
+        EZ_LOG_BLOCK("Setup");
+
+        // Setup the logging system
+        ezGlobalLog::AddLogWriter(ezLogWriter::Console::LogMessageHandler);
+        ezGlobalLog::AddLogWriter(ezLogWriter::VisualStudio::LogMessageHandler);
+
+        auto logLevel = ezLogMsgType::All;
+        ezGlobalLog::SetLogLevel(ezLogMsgType::All);
+        ezLog::Info("Log Level: %u", logLevel);
+
+        auto& SysInfo = ezSystemInformation::Get();
+        {
+            EZ_LOG_BLOCK("System Information");
+            ezLog::Info("Configuration:    %s", SysInfo.GetBuildConfiguration());
+            ezLog::Info("Host Name:        %s", SysInfo.GetHostName());
+            ezLog::Info("Platform:         %s %s", SysInfo.GetPlatformName(), SysInfo.Is64BitOS() ? "64 bit" : "32 bit");
+            ezLog::Info("CPU Cores:        %u", SysInfo.GetCPUCoreCount());
+            ezLog::Info("Main Memory:      %f GiB (%u Bytes)",
+                        SysInfo.GetInstalledMainMemory() / float(1024 * 1024 * 1024),
+                        SysInfo.GetInstalledMainMemory());
+            ezLog::Info("Memory Page Size: %u", SysInfo.GetMemoryPageSize());
+        }
+    }
+
+    auto& cmd = GetCommandLine();
+    if(cmd.GetBoolOption("-test"))
+    {
+        EZ_LOG_BLOCK("Unit Tests");
+        ezLog::Info("Be patient...");
+        auto iNumFailedTests = RunTests();
+        if (iNumFailedTests > 0)
+        {
+            ezLog::Warning("%d unit test%s failed!", iNumFailedTests, iNumFailedTests == 1 ? "s" : "");
+            SetReturnCode(iNumFailedTests);
+            m_bQuit = true;
+            return;
+        }
     }
 
     EZ_LOG_BLOCK("Initialization");
-
-    auto logLevel = ezLogMsgType::All;
-    ezGlobalLog::SetLogLevel(ezLogMsgType::All);
-    ezLog::Info("Log Level: %u", logLevel);
 
     m_pMainAllocator = ezFoundation::GetDefaultAllocator();
 

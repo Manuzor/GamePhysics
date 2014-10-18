@@ -11,7 +11,6 @@ public:
     gpApplication();
     ~gpApplication();
 
-    virtual void BeforeEngineInit() override final;
     virtual void AfterEngineInit() override final;
     virtual void BeforeEngineShutdown() override final;
     virtual ApplicationExecution Run() override final;

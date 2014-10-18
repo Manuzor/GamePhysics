@@ -16,7 +16,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <OutDir>$(GP_OutputRootDir)\Bin\$(GP_UniqueOutputName)\</OutDir>
-    <IntDir>$(GP_TempRootDir)\$(GP_UniqueOutputName)\</IntDir>
+    <IntDir>$(GP_TempRootDir)\$(ProjectName)\$(GP_UniqueOutputName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
