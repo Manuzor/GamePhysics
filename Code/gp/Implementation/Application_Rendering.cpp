@@ -28,19 +28,34 @@ void gpApplication::RenderFrame()
     gpDrawData::Line line;
     line.m_Start.SetZero();
     line.m_End.Set(ezMath::Cos(angle), ezMath::Sin(angle), 0.0f);
+    line.m_fLineWidth = angle.GetRadian() * 2;
+    line.m_Color = ezColor(1.0f, 1.0f, 1.0f, 1.0f);
     gpDraw(line);
 
     gpDrawData::Point point;
     point.m_Position.Set(0.5f, 0.5f, 0.0f);
     point.m_Color.SetRGB(ezVec3(1.0f, 0.0f, 0.0f));
-    point.m_fPointSize = 10.0f;
+    point.m_fPointSize = angle.GetRadian() * 2;
     gpDraw(point);
 
     gpDrawData::Circle circle;
     circle.m_Position.Set(-0.5f, -0.5f, 0.0f);
     circle.m_FillColor = ezColor(0.0f, 1.0f, 0.0f, 0.75f);
-    circle.m_OutlineColor = ezColor(1.0f, 1.0f, 1.0f);
+    circle.m_OutlineColor = ezColor(0.0f, 0.0f, 0.0f, 1.0f);
+    circle.m_fOutlineWidth = angle.GetRadian() * 2;
     circle.m_fRadius = 0.5f;
     circle.m_uiNumLineSegments = 100;
     gpDraw(circle);
+
+    gpDrawData::Polygon poly;
+    poly.m_FillColor = ezColor(1.0f, 1.0f, 0.0f, 0.5f);
+    poly.m_OutlineColor = ezColor(1.0f, 1.0f, 0.0f, 1.0f);
+    static gpVec3 vertices[3] =
+    {
+        gpVec3( 0.00f,  0.00f, 0.00f),
+        gpVec3(-0.25f,  0.25f, 0.00f),
+        gpVec3(-0.25f, -0.25f, 0.00f),
+    };
+    poly.m_Vertices = vertices;
+    gpDraw(poly);
 }

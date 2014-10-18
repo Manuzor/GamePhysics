@@ -4,36 +4,47 @@ namespace gpDrawData
     struct Point
     {
         gpVec3 m_Position;
-        ezColor m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+
         float m_fPointSize = 1.0f;
+        ezColor m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
     };
 
     struct Line
     {
         gpVec3 m_Start;
         gpVec3 m_End;
+
+        float m_fLineWidth = 1.0f;
         ezColor m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
-        float m_fLineSize = 1.0f;
     };
 
     struct Polygon
     {
         ezArrayPtr<gpVec3> m_Vertices;
-        bool m_bDrawFill = true;
+
         ezColor m_FillColor =    { 1.0f, 1.0f, 1.0f, 1.0f };
-        bool m_bDrawOutline = true;
-        ezColor m_OutlineColor = { 1.0f, 1.0f, 1.0f, 0.75f };
+        float m_fOutlineWidth = 1.0f;
+        ezColor m_OutlineColor = { 1.0f, 1.0f, 1.0f, 1.0f };
     };
 
     struct Circle
     {
-        float m_fRadius = 1.0f;
         gpVec3 m_Position = { 0.0f, 0.0f, 0.0f };
-        bool m_bDrawFill = true;
-        ezColor m_FillColor =    { 1.0f, 1.0f, 1.0f, 1.0f };
-        bool m_bDrawOutline = true;
-        ezColor m_OutlineColor = { 1.0f, 1.0f, 1.0f, 0.75f };
+        float m_fRadius = 1.0f;
         ezUInt32 m_uiNumLineSegments = 10;
+
+        ezColor m_FillColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float m_fOutlineWidth = 1.0f;
+        ezColor m_OutlineColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+    };
+
+    struct Box
+    {
+        gpRect m_Box;
+
+        ezColor m_FillColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float m_fOutlineWidth = 1.0f;
+        ezColor m_OutlineColor = { 1.0f, 1.0f, 1.0f, 1.0f };
     };
 }
 

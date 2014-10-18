@@ -28,6 +28,12 @@
     <Filter Include="gp\Rendering\OpenGL\Implementation">
       <UniqueIdentifier>{c724cc28-7730-4d85-af89-76da3930ec0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gp\Dependencies">
+      <UniqueIdentifier>{7237a0df-ba03-4880-a9bb-99518a73a906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gp\Utilities">
+      <UniqueIdentifier>{546ad133-596d-4bd7-97d5-6ecb583ba4c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
@@ -97,6 +103,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gp\Rendering\Rendering.h">
       <Filter>gp\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Dependencies\EzEngine.h">
+      <Filter>gp\Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Dependencies\OpenGL.h">
+      <Filter>gp\Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Utilities\EzMathExtensions.h">
+      <Filter>gp\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

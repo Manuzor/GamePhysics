@@ -14,6 +14,7 @@ using gpStringBuffer = CharacterType*;
 using gpScalar = float;
 
 using gpVec3 = ezVec3Template<gpScalar>;
+using gpRect = ezRectTemplate<gpScalar>;
 
 class gpNotImplementedException : public std::exception
 {
