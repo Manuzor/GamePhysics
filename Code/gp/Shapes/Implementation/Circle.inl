@@ -1,6 +1,6 @@
 
 gpCircleShape::gpCircleShape() :
-    m_fRadius(0.0f)
+    m_fRadius(1.0f)
 {
 }
 

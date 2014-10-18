@@ -3,6 +3,7 @@
 class gpCircleShape
 {
 public:
+    EZ_DECLARE_POD_TYPE();
 
     gpCircleShape();
     gpCircleShape(gpScalar fRadius);
