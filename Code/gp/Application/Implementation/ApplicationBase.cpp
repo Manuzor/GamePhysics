@@ -10,7 +10,8 @@
 #include <Foundation/System/SystemInformation.h>
 #include <Foundation/Threading/TaskSystem.h>
 
-gpApplicationBase::gpApplicationBase() :
+gpApplicationBase::gpApplicationBase(const char* szTitle) :
+    m_szTitle(szTitle),
     m_pWindow(nullptr),
     m_bQuit(false),
     m_bRegisteredLogging(false)
@@ -20,6 +21,7 @@ gpApplicationBase::gpApplicationBase() :
 gpApplicationBase::~gpApplicationBase()
 {
     m_pWindow = nullptr;
+    m_szTitle = nullptr;
 }
 
 void gpApplicationBase::SetupLogging()
@@ -39,7 +41,9 @@ void gpApplicationBase::SetupLogging()
 
 void gpApplicationBase::SetupWindow()
 {
-    m_pWindow = EZ_DEFAULT_NEW(gpWindow);
+    m_pWindow = EZ_DEFAULT_NEW(gpWindow)(m_szTitle);
+    auto result = m_pWindow->Initialize();
+    EZ_ASSERT(result.Succeeded(), "Window initialization failed.");
     m_pWindow->AddEventHandler(gpWindow::Event::Handler(AddressOf(gpApplicationBase::WindowEventHandler), this));
 }
 

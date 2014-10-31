@@ -17,8 +17,10 @@ public:
 
     using Event = ezEvent<EventData*>;
 public:
-    gpWindow();
+    gpWindow(const char* szTitle);
     ~gpWindow();
+
+    ezResult Initialize();
 
     ezResult CreateGraphicsContext();
     ezResult DestroyGraphicsContext();

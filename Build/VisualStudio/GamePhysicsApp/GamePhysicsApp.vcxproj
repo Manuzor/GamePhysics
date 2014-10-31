@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\AndyParticles.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Input.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Rendering.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="..\..\..\Code\gp\Shapes\Implementation\Circle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\gp\Application\AndyPatricles.h" />
     <ClInclude Include="..\..\..\Code\gp\Application\ApplicationBase.h" />
     <ClInclude Include="..\..\..\Code\gp\Application\Experiments.h" />
     <ClInclude Include="..\..\..\Code\gp\Common.h" />

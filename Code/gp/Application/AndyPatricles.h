@@ -1,10 +1,10 @@
 #pragma once
 #include "gp/Application/ApplicationBase.h"
 
-class gpExperimentsApp : public gpApplicationBase
+class gpAndyParticlesApp : public gpApplicationBase
 {
 public:
-    gpExperimentsApp(const char* szTitle) : gpApplicationBase(szTitle) {}
+    gpAndyParticlesApp(const char* szTitle) : gpApplicationBase(szTitle) {}
 
     virtual void AfterEngineInit() override;
     virtual void BeforeEngineShutdown() override;

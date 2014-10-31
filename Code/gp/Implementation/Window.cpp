@@ -1,22 +1,25 @@
 #include "gp/PCH.h"
 #include "gp/Window.h"
 
-gpWindow::gpWindow()
+gpWindow::gpWindow(const char* szTitle)
 {
     m_CreationDescription.m_WindowPosition.Set(400, 100);
     m_CreationDescription.m_ClientAreaSize.width = 500;
     m_CreationDescription.m_ClientAreaSize.height = 500;
-    m_CreationDescription.m_Title = "Game Physics mm198";
+    m_CreationDescription.m_Title = szTitle;
     m_CreationDescription.m_bFullscreenWindow = false;
     m_CreationDescription.m_bResizable = true;
-    Initialize();
-    auto result = CreateGraphicsContext();
-    EZ_ASSERT(result.Succeeded(), "No graphics context could be opened.");
 }
 
 gpWindow::~gpWindow()
 {
     Destroy();
+}
+
+ezResult gpWindow::Initialize()
+{
+    ezWindow::Initialize();
+    return CreateGraphicsContext();
 }
 
 ezSizeU32 gpWindow::GetResolution() const

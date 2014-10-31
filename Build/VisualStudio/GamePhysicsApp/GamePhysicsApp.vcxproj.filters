@@ -78,6 +78,9 @@
     <ClCompile Include="..\..\..\Code\gp\Application\Implementation\Experiments.cpp">
       <Filter>gp\Application\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\AndyParticles.cpp">
+      <Filter>gp\Application\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\PCH.h">
@@ -123,6 +126,9 @@
       <Filter>gp\Application</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gp\Application\Experiments.h">
+      <Filter>gp\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Application\AndyPatricles.h">
       <Filter>gp\Application</Filter>
     </ClInclude>
   </ItemGroup>

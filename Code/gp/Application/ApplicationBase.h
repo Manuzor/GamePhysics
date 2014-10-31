@@ -9,7 +9,7 @@
 class gpApplicationBase : public ezApplication
 {
 public:
-    gpApplicationBase();
+    gpApplicationBase(const char* szTitle);
     ~gpApplicationBase();
 
     // Unit test related
@@ -61,6 +61,7 @@ private:
     void WindowEventHandler(gpWindow::EventData* pEventData);
 
 protected:
+    const char* m_szTitle;
     gpWindow* m_pWindow;
     bool m_bQuit;
 
