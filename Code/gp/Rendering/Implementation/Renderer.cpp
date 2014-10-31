@@ -6,14 +6,12 @@ static void DrawHelper(gpDrawData::Base* pDrawData)
 {
     switch(pDrawData->m_Type)
     {
-    case gpDrawData::Type::Point:   gpDraw(*static_cast<gpDrawData::Point*  >(pDrawData));
-    case gpDrawData::Type::Line:    gpDraw(*static_cast<gpDrawData::Line*   >(pDrawData));
-    case gpDrawData::Type::Arrow:   gpDraw(*static_cast<gpDrawData::Arrow*  >(pDrawData));
-    case gpDrawData::Type::Polygon: gpDraw(*static_cast<gpDrawData::Polygon*>(pDrawData));
-    case gpDrawData::Type::Circle:  gpDraw(*static_cast<gpDrawData::Circle* >(pDrawData));
-    case gpDrawData::Type::Box:     gpDraw(*static_cast<gpDrawData::Box*    >(pDrawData));
-    default:
-        break;
+    case gpDrawData::Type::Point:   gpDraw(*static_cast<gpDrawData::Point*  >(pDrawData)); return;
+    case gpDrawData::Type::Line:    gpDraw(*static_cast<gpDrawData::Line*   >(pDrawData)); return;
+    case gpDrawData::Type::Arrow:   gpDraw(*static_cast<gpDrawData::Arrow*  >(pDrawData)); return;
+    case gpDrawData::Type::Polygon: gpDraw(*static_cast<gpDrawData::Polygon*>(pDrawData)); return;
+    case gpDrawData::Type::Circle:  gpDraw(*static_cast<gpDrawData::Circle* >(pDrawData)); return;
+    case gpDrawData::Type::Box:     gpDraw(*static_cast<gpDrawData::Box*    >(pDrawData)); return;
     }
 }
 
@@ -25,7 +23,7 @@ void gpRenderer::Render()
         // TODO Wait for extractor signal.
         auto pData = pExtractor->m_pActiveRenderData;
         auto pCurrentData = (gpDrawData::Base*)pData->GetBegin();
-        auto pEnd = (gpDrawData::Base*)pData->GetEnd();
+        auto pEnd = (gpDrawData::Base*)pData->GetCurrent();
         while(pCurrentData < pEnd)
         {
             DrawHelper(pCurrentData);
