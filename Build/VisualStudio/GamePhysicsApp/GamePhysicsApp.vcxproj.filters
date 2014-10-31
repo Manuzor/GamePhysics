@@ -34,6 +34,12 @@
     <Filter Include="gp\Utilities">
       <UniqueIdentifier>{546ad133-596d-4bd7-97d5-6ecb583ba4c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gp\Application">
+      <UniqueIdentifier>{79518afa-d046-4e37-b5ea-84248cd60fed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gp\Application\Implementation">
+      <UniqueIdentifier>{8011e18c-d0cf-4e78-a73e-0a87add61653}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
@@ -41,9 +47,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gp\Main.cpp">
       <Filter>gp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\gp\Implementation\Application.cpp">
-      <Filter>gp\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gp\Memory\Implementation\Allocators.cpp">
       <Filter>gp\Memory\Implementation</Filter>
@@ -54,27 +57,30 @@
     <ClCompile Include="..\..\..\Code\gp\Implementation\Window.cpp">
       <Filter>gp\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Input.cpp">
-      <Filter>gp\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Rendering.cpp">
-      <Filter>gp\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\gp\Implementation\Task_Tests.cpp">
-      <Filter>gp\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Tests.cpp">
       <Filter>gp\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gp\Rendering\OpenGL\Implementation\OpenGL.cpp">
       <Filter>gp\Rendering\OpenGL\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase.cpp">
+      <Filter>gp\Application\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Input.cpp">
+      <Filter>gp\Application\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Rendering.cpp">
+      <Filter>gp\Application\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Tests.cpp">
+      <Filter>gp\Application\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\Experiments.cpp">
+      <Filter>gp\Application\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\PCH.h">
-      <Filter>gp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gp\Application.h">
       <Filter>gp</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gp\Memory\Allocators.h">
@@ -112,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gp\Utilities\EzMathExtensions.h">
       <Filter>gp\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Application\ApplicationBase.h">
+      <Filter>gp\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Application\Experiments.h">
+      <Filter>gp\Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

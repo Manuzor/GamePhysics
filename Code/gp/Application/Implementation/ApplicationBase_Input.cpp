@@ -1,13 +1,15 @@
 #include "gp/PCH.h"
-#include "gp/Application.h"
+#include "gp/Application/ApplicationBase.h"
 #include "gp/Window.h"
 
-#include <Foundation/Logging/ConsoleWriter.h>
-#include <Foundation/Logging/VisualStudioWriter.h>
 #include <Foundation/Time/Clock.h>
 #include <Core/Input/InputManager.h>
 
-static void RegisterInputAction(const char* szInputSet, const char* szInputAction, const char* szKey1, const char* szKey2 = nullptr, const char* szKey3 = nullptr)
+void gpApplicationBase::RegisterInputAction(const char* szInputSet,
+                                            const char* szInputAction,
+                                            const char* szKey1,
+                                            const char* szKey2,
+                                            const char* szKey3)
 {
   ezInputActionConfig cfg;
 
@@ -21,19 +23,16 @@ static void RegisterInputAction(const char* szInputSet, const char* szInputActio
   ezInputManager::SetInputActionConfig(szInputSet, szInputAction, cfg, true);
 }
 
-void gpApplication::SetupInput()
+void gpApplicationBase::SetupInput()
 {
     m_pWindow->GetInputDevice()->SetClipMouseCursor(false);
     m_pWindow->GetInputDevice()->SetShowMouseCursor(true);
     m_pWindow->GetInputDevice()->SetMouseSpeed(ezVec2(0.002f));
 
     RegisterInputAction("Main", "Quit", ezInputSlot_KeyEscape);
-
-    // Poll once to complete input initialization
-    ezInputManager::PollHardware();
 }
 
-void gpApplication::UpdateInput(ezTime dt)
+void gpApplicationBase::UpdateInput(ezTime dt)
 {
     ezInputManager::Update(dt);
 

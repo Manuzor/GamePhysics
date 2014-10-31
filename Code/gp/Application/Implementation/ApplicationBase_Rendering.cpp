@@ -1,8 +1,8 @@
 #include "gp/PCH.h"
-#include "gp/Application.h"
+#include "gp/Application/ApplicationBase.h"
 #include "gp/Rendering/Rendering.h"
 
-void gpApplication::RenderFrame()
+void gpApplicationBase::RenderFrame()
 {
     auto resolution = m_pWindow->GetResolution();
     glViewport(0, 0, resolution.width, resolution.height);

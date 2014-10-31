@@ -19,10 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\gp\Implementation\Application.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Input.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Rendering.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Implementation\Application_Tests.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Input.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Rendering.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Tests.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\Experiments.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Implementation\Task_Tests.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Implementation\Window.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Main.cpp" />
@@ -41,7 +42,8 @@
     <ClCompile Include="..\..\..\Code\gp\Shapes\Implementation\Circle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\gp\Application.h" />
+    <ClInclude Include="..\..\..\Code\gp\Application\ApplicationBase.h" />
+    <ClInclude Include="..\..\..\Code\gp\Application\Experiments.h" />
     <ClInclude Include="..\..\..\Code\gp\Common.h" />
     <ClInclude Include="..\..\..\Code\gp\Config.h" />
     <ClInclude Include="..\..\..\Code\gp\Dependencies\EzEngine.h" />
