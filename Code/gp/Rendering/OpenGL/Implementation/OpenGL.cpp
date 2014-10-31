@@ -1,5 +1,5 @@
 #include "gp/PCH.h"
-#include "gp/Rendering/OpenGL/OpenGL.h"
+#include "gp/Rendering/Rendering.h"
 #include "gp/Utilities/EzMathExtensions.h"
 
 using ezMath::Cos;
@@ -136,4 +136,9 @@ void gpDraw(const gpDrawData::Circle& Data)
         glLineWidth(Data.m_fOutlineWidth);
         gpDrawCircleHelper(Data, GL_LINE, Data.m_OutlineColor);
     }
+}
+
+void gpDraw(const gpDrawData::Box& Data)
+{
+    GP_NotImplemented;
 }

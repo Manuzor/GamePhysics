@@ -40,6 +40,9 @@
     <Filter Include="gp\Application\Implementation">
       <UniqueIdentifier>{8011e18c-d0cf-4e78-a73e-0a87add61653}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gp\Rendering\Implementation">
+      <UniqueIdentifier>{5164e4a6-bd66-4ac9-90cf-5f117793246b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
@@ -80,6 +83,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gp\Application\Implementation\AndyParticles.cpp">
       <Filter>gp\Application\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\RenderExtractor.cpp">
+      <Filter>gp\Rendering\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\Renderer.cpp">
+      <Filter>gp\Rendering\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,10 +140,22 @@
     <ClInclude Include="..\..\..\Code\gp\Application\AndyPatricles.h">
       <Filter>gp\Application</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Rendering\Renderer.h">
+      <Filter>gp\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Rendering\RenderExtractor.h">
+      <Filter>gp\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Memory\FixedStackAllocator.h">
+      <Filter>gp\Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gp\Shapes\Implementation\Circle.inl">
       <Filter>gp\Shapes\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gp\Memory\Implementation\FixedStackAllocator.inl">
+      <Filter>gp\Memory\Implementation</Filter>
     </None>
   </ItemGroup>
 </Project>

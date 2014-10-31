@@ -5,6 +5,9 @@
 
 #include "gp/Window.h"
 
+class gpRenderer;
+class gpRenderExtractor;
+
 /// \brief Provides some basic functionality that can be used by sub-classes.
 class gpApplicationBase : public ezApplication
 {
@@ -54,6 +57,10 @@ public:
 
     // Rendering
     //////////////////////////////////////////////////////////////////////////
+    /// \brief Instanciates the render extractor.
+    void SetupRendering();
+
+    /// \brief Triggers an extraction and renders the data.
     void RenderFrame();
 
 private:
@@ -64,6 +71,8 @@ protected:
     const char* m_szTitle;
     gpWindow* m_pWindow;
     bool m_bQuit;
+    gpRenderer* m_pRenderer;
+    gpRenderExtractor* m_pRenderExtractor;
 
 private:
     bool m_bRegisteredLogging;

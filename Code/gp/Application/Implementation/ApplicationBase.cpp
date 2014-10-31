@@ -1,7 +1,4 @@
 #include "gp/PCH.h"
-#include "gp/Application/ApplicationBase.h"
-#include "gp/Window.h"
-#include "gp/Task.h"
 
 #include <Foundation/Logging/ConsoleWriter.h>
 #include <Foundation/Logging/VisualStudioWriter.h>
@@ -10,11 +7,19 @@
 #include <Foundation/System/SystemInformation.h>
 #include <Foundation/Threading/TaskSystem.h>
 
+#include "gp/Application/ApplicationBase.h"
+#include "gp/Window.h"
+#include "gp/Task.h"
+#include "gp/Rendering/Renderer.h"
+#include "gp/Rendering/RenderExtractor.h"
+
 gpApplicationBase::gpApplicationBase(const char* szTitle) :
     m_szTitle(szTitle),
     m_pWindow(nullptr),
     m_bQuit(false),
-    m_bRegisteredLogging(false)
+    m_bRegisteredLogging(false),
+    m_pRenderer(nullptr),
+    m_pRenderExtractor(nullptr)
 {
 }
 
@@ -83,6 +88,8 @@ void gpApplicationBase::LogSystemInformation()
 
 void gpApplicationBase::Cleanup()
 {
+    EZ_DEFAULT_DELETE(m_pRenderExtractor);
+    EZ_DEFAULT_DELETE(m_pRenderer);
     EZ_DEFAULT_DELETE(m_pWindow);
 
     if(m_bRegisteredLogging)
@@ -102,4 +109,11 @@ void gpApplicationBase::WindowEventHandler(gpWindow::EventData* pEventData)
     default:
         break;
     }
+}
+
+void gpApplicationBase::SetupRendering()
+{
+    m_pRenderer = EZ_DEFAULT_NEW(gpRenderer);
+    m_pRenderExtractor = EZ_DEFAULT_NEW(gpRenderExtractor);
+    m_pRenderer->AddExtractor(m_pRenderExtractor);
 }

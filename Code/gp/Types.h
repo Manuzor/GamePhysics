@@ -11,12 +11,16 @@ using gpStringBuffer = CharacterType*;
 #define AddressOf(x) (&x)
 #define Deref(x) (*x)
 
+using gpByte = unsigned char;
+
 using gpScalar = float;
 
 using gpVec3 = ezVec3Template<gpScalar>;
 using gpRect = ezRectTemplate<gpScalar>;
 using gpMat3 = ezMat3Template<gpScalar>;
 using gpMat4 = ezMat4Template<gpScalar>;
+
+enum class gpObjectInitialization { Yes, No };
 
 class gpNotImplementedException : public std::exception
 {

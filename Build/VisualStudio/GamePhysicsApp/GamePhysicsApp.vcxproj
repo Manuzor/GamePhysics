@@ -39,6 +39,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gp\PCH.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\Renderer.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\RenderExtractor.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Rendering\OpenGL\Implementation\OpenGL.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Shapes\Implementation\Circle.cpp" />
   </ItemGroup>
@@ -51,8 +53,11 @@
     <ClInclude Include="..\..\..\Code\gp\Dependencies\EzEngine.h" />
     <ClInclude Include="..\..\..\Code\gp\Dependencies\OpenGL.h" />
     <ClInclude Include="..\..\..\Code\gp\Memory\Allocators.h" />
+    <ClInclude Include="..\..\..\Code\gp\Memory\FixedStackAllocator.h" />
     <ClInclude Include="..\..\..\Code\gp\PCH.h" />
     <ClInclude Include="..\..\..\Code\gp\Rendering\OpenGL\OpenGL.h" />
+    <ClInclude Include="..\..\..\Code\gp\Rendering\Renderer.h" />
+    <ClInclude Include="..\..\..\Code\gp\Rendering\RenderExtractor.h" />
     <ClInclude Include="..\..\..\Code\gp\Rendering\Rendering.h" />
     <ClInclude Include="..\..\..\Code\gp\Shapes\Circle.h" />
     <ClInclude Include="..\..\..\Code\gp\Task.h" />
@@ -61,6 +66,7 @@
     <ClInclude Include="..\..\..\Code\gp\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\Code\gp\Memory\Implementation\FixedStackAllocator.inl" />
     <None Include="..\..\..\Code\gp\Shapes\Implementation\Circle.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

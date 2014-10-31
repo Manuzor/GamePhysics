@@ -1,6 +1,7 @@
 #include "gp/PCH.h"
 #include "gp/Application/ApplicationBase.h"
 #include "gp/Rendering/Rendering.h"
+#include "gp/Rendering/RenderExtractor.h"
 
 void gpApplicationBase::RenderFrame()
 {
@@ -25,12 +26,15 @@ void gpApplicationBase::RenderFrame()
     auto angle = ezAngle::Radian(static_cast<float>(-dt));
     angle.NormalizeRange();
 
-    gpDrawData::Arrow line;
+    auto pLine = m_pRenderExtractor->AllocateRenderData<gpDrawData::Arrow>();
+    auto& line = *pLine;
     line.m_Start.SetZero();
     line.m_End.Set(ezMath::Cos(angle), ezMath::Sin(angle), 0.0f);
     line.m_fLineWidth = angle.GetRadian() * 2;
     line.m_Color = ezColor(1.0f, 1.0f, 1.0f, 1.0f);
     gpDraw(line);
+
+    m_pRenderExtractor->TriggerExtraction(); // Will swap the buffers.
 
     gpDrawData::Arrow arrow;
     arrow.m_Start.Set(-0.25f, 0.25f, 0.0f);
