@@ -6,15 +6,8 @@
 
 void gpApplicationBase::RenderFrame()
 {
-    static bool bInitialized = false;
-
-    if (!bInitialized)
-    {
-        bInitialized = true;
-
-        auto resolution = m_pWindow->GetResolution();
-        glViewport(0, 0, resolution.width, resolution.height);
-    }
+    auto resolution = m_pWindow->GetResolution();
+    glViewport(0, 0, resolution.width, resolution.height);
 
     gpRenderExtractor::TriggerExtraction();
 }
