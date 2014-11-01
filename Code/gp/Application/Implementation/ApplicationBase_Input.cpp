@@ -1,9 +1,10 @@
 #include "gp/PCH.h"
-#include "gp/Application/ApplicationBase.h"
-#include "gp/Window.h"
 
 #include <Foundation/Time/Clock.h>
 #include <Core/Input/InputManager.h>
+
+#include "gp/Application/ApplicationBase.h"
+#include "gp/Window.h"
 
 void gpApplicationBase::RegisterInputAction(const char* szInputSet,
                                             const char* szInputAction,

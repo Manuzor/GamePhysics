@@ -71,8 +71,6 @@ protected:
     const char* m_szTitle;
     gpWindow* m_pWindow;
     bool m_bQuit;
-    gpRenderer* m_pRenderer;
-    gpRenderExtractor* m_pRenderExtractor;
 
 private:
     bool m_bRegisteredLogging;

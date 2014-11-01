@@ -17,9 +17,7 @@ gpApplicationBase::gpApplicationBase(const char* szTitle) :
     m_szTitle(szTitle),
     m_pWindow(nullptr),
     m_bQuit(false),
-    m_bRegisteredLogging(false),
-    m_pRenderer(nullptr),
-    m_pRenderExtractor(nullptr)
+    m_bRegisteredLogging(false)
 {
 }
 
@@ -88,8 +86,6 @@ void gpApplicationBase::LogSystemInformation()
 
 void gpApplicationBase::Cleanup()
 {
-    EZ_DEFAULT_DELETE(m_pRenderExtractor);
-    EZ_DEFAULT_DELETE(m_pRenderer);
     EZ_DEFAULT_DELETE(m_pWindow);
 
     if(m_bRegisteredLogging)
@@ -113,7 +109,4 @@ void gpApplicationBase::WindowEventHandler(gpWindow::EventData* pEventData)
 
 void gpApplicationBase::SetupRendering()
 {
-    m_pRenderer = EZ_DEFAULT_NEW(gpRenderer);
-    m_pRenderExtractor = EZ_DEFAULT_NEW(gpRenderExtractor);
-    m_pRenderer->AddExtractor(m_pRenderExtractor);
 }

@@ -39,6 +39,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gp\PCH.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\AsyncRendering.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\Renderer.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\RenderExtractor.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Rendering\OpenGL\Implementation\OpenGL.cpp" />
@@ -52,9 +53,11 @@
     <ClInclude Include="..\..\..\Code\gp\Config.h" />
     <ClInclude Include="..\..\..\Code\gp\Dependencies\EzEngine.h" />
     <ClInclude Include="..\..\..\Code\gp\Dependencies\OpenGL.h" />
+    <ClInclude Include="..\..\..\Code\gp\Dependencies\Stl.h" />
     <ClInclude Include="..\..\..\Code\gp\Memory\Allocators.h" />
     <ClInclude Include="..\..\..\Code\gp\Memory\FixedStackAllocator.h" />
     <ClInclude Include="..\..\..\Code\gp\PCH.h" />
+    <ClInclude Include="..\..\..\Code\gp\Rendering\AsyncRendering.h" />
     <ClInclude Include="..\..\..\Code\gp\Rendering\OpenGL\OpenGL.h" />
     <ClInclude Include="..\..\..\Code\gp\Rendering\Renderer.h" />
     <ClInclude Include="..\..\..\Code\gp\Rendering\RenderExtractor.h" />

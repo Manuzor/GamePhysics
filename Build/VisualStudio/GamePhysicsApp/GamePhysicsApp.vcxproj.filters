@@ -90,6 +90,9 @@
     <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\Renderer.cpp">
       <Filter>gp\Rendering\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\AsyncRendering.cpp">
+      <Filter>gp\Rendering\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\PCH.h">
@@ -148,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gp\Memory\FixedStackAllocator.h">
       <Filter>gp\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Dependencies\Stl.h">
+      <Filter>gp\Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Rendering\AsyncRendering.h">
+      <Filter>gp\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
