@@ -58,6 +58,7 @@
     <ClInclude Include="..\..\..\Code\gp\Memory\FixedStackAllocator.h" />
     <ClInclude Include="..\..\..\Code\gp\PCH.h" />
     <ClInclude Include="..\..\..\Code\gp\Rendering\AsyncRendering.h" />
+    <ClInclude Include="..\..\..\Code\gp\Rendering\Implementation\RenderThread.h" />
     <ClInclude Include="..\..\..\Code\gp\Rendering\OpenGL\OpenGL.h" />
     <ClInclude Include="..\..\..\Code\gp\Rendering\Renderer.h" />
     <ClInclude Include="..\..\..\Code\gp\Rendering\RenderExtractor.h" />
@@ -70,6 +71,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gp\Memory\Implementation\FixedStackAllocator.inl" />
+    <None Include="..\..\..\Code\gp\Rendering\Implementation\Renderer_Async.inl" />
+    <None Include="..\..\..\Code\gp\Rendering\Implementation\Renderer_NonAsync.inl" />
     <None Include="..\..\..\Code\gp\Shapes\Implementation\Circle.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

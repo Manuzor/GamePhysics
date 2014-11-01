@@ -6,10 +6,6 @@
 bool gpRenderer::s_bInitialized = false;
 gpRenderExtractor* gpRenderer::s_pExtractor = nullptr;
 
-#if EZ_ENABLED(GP_AsyncRendering)
-gpInternal::gpRenderThread* gpRenderer::s_pRenderThread = nullptr;
-#endif
-
 EZ_BEGIN_SUBSYSTEM_DECLARATION(GamePhysics, Renderer)
     ON_ENGINE_STARTUP
     {
@@ -20,34 +16,7 @@ EZ_BEGIN_SUBSYSTEM_DECLARATION(GamePhysics, Renderer)
     {
         gpRenderer::Shutdown();
     }
-
 EZ_END_SUBSYSTEM_DECLARATION
-
-void gpRenderer::Initialize()
-{
-    if (IsInitialized())
-        return;
-
-#if EZ_ENABLED(GP_AsyncRendering)
-    static gpByte staticRenderThreadData[sizeof(gpInternal::gpRenderThread)];
-    s_pRenderThread = new (staticRenderThreadData) gpInternal::gpRenderThread();
-    s_pRenderThread->Start();
-#endif
-
-    s_bInitialized = true;
-}
-
-void gpRenderer::Shutdown()
-{
-    if (!IsInitialized())
-        return;
-
-#if EZ_ENABLED(GP_AsyncRendering)
-    s_pRenderThread->Stop();
-#endif
-
-    s_bInitialized = false;
-}
 
 gpFixedStackAllocator* gpRenderer::GetRenderData()
 {
@@ -95,45 +64,7 @@ void gpRenderer::Render()
 }
 
 #if EZ_ENABLED(GP_AsyncRendering)
-gpInternal::gpRenderThread::gpRenderThread() :
-    ezThread("Render Thread"),
-    m_bStop(false)
-{
-}
-
-void gpInternal::gpRenderThread::Stop()
-{
-    m_bStop = true;
-    gpAsyncRendering::GetRenderSignal()->RaiseSignal();
-    ezLog::Info("Waiting for render thread...");
-    Join();
-    ezLog::Info("Render thread successfully terminated.");
-
-    // TODO Make sure the main thread is not blocked?
-    gpAsyncRendering::GetExtractionSignal()->RaiseSignal();
-}
-
-ezUInt32 gpInternal::gpRenderThread::Run()
-{
-    ezLog::Info("Render thread is running.");
-
-    // Make sure the extractor is not waiting for us indefinitely.
-    GP_OnScopeExit{ gpAsyncRendering::GetExtractionSignal()->RaiseSignal(); };
-
-    while(true)
-    {
-        gpAsyncRendering::GetExtractionSignal()->RaiseSignal(); // "Hey extractor, continue extracting!"
-        if(m_bStop)
-            break;
-        gpAsyncRendering::GetRenderSignal()->WaitForSignal(); // "[Lets wait for the extractor to give us data.]"
-        if (m_bStop)
-            break;
-
-        gpRenderer::Render();
-    }
-
-    ezLog::Info("Render thread finished.");
-
-    return 0;
-}
+#include "gp/Rendering/Implementation/Renderer_Async.inl"
+#else
+#include "gp/Rendering/Implementation/Renderer_NonAsync.inl"
 #endif

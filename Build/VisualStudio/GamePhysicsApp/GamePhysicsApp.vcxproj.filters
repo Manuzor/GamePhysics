@@ -158,6 +158,9 @@
     <ClInclude Include="..\..\..\Code\gp\Rendering\AsyncRendering.h">
       <Filter>gp\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\Rendering\Implementation\RenderThread.h">
+      <Filter>gp\Rendering\Implementation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gp\Shapes\Implementation\Circle.inl">
@@ -165,6 +168,12 @@
     </None>
     <None Include="..\..\..\Code\gp\Memory\Implementation\FixedStackAllocator.inl">
       <Filter>gp\Memory\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gp\Rendering\Implementation\Renderer_Async.inl">
+      <Filter>gp\Rendering\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gp\Rendering\Implementation\Renderer_NonAsync.inl">
+      <Filter>gp\Rendering\Implementation</Filter>
     </None>
   </ItemGroup>
 </Project>
