@@ -1,8 +1,11 @@
 #pragma once
 #include <System/Window/Window.h>
 
+class gpRenderer;
+
 class gpWindow : public ezWindow
 {
+    friend gpRenderer;
 public:
 
     enum EventReason

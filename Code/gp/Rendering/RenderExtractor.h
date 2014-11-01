@@ -68,6 +68,8 @@ public:
 private:
     EZ_FORCE_INLINE static bool IsInitialized() { return s_pInstance != nullptr; }
 
+    static void SwapBuffers();
+
 private:
     static gpRenderExtractor* s_pInstance;
 

@@ -57,6 +57,13 @@ void gpRenderExtractor::TriggerExtraction()
         s_pInstance->m_ExtractionEvent.Broadcast(s_pInstance);
     }
 
+    SwapBuffers();
+
+    s_pInstance->m_pCollectedRenderData->Reset();
+}
+
+void gpRenderExtractor::SwapBuffers()
+{
 #if EZ_ENABLED(GP_AsyncRendering)
     gpAsyncRendering::GetExtractionSignal()->WaitForSignal();
     s_pInstance->SwapDataPointers();
@@ -65,8 +72,6 @@ void gpRenderExtractor::TriggerExtraction()
     s_pInstance->SwapDataPointers();
     gpRenderer::Render();
 #endif
-
-    s_pInstance->m_pCollectedRenderData->Reset();
 }
 
 // Non-static

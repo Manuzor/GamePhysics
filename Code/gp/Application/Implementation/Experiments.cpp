@@ -65,6 +65,7 @@ void gpExperimentsApp::AfterEngineInit()
         SetupInput();
         // Poll once to finish input initialization;
         ezInputManager::PollHardware();
+        SetupRendering();
     }
 
     RunTestsIfEnabled();

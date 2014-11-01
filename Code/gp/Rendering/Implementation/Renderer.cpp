@@ -5,6 +5,7 @@
 
 bool gpRenderer::s_bInitialized = false;
 gpRenderExtractor* gpRenderer::s_pExtractor = nullptr;
+gpWindow* gpRenderer::s_pWindow = nullptr;
 
 EZ_BEGIN_SUBSYSTEM_DECLARATION(GamePhysics, Renderer)
     ON_ENGINE_STARTUP

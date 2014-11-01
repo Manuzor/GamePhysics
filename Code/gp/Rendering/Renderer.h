@@ -3,6 +3,7 @@
 
 class gpRenderExtractor;
 class gpFixedStackAllocator;
+class gpWindow;
 
 class gpRenderer
 {
@@ -14,6 +15,9 @@ public:
 
     static void SetExtractor(gpRenderExtractor* pExtractor) { EZ_ASSERT(IsInitialized(), ""); s_pExtractor = pExtractor; }
     static gpRenderExtractor* GetExtractor() { EZ_ASSERT(IsInitialized(), ""); return s_pExtractor; }
+
+    static void SetWindow(gpWindow* pWindow) { EZ_ASSERT(IsInitialized(), ""); s_pWindow = pWindow; }
+    static gpWindow* GetWindow() { EZ_ASSERT(IsInitialized(), ""); return s_pWindow; }
 
     static void Render();
 
@@ -28,6 +32,7 @@ private:
 private:
     static bool s_bInitialized;
     static gpRenderExtractor* s_pExtractor;
+    static gpWindow* s_pWindow;
 
     EZ_MAKE_SUBSYSTEM_STARTUP_FRIEND(GamePhysics, Renderer);
 };
