@@ -1,5 +1,6 @@
 #include "gp/PCH.h"
 #include "gp/Window.h"
+#include "gp/Rendering/Renderer.h"
 
 gpWindow::gpWindow(const char* szTitle)
 {
@@ -9,6 +10,8 @@ gpWindow::gpWindow(const char* szTitle)
     m_CreationDescription.m_Title = szTitle;
     m_CreationDescription.m_bFullscreenWindow = false;
     m_CreationDescription.m_bResizable = true;
+
+    gpRenderer::SetResolution(m_CreationDescription.m_ClientAreaSize);
 }
 
 gpWindow::~gpWindow()
@@ -32,6 +35,8 @@ void gpWindow::OnResizeMessage(const ezSizeU32& newWindowSize)
     printf("Resolution changed: %dx%d\n", newWindowSize.width, newWindowSize.height);
 
     m_CreationDescription.m_ClientAreaSize = newWindowSize;
+
+    gpRenderer::SetResolution(newWindowSize);
 }
 
 void gpWindow::OnClickCloseMessage()

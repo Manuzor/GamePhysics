@@ -7,3 +7,4 @@
 #include <Foundation/Math/Rect.h>
 #include <Foundation/Communication/GlobalEvent.h>
 #include <Foundation/Threading/ThreadSignal.h>
+#include <Foundation/Math/Size.h>

@@ -109,5 +109,4 @@ void gpApplicationBase::WindowEventHandler(gpWindow::EventData* pEventData)
 
 void gpApplicationBase::SetupRendering()
 {
-    gpRenderer::SetWindow(m_pWindow);
 }

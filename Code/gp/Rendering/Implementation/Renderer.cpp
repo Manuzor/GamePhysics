@@ -5,7 +5,7 @@
 
 bool gpRenderer::s_bInitialized = false;
 gpRenderExtractor* gpRenderer::s_pExtractor = nullptr;
-gpWindow* gpRenderer::s_pWindow = nullptr;
+ezSizeU32 gpRenderer::s_Resolution;
 
 EZ_BEGIN_SUBSYSTEM_DECLARATION(GamePhysics, Renderer)
     ON_ENGINE_STARTUP
@@ -40,6 +40,8 @@ static void DrawHelper(gpDrawData::Base* pDrawData)
 
 void gpRenderer::Render()
 {
+    glViewport(0, 0, s_Resolution.width, s_Resolution.height);
+
     //glMatrixMode(GL_PROJECTION);
     //glLoadIdentity();
     //glOrtho(-20, 20, -20, 20, -10, 10);

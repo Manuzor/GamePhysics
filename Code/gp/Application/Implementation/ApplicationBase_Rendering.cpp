@@ -6,8 +6,5 @@
 
 void gpApplicationBase::RenderFrame()
 {
-    auto resolution = m_pWindow->GetResolution();
-    glViewport(0, 0, resolution.width, resolution.height);
-
     gpRenderExtractor::TriggerExtraction();
 }

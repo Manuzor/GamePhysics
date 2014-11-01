@@ -16,8 +16,8 @@ public:
     static void SetExtractor(gpRenderExtractor* pExtractor) { EZ_ASSERT(IsInitialized(), ""); s_pExtractor = pExtractor; }
     static gpRenderExtractor* GetExtractor() { EZ_ASSERT(IsInitialized(), ""); return s_pExtractor; }
 
-    static void SetWindow(gpWindow* pWindow) { EZ_ASSERT(IsInitialized(), ""); s_pWindow = pWindow; }
-    static gpWindow* GetWindow() { EZ_ASSERT(IsInitialized(), ""); return s_pWindow; }
+    static void SetResolution(const ezSizeU32& newResolution) { s_Resolution = newResolution; }
+    static ezSizeU32 GetResolution() { return s_Resolution; }
 
     static void Render();
 
@@ -32,7 +32,7 @@ private:
 private:
     static bool s_bInitialized;
     static gpRenderExtractor* s_pExtractor;
-    static gpWindow* s_pWindow;
+    static ezSizeU32 s_Resolution;
 
     EZ_MAKE_SUBSYSTEM_STARTUP_FRIEND(GamePhysics, Renderer);
 };
