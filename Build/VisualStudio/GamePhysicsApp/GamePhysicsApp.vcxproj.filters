@@ -43,6 +43,12 @@
     <Filter Include="gp\Rendering\Implementation">
       <UniqueIdentifier>{5164e4a6-bd66-4ac9-90cf-5f117793246b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gp\World">
+      <UniqueIdentifier>{07e4f84c-58b4-4c27-b75f-c31f0e4dd25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gp\World\Implementation">
+      <UniqueIdentifier>{31e2b37e-5872-4922-ac6b-36a36fbabb4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
@@ -92,6 +98,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\AsyncRendering.cpp">
       <Filter>gp\Rendering\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\World\Implementation\World.cpp">
+      <Filter>gp\World\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\World\Implementation\EntityBase.cpp">
+      <Filter>gp\World\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\World\Implementation\World_Rendering.cpp">
+      <Filter>gp\World\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gp\World\Implementation\Particle.cpp">
+      <Filter>gp\World\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +178,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gp\Rendering\Implementation\RenderThread.h">
       <Filter>gp\Rendering\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\World\World.h">
+      <Filter>gp\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\World\EntityBase.h">
+      <Filter>gp\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\World\EntityType.h">
+      <Filter>gp\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gp\World\Particle.h">
+      <Filter>gp\World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

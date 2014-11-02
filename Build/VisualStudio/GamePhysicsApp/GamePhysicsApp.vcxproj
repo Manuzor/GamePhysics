@@ -44,6 +44,10 @@
     <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\RenderExtractor.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Rendering\OpenGL\Implementation\OpenGL.cpp" />
     <ClCompile Include="..\..\..\Code\gp\Shapes\Implementation\Circle.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\World\Implementation\EntityBase.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\World\Implementation\Particle.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\World\Implementation\World.cpp" />
+    <ClCompile Include="..\..\..\Code\gp\World\Implementation\World_Rendering.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gp\Application\AndyPatricles.h" />
@@ -68,6 +72,10 @@
     <ClInclude Include="..\..\..\Code\gp\Types.h" />
     <ClInclude Include="..\..\..\Code\gp\Utilities\EzMathExtensions.h" />
     <ClInclude Include="..\..\..\Code\gp\Window.h" />
+    <ClInclude Include="..\..\..\Code\gp\World\EntityBase.h" />
+    <ClInclude Include="..\..\..\Code\gp\World\EntityType.h" />
+    <ClInclude Include="..\..\..\Code\gp\World\Particle.h" />
+    <ClInclude Include="..\..\..\Code\gp\World\World.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gp\Memory\Implementation\FixedStackAllocator.inl" />

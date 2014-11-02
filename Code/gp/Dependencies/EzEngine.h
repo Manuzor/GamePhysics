@@ -8,3 +8,4 @@
 #include <Foundation/Communication/GlobalEvent.h>
 #include <Foundation/Threading/ThreadSignal.h>
 #include <Foundation/Math/Size.h>
+#include <Foundation/Basics/Types/RefCounted.h>
