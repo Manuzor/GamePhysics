@@ -30,7 +30,7 @@ void gpAndyParticlesApp::AfterEngineInit()
     RunTestsIfEnabled();
 
     m_pWorld = EZ_DEFAULT_NEW(gpWorld);
-    m_pWorld->SetGravity(gpVec3(0, -1, 0));
+    m_pWorld->SetGravity(gpVec3(0, -9.81f, 0));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
     PopulateWorld();
@@ -86,7 +86,8 @@ ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
 void gpAndyParticlesApp::PopulateWorld()
 {
     auto pParticle = m_pWorld->CreateEntity<gpParticleEntity>();
-    pParticle->SetLinearVelocity(gpVec3(0.01f, 0, 0));
+    pParticle->SetName("TheParticle");
+    pParticle->SetLinearVelocity(gpVec3(10, 10, 0));
     auto result = m_pWorld->AddEntity(pParticle);
     EZ_ASSERT(result.Succeeded(), "");
     m_pWorld->GetEntityDrawInfo(pParticle).m_Color = ezColor(1, 0, 0, 0.9f);

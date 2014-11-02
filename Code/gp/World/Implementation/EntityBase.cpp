@@ -4,6 +4,7 @@
 
 gpEntityBase::gpEntityBase(gpEntityType TheType) :
     m_Type(TheType),
+    m_pWorld(nullptr),
     m_Position(0.0f),
     m_LinearVelocity(0.0f)
 {

@@ -16,14 +16,21 @@ gpWorld::~gpWorld()
     {
         auto pEntity = m_CreatedEntities[i];
         if(pEntity)
+        {
             ezFoundation::GetDefaultAllocator()->Deallocate(pEntity);
+        }
     }
 }
 
 ezResult gpWorld::AddEntity(gpEntityBase* pEntity)
 {
-    if (m_SimulatedEntities.Contains(pEntity))
+    if(pEntity->m_pWorld != nullptr)
+    {
+        EZ_ASSERT(pEntity->m_pWorld == this,
+                  "The entity you tried to add to this world already exists in another world.");
         return EZ_FAILURE;
+    }
+
     pEntity->AddRef();
     m_SimulatedEntities.PushBack(pEntity);
     return EZ_SUCCESS;
@@ -31,8 +38,13 @@ ezResult gpWorld::AddEntity(gpEntityBase* pEntity)
 
 ezResult gpWorld::RemoveEntity(gpEntityBase* pEntity)
 {
-    if (!m_SimulatedEntities.Contains(pEntity))
+    if (pEntity->m_pWorld != this)
+    {
+        EZ_ASSERT(pEntity->m_pWorld == nullptr,
+                  "The entity you tried to remove from this world exists in another world!");
         return EZ_FAILURE;
+    }
+
     m_SimulatedEntities.RemoveSwap(pEntity);
     pEntity->ReleaseRef();
     return EZ_SUCCESS;
@@ -49,9 +61,8 @@ void gpWorld::StepSimulation(ezTime dt)
     for(ezUInt32 i = 0; i < m_SimulatedEntities.GetCount(); ++i)
     {
         auto pEntity = m_SimulatedEntities[i];
-        auto Velocity = pEntity->GetLinearVelocity() + m_Gravity * fDeltaSeconds;
-        auto Position = pEntity->GetPosition() + Velocity * fDeltaSeconds;
-        pEntity->SetPosition(Position);
+        pEntity->m_LinearVelocity = pEntity->GetLinearVelocity() + m_Gravity * fDeltaSeconds;
+        pEntity->m_Position = pEntity->GetPosition() + pEntity->m_LinearVelocity * fDeltaSeconds;
     }
 }
 

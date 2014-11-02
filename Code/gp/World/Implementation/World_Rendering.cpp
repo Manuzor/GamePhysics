@@ -11,6 +11,7 @@ static void ExtractParticleData(gpRenderExtractor* pExtractor,
 {
     auto pData = pExtractor->AllocateRenderData<gpDrawData::Point>();
     pData->m_Position = pParticle->GetPosition();
+    pData->m_fPointSize = 3;
     if(pDrawInfo)
     {
         pData->m_Color = pDrawInfo->m_Color;
@@ -39,5 +40,11 @@ void gpWorld::ExtractRenderingData(gpRenderExtractor* pExtractor) const
         default:
             break;
         }
+        auto pos = pEntity->GetPosition();
+        auto vel = pEntity->GetLinearVelocity();
+        ezLog::Info("%s: p{%3.3f, %3.3f, %3.3f} v{%3.3f, %3.3f, %3.3f}",
+                    pEntity->GetName().GetData(),
+                    pos.x, pos.y, pos.z,
+                    vel.x, vel.y, vel.z);
     }
 }

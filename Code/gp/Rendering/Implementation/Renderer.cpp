@@ -42,11 +42,11 @@ void gpRenderer::Render()
 {
     glViewport(0, 0, s_Resolution.width, s_Resolution.height);
 
-    //glMatrixMode(GL_PROJECTION);
-    //glLoadIdentity();
-    //glOrtho(-20, 20, -20, 20, -10, 10);
-    //glMatrixMode(GL_MODELVIEW);
-    //glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-250, 250, -250, 250, -10, 10);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
     glDisable(GL_CULL_FACE);
 

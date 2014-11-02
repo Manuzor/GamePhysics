@@ -19,12 +19,18 @@ public:
     EZ_FORCE_INLINE gpWorld* GetWorld() { return m_pWorld; }
     EZ_FORCE_INLINE const gpWorld* GetWorld() const { return m_pWorld; }
 
+    EZ_FORCE_INLINE ezString& GetName() { return m_sName; }
+    EZ_FORCE_INLINE const ezString& GetName() const { return m_sName; }
+    EZ_FORCE_INLINE void SetName(const ezString& sNewName) { m_sName = sNewName; }
+    EZ_FORCE_INLINE void SetName(const char* szNewName) { m_sName = szNewName; }
+
 private:
     const gpEntityType m_Type;
     gpWorld* m_pWorld;
 
     gpVec3 m_Position;
     gpVec3 m_LinearVelocity;
+    ezString m_sName;
 };
 
 struct gpEntityDrawInfo
