@@ -41,6 +41,7 @@ Dependencies = [
     EzModule("ezInputXBox360"),
     EzModule("ezThirdParty"),
     EzModule("ezTestFramework"),
+    EzModule("ezInspectorPlugin"),
 
     GlewModule("glew32"),
 ]

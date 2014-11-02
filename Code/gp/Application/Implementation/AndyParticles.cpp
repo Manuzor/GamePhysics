@@ -1,6 +1,7 @@
 #include "gp/PCH.h"
 
 #include <Core/Input/InputManager.h>
+#include <Foundation/Communication/Telemetry.h>
 
 #include "gp/Application/AndyPatricles.h"
 #include "gp/Rendering/Rendering.h"
@@ -16,6 +17,13 @@ void gpAndyParticlesApp::AfterEngineInit()
     {
         EZ_LOG_BLOCK("Initialization");
 
+        ezTelemetry::CreateServer();
+
+        if (ezPlugin::LoadPlugin("ezInspectorPlugin").Failed())
+        {
+            ezLog::SeriousWarning("Failed to load ezInspectorPlugin.");
+        }
+
         SetupWindow();
         ezStartup::StartupEngine();
         ezClock::SetNumGlobalClocks();
@@ -29,7 +37,7 @@ void gpAndyParticlesApp::AfterEngineInit()
 
     RunTestsIfEnabled();
 
-    m_pWorld = EZ_DEFAULT_NEW(gpWorld);
+    m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PrimaryWorld");
     m_pWorld->SetGravity(gpVec3(0, -9.81f, 0));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
@@ -42,6 +50,10 @@ void gpAndyParticlesApp::BeforeEngineShutdown()
 
     ezStartup::ShutdownEngine();
     Cleanup();
+
+    ezPlugin::UnloadPlugin("ezInspectorPlugin");
+
+    ezTelemetry::CloseConnection();
 }
 
 ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
@@ -79,6 +91,8 @@ ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
     m_pWindow->PresentFrame();
 
     ezTaskSystem::FinishFrameTasks();
+
+    ezTelemetry::PerFrameUpdate();
 
     return Continue;
 }

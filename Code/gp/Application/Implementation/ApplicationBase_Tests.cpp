@@ -1,6 +1,8 @@
 #include "gp/PCH.h"
 #include "gp/Application/ApplicationBase.h"
 
+#if 0
+
 #include <TestFramework/Framework/TestFramework.h>
 #include <TestFramework/Utilities/TestSetup.h>
 
@@ -17,3 +19,9 @@ ezInt32 gpApplicationBase::RunTests()
     ezTestSetup::DeInitTestFramework();
     return iFailedTests;
 }
+#else
+ezInt32 gpApplicationBase::RunTests()
+{
+    return 0;
+}
+#endif

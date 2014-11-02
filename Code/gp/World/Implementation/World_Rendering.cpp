@@ -1,4 +1,7 @@
 #include "gp/PCH.h"
+
+#include <Foundation/Utilities/Stats.h>
+
 #include "gp/World/World.h"
 #include "gp/World/EntityBase.h"
 #include "gp/World/Particle.h"
@@ -20,6 +23,11 @@ static void ExtractParticleData(gpRenderExtractor* pExtractor,
 
 void gpWorld::ExtractRenderingData(gpRenderExtractor* pExtractor) const
 {
+    ezStringBuilder sbStatName;
+    sbStatName.Format("%s/", m_sName.GetData());
+
+    ezStringBuilder sbToRecord;
+
     for (ezUInt32 i = 0; i < m_SimulatedEntities.GetCount(); ++i)
     {
         auto pEntity = m_SimulatedEntities[i];
@@ -40,11 +48,12 @@ void gpWorld::ExtractRenderingData(gpRenderExtractor* pExtractor) const
         default:
             break;
         }
-        auto pos = pEntity->GetPosition();
-        auto vel = pEntity->GetLinearVelocity();
-        ezLog::Info("%s: p{%3.3f, %3.3f, %3.3f} v{%3.3f, %3.3f, %3.3f}",
-                    pEntity->GetName().GetData(),
-                    pos.x, pos.y, pos.z,
-                    vel.x, vel.y, vel.z);
+
+        // Collect stats
+        sbToRecord.Clear();
+        gpGetStats(sbToRecord, pEntity);
+        sbStatName.Append(pEntity->m_sName.GetData());
+        ezStats::SetStat(sbStatName.GetData(), sbToRecord.GetData());
+        sbStatName.Shrink(0, pEntity->m_sName.GetCharacterCount());
     }
 }

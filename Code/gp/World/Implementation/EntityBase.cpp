@@ -13,3 +13,12 @@ gpEntityBase::gpEntityBase(gpEntityType TheType) :
 gpEntityBase::~gpEntityBase()
 {
 }
+
+void gpGetStats(ezStringBuilder& out_Stats, const gpEntityBase* pEntity)
+{
+    auto pos = pEntity->GetPosition();
+    auto vel = pEntity->GetLinearVelocity();
+    out_Stats.Format("position = {%3.3f, %3.3f, %3.3f} linearVelocity = {%3.3f, %3.3f, %3.3f}",
+                     pos.x, pos.y, pos.z,
+                     vel.x, vel.y, vel.z);
+}

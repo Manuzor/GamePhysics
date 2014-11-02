@@ -6,7 +6,7 @@ class gpRenderExtractor;
 class gpWorld
 {
 public:
-    gpWorld();
+    gpWorld(const char* szName);
     gpWorld(const gpWorld&) = delete;
     void operator=(const gpWorld&) = delete;
     ~gpWorld();
@@ -14,6 +14,7 @@ public:
     template<typename Type>
     Type* CreateEntity()
     {
+        EZ_PROFILE(m_ProfilingId_CreateEntity);
         auto pEntity = EZ_DEFAULT_NEW(Type);
         InsertCreatedEntity(pEntity);
         return pEntity;
@@ -34,6 +35,10 @@ public:
     void ExtractRenderingData(gpRenderExtractor* pExtractor) const;
 
 private:
+    ezString m_sName;
+    ezProfilingId m_ProfilingId_Simulation;
+    ezProfilingId m_ProfilingId_CreateEntity;
+
     gpVec3 m_Gravity;
     ezDynamicArray<gpEntityBase*> m_CreatedEntities;
     ezDynamicArray<gpEntityBase*> m_SimulatedEntities;

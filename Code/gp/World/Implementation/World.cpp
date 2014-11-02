@@ -1,17 +1,30 @@
 #include "gp/PCH.h"
+
+#include <Foundation/Utilities/Stats.h>
+
 #include "gp/World/World.h"
 #include "gp/World/EntityBase.h"
 #include "gp/World/Particle.h"
 
-gpWorld::gpWorld() :
+gpWorld::gpWorld(const char* szName) :
+    m_sName(szName),
     m_Gravity(0, 0, 0)
 {
     m_CreatedEntities.Reserve(64);
     m_SimulatedEntities.Reserve(64);
+
+    ezStringBuilder sbProfilingName;
+    sbProfilingName.Format("%s/%s", m_sName.GetData(), "Simulation");
+    m_ProfilingId_Simulation = ezProfilingSystem::CreateId(sbProfilingName.GetData());
+    sbProfilingName.Format("%s/%s", m_sName.GetData(), "CreateEntity");
+    m_ProfilingId_CreateEntity = ezProfilingSystem::CreateId(sbProfilingName.GetData());
 }
 
 gpWorld::~gpWorld()
 {
+    ezProfilingSystem::DeleteId(m_ProfilingId_CreateEntity);
+    ezProfilingSystem::DeleteId(m_ProfilingId_Simulation);
+
     for (ezUInt32 i = 0; i < m_CreatedEntities.GetCount(); ++i)
     {
         auto pEntity = m_CreatedEntities[i];
@@ -33,6 +46,13 @@ ezResult gpWorld::AddEntity(gpEntityBase* pEntity)
 
     pEntity->AddRef();
     m_SimulatedEntities.PushBack(pEntity);
+
+    // Add stat
+    {
+        ezStringBuilder sbStatName;
+        sbStatName.Format("%s/%s", m_sName.GetData(), pEntity->m_sName.GetData());
+        ezStats::SetStat(sbStatName.GetData(), "<Added>");
+    }
     return EZ_SUCCESS;
 }
 
@@ -43,6 +63,13 @@ ezResult gpWorld::RemoveEntity(gpEntityBase* pEntity)
         EZ_ASSERT(pEntity->m_pWorld == nullptr,
                   "The entity you tried to remove from this world exists in another world!");
         return EZ_FAILURE;
+    }
+
+    // Remove stat
+    {
+        ezStringBuilder sbStatName;
+        sbStatName.Format("%s/%s", m_sName.GetData(), pEntity->m_sName.GetData());
+        ezStats::RemoveStat(sbStatName.GetData());
     }
 
     m_SimulatedEntities.RemoveSwap(pEntity);
@@ -57,6 +84,8 @@ gpEntityDrawInfo& gpWorld::GetEntityDrawInfo(gpEntityBase* pEntity)
 
 void gpWorld::StepSimulation(ezTime dt)
 {
+    EZ_PROFILE(m_ProfilingId_Simulation);
+
     auto fDeltaSeconds = (float)dt.GetSeconds();
     for(ezUInt32 i = 0; i < m_SimulatedEntities.GetCount(); ++i)
     {

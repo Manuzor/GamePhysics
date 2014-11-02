@@ -37,3 +37,5 @@ struct gpEntityDrawInfo
 {
     ezColor m_Color = { 1, 1, 1, 1 };
 };
+
+void gpGetStats(ezStringBuilder& out_Stats, const gpEntityBase* pEntity);
