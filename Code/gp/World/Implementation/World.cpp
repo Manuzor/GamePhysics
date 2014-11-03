@@ -8,7 +8,7 @@
 
 gpWorld::gpWorld(const char* szName) :
     m_sName(szName),
-    m_Gravity(0, 0, 0)
+    m_Gravity(0.0f, 0.0f, 0.0f)
 {
     m_CreatedEntities.Reserve(64);
     m_SimulatedEntities.Reserve(64);

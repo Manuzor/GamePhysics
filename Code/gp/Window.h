@@ -38,6 +38,9 @@ public:
     EZ_FORCE_INLINE void AddEventHandler(Event::Handler handler) { m_WindowEvent.AddEventHandler(handler); }
     EZ_FORCE_INLINE void RemoveEventHandler(Event::Handler handler) { m_WindowEvent.RemoveEventHandler(handler); }
 
+    EZ_FORCE_INLINE static ezCVarInt* GetWidthCVar() { return &s_iWidth; }
+    EZ_FORCE_INLINE static ezCVarInt* GetHeightCVar() { return &s_iHeight; }
+
 private:
     ezResult CreateContextOpenGL();
     ezResult DestroyContextOpenGL();
@@ -47,4 +50,7 @@ private:
 
     HDC m_hDeviceContext;
     HGLRC m_hRenderContext;
+
+    static ezCVarInt s_iWidth;
+    static ezCVarInt s_iHeight;
 };

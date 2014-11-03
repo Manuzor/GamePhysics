@@ -11,3 +11,4 @@
 #include <Foundation/Threading/ThreadSignal.h>
 #include <Foundation/Math/Size.h>
 #include <Foundation/Basics/Types/RefCounted.h>
+#include <Foundation/Configuration/CVar.h>

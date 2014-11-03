@@ -1,6 +1,12 @@
 #include "gp/PCH.h"
+
+#include <Foundation/Configuration/CVar.h>
+
 #include "gp/Window.h"
 #include "gp/Rendering/Renderer.h"
+
+ezCVarInt gpWindow::s_iWidth("Window.Width", 500, ezCVarFlags::Default, "Width of the window.");
+ezCVarInt gpWindow::s_iHeight("Window.Height", 500, ezCVarFlags::Default, "Height of the window.");
 
 gpWindow::gpWindow(const char* szTitle)
 {

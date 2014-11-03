@@ -44,7 +44,7 @@ void gpRenderer::Render()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-250, 250, -250, 250, -10, 10);
+    glOrtho(0, s_Resolution.width, -(ezInt32)s_Resolution.height, 0, -10, 10);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
@@ -64,6 +64,24 @@ void gpRenderer::Render()
         DrawHelper(pCurrentData);
         pCurrentData = pCurrentData->GetNext();
     }
+}
+
+static void WidthChangedCallback(const ezCVar::CVarEvent& Event)
+{
+    if (Event.m_EventType != ezCVar::CVarEvent::ValueChanged)
+        return;
+
+    auto Res = gpRenderer::GetResolution();
+    Res.width = (decltype(Res.width))static_cast<ezCVarInt*>(Event.m_pCVar)->GetValue();
+}
+
+static void HeightChangedCallback(const ezCVar::CVarEvent& Event)
+{
+    if (Event.m_EventType != ezCVar::CVarEvent::ValueChanged)
+        return;
+
+    auto Res = gpRenderer::GetResolution();
+    Res.height = (decltype(Res.height))static_cast<ezCVarInt*>(Event.m_pCVar)->GetValue();
 }
 
 #if EZ_ENABLED(GP_AsyncRendering)

@@ -2,6 +2,7 @@
 
 #include <Core/Input/InputManager.h>
 #include <Foundation/Communication/Telemetry.h>
+#include <Foundation/Utilities/Stats.h>
 
 #include "gp/Application/AndyPatricles.h"
 #include "gp/Rendering/Rendering.h"
@@ -32,13 +33,14 @@ void gpAndyParticlesApp::AfterEngineInit()
         SetupInput();
         // Poll once to finish input initialization;
         ezInputManager::PollHardware();
+        RegisterInputAction("Game", "Click", ezInputSlot_MouseButton0);
         SetupRendering();
     }
 
     RunTestsIfEnabled();
 
     m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PrimaryWorld");
-    m_pWorld->SetGravity(gpVec3(0, -9.81f, 0));
+    //m_pWorld->SetGravity(gpVec3(0, -9.81f, 0));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
     PopulateWorld();
@@ -75,6 +77,7 @@ ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
         bInputUpdated = true;
 
         UpdateInput(tUpdateInterval);
+        Update(tUpdateInterval);
         m_pWorld->StepSimulation(tUpdateInterval);
 
         m_LastUpdate += tUpdateInterval;
@@ -105,4 +108,84 @@ void gpAndyParticlesApp::PopulateWorld()
     auto result = m_pWorld->AddEntity(pParticle);
     EZ_ASSERT(result.Succeeded(), "");
     m_pWorld->GetEntityDrawInfo(pParticle).m_Color = ezColor(1, 0, 0, 0.9f);
+}
+
+void gpAndyParticlesApp::Update(ezTime dt)
+{
+    static bool bAddedParticle = false;
+
+    auto GameClickState = ezInputManager::GetInputActionState("Game", "Click");
+    if (GameClickState != ezKeyState::Pressed)
+        return;
+
+    if(!bAddedParticle)
+    {
+        float fX;
+        ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &fX);
+        fX *= gpWindow::GetWidthCVar()->GetValue();
+
+        float fY;
+        ezInputManager::GetInputSlotState(ezInputSlot_MousePositionY, &fY);
+        fY *= gpWindow::GetHeightCVar()->GetValue();
+
+        gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(&gpAndyParticlesApp::ExtractVelocityData, this));
+
+        AddNewParticle(gpVec3(fX, fY, 0.0f));
+        bAddedParticle = true;
+
+        // Stat
+        ezStringBuilder sbStat;
+        sbStat.Format("{%.2f, %.2f}", fX, fY);
+        ezStats::SetStat("Click/Start", sbStat.GetData());
+    }
+    else
+    {
+        EZ_ASSERT(m_pCurrentParticle, "Did we miss Pressed input?");
+
+        float fX;
+        ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &fX);
+        fX *= gpWindow::GetWidthCVar()->GetValue();
+
+        float fY;
+        ezInputManager::GetInputSlotState(ezInputSlot_MousePositionY, &fY);
+        fY *= gpWindow::GetHeightCVar()->GetValue();
+
+        gpVec3 MousePos(fX, fY, 0.0f);
+        auto Velocity = MousePos - m_pCurrentParticle->GetLinearVelocity();
+        m_pCurrentParticle->SetLinearVelocity(Velocity);
+        bAddedParticle = false;
+
+        gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyParticlesApp::ExtractVelocityData, this));
+
+        // Stat
+        ezStringBuilder sbStat;
+        sbStat.Format("{%.2f, %.2f}", fX, fY);
+        ezStats::SetStat("Click/End", sbStat.GetData());
+    }
+}
+
+void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
+{
+    auto pLine = pExtractor->AllocateRenderData<gpDrawData::Line>();
+    pLine->m_Start = m_pCurrentParticle->GetPosition();
+    pLine->m_End.SetZero();
+    ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &pLine->m_End.x);
+    ezInputManager::GetInputSlotState(ezInputSlot_MousePositionY, &pLine->m_End.y);
+}
+
+void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
+{
+    static ezUInt32 uiCount = 0;
+    m_pCurrentParticle = m_pWorld->CreateEntity<gpParticleEntity>();
+    {
+        ezStringBuilder s;
+        s.AppendFormat("Particle #%u", uiCount++);
+        m_pCurrentParticle->SetName(s.GetData());
+    }
+    m_pCurrentParticle->AddRef();
+    m_pCurrentParticle->SetPosition(Position);
+    m_pWorld->AddEntity(m_pCurrentParticle);
+    ezLog::Success("Added new particle %s @ {%.3f, %.3f, %.3f}",
+                   m_pCurrentParticle->GetName().GetData(),
+                   Position.x, Position.y, Position.z);
 }
