@@ -5,7 +5,7 @@ class gpWorld;
 
 struct gpEntityProperties
 {
-    gpVec3 m_Position = { 0, 0, 0};
+    gpVec3 m_Position = { 0, 0, 0 };
     gpVec3 m_LinearVelocity = { 0, 0, 0 };
     gpScalar m_fGravityFactor = 1.0f;
 };
@@ -45,6 +45,9 @@ private:
 struct gpEntityDrawInfo
 {
     ezColor m_Color = { 1, 1, 1, 1 };
+    gpScalar m_fScale = 4.0f;
+    ezColor m_LinearVelocityColor = { 0, 1, 1, 0.333f };
+    gpScalar m_fLinearVelocityArrowWingScale = 10.0f;
 };
 
 void gpGetStats(ezStringBuilder& out_Stats, const gpEntityBase* pEntity);

@@ -34,6 +34,9 @@ public:
 
     void ExtractRenderingData(gpRenderExtractor* pExtractor) const;
 
+    EZ_FORCE_INLINE void SetEntityDrawInfoDefault(gpEntityDrawInfo* pDrawInfo) { m_pEntityDrawInfoDefault = pDrawInfo; }
+    EZ_FORCE_INLINE gpEntityDrawInfo* GetEntityDrawInfoDefault() { return m_pEntityDrawInfoDefault; }
+
 private:
     ezString m_sName;
     ezProfilingId m_ProfilingId_Simulation;
@@ -43,6 +46,8 @@ private:
     ezDynamicArray<gpEntityBase*> m_CreatedEntities;
     ezDynamicArray<gpEntityBase*> m_SimulatedEntities;
     ezMap<gpEntityBase*, gpEntityDrawInfo> m_EntityDrawInfos;
+    gpEntityDrawInfo m_EntityDrawInfo_HardDefault;
+    gpEntityDrawInfo* m_pEntityDrawInfoDefault;
 
 private:
     void InsertCreatedEntity(gpEntityBase* pEntity);

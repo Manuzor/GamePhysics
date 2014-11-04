@@ -109,7 +109,9 @@ void gpAndyParticlesApp::PopulateWorld()
     //pParticle->SetLinearVelocity(gpVec3(10, 10, 0));
     auto result = m_pWorld->AddEntity(pParticle);
     EZ_ASSERT(result.Succeeded(), "");
-    m_pWorld->GetEntityDrawInfo(pParticle).m_Color = ezColor(1, 0, 0, 0.9f);
+    auto& DrawInfo = m_pWorld->GetEntityDrawInfo(pParticle);
+    DrawInfo.m_Color = ezColor(1, 0, 0, 0.9f);
+    DrawInfo.m_fScale = 8.0f;
 }
 
 void gpAndyParticlesApp::Update(ezTime dt)
@@ -208,7 +210,7 @@ void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
     pProps->m_Position = Position;
     pProps->m_fGravityFactor = 0.0f;
     EZ_VERIFY(m_pWorld->AddEntity(m_pCurrentParticle).Succeeded(), "Failed to add new particle?!");
-    m_pWorld->GetEntityDrawInfo(m_pCurrentParticle).m_Color = ezColor(1, 0, 0, 0.9f);
+    //m_pWorld->GetEntityDrawInfo(m_pCurrentParticle).m_Color = ezColor(1, 0, 0, 0.9f);
     ezLog::Success("Added new particle %s @ {%.3f, %.3f, %.3f}",
                    m_pCurrentParticle->GetName().GetData(),
                    Position.x, Position.y, Position.z);
