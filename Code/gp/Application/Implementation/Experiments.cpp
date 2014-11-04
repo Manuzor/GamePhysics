@@ -5,6 +5,23 @@
 #include "gp/Application/Experiments.h"
 #include "gp/Rendering/Rendering.h"
 #include "gp/Rendering/RenderExtractor.h"
+#include "gp/World/World.h"
+#include "gp/World/Particle.h"
+
+static gpWorld g_World("World");
+
+static void PopulateWorld()
+{
+    auto pParticle = g_World.CreateEntity<gpParticleEntity>();
+    pParticle->SetName("TheParticle");
+    pParticle->GetProperties()->m_Position.Set(100, 200, 0);
+    EZ_VERIFY(g_World.AddEntity(pParticle).Succeeded(), "");
+}
+
+static void Update(ezTime dt)
+{
+
+}
 
 static void OnRenderExtraction(gpRenderExtractor* pExtractor)
 {
@@ -57,6 +74,13 @@ void gpExperimentsApp::AfterEngineInit()
     {
         EZ_LOG_BLOCK("Initialization");
 
+        ezTelemetry::CreateServer();
+
+        if (ezPlugin::LoadPlugin("ezInspectorPlugin").Failed())
+        {
+            ezLog::SeriousWarning("Failed to load ezInspectorPlugin.");
+        }
+
         SetupWindow();
         ezStartup::StartupEngine();
         ezClock::SetNumGlobalClocks();
@@ -70,13 +94,18 @@ void gpExperimentsApp::AfterEngineInit()
 
     RunTestsIfEnabled();
 
-    gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
+    //gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
+    gpRenderExtractor::AddExtractionListener(
+        gpRenderExtractionListener(&gpWorld::ExtractRenderingData, &g_World));
+    PopulateWorld();
 }
 
 void gpExperimentsApp::BeforeEngineShutdown()
 {
     ezStartup::ShutdownEngine();
     Cleanup();
+
+    ezTelemetry::CloseConnection();
 }
 
 ezApplication::ApplicationExecution gpExperimentsApp::Run()
@@ -98,6 +127,7 @@ ezApplication::ApplicationExecution gpExperimentsApp::Run()
         bInputUpdated = true;
 
         UpdateInput(tUpdateInterval);
+        Update(tUpdateInterval);
 
         m_LastUpdate += tUpdateInterval;
     }
@@ -113,6 +143,8 @@ ezApplication::ApplicationExecution gpExperimentsApp::Run()
     m_pWindow->PresentFrame();
 
     ezTaskSystem::FinishFrameTasks();
+
+    ezTelemetry::PerFrameUpdate();
 
     return Continue;
 }
