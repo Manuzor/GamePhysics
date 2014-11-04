@@ -45,6 +45,7 @@ ezResult gpWorld::AddEntity(gpEntityBase* pEntity)
     }
 
     pEntity->AddRef();
+    pEntity->m_pWorld = this;
     m_SimulatedEntities.PushBack(pEntity);
 
     // Add stat
@@ -73,6 +74,7 @@ ezResult gpWorld::RemoveEntity(gpEntityBase* pEntity)
     }
 
     m_SimulatedEntities.RemoveSwap(pEntity);
+    pEntity->m_pWorld = nullptr;
     pEntity->ReleaseRef();
     return EZ_SUCCESS;
 }
@@ -90,8 +92,10 @@ void gpWorld::StepSimulation(ezTime dt)
     for(ezUInt32 i = 0; i < m_SimulatedEntities.GetCount(); ++i)
     {
         auto pEntity = m_SimulatedEntities[i];
-        pEntity->m_LinearVelocity = pEntity->GetLinearVelocity() + m_Gravity * fDeltaSeconds;
-        pEntity->m_Position = pEntity->GetPosition() + pEntity->m_LinearVelocity * fDeltaSeconds;
+        auto pProps = pEntity->GetProperties();
+        auto G = m_Gravity * pProps->m_fGravityFactor;
+        pProps->m_LinearVelocity = pProps->m_LinearVelocity + G * fDeltaSeconds;
+        pProps->m_Position = pProps->m_Position + pProps->m_LinearVelocity * fDeltaSeconds;
     }
 }
 

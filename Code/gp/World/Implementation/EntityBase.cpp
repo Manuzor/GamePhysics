@@ -4,9 +4,7 @@
 
 gpEntityBase::gpEntityBase(gpEntityType TheType) :
     m_Type(TheType),
-    m_pWorld(nullptr),
-    m_Position(0.0f),
-    m_LinearVelocity(0.0f)
+    m_pWorld(nullptr)
 {
 }
 
@@ -16,9 +14,8 @@ gpEntityBase::~gpEntityBase()
 
 void gpGetStats(ezStringBuilder& out_Stats, const gpEntityBase* pEntity)
 {
-    auto pos = pEntity->GetPosition();
-    auto vel = pEntity->GetLinearVelocity();
+    auto p = pEntity->GetProperties();
     out_Stats.Format("position = {%3.3f, %3.3f, %3.3f} linearVelocity = {%3.3f, %3.3f, %3.3f}",
-                     pos.x, pos.y, pos.z,
-                     vel.x, vel.y, vel.z);
+                     p->m_Position.x, p->m_Position.y, p->m_Position.z,
+                     p->m_LinearVelocity.x, p->m_LinearVelocity.y, p->m_LinearVelocity.z);
 }

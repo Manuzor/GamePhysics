@@ -33,14 +33,15 @@ void gpAndyParticlesApp::AfterEngineInit()
         SetupInput();
         // Poll once to finish input initialization;
         ezInputManager::PollHardware();
-        RegisterInputAction("Game", "Click", ezInputSlot_MouseButton0);
+        RegisterInputAction("Game", "Spawn", ezInputSlot_MouseButton0);
+        RegisterInputAction("Game", "CancelSpawn", ezInputSlot_MouseButton1);
         SetupRendering();
     }
 
     RunTestsIfEnabled();
 
     m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PrimaryWorld");
-    //m_pWorld->SetGravity(gpVec3(0, -9.81f, 0));
+    m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
     PopulateWorld();
@@ -104,7 +105,7 @@ void gpAndyParticlesApp::PopulateWorld()
 {
     auto pParticle = m_pWorld->CreateEntity<gpParticleEntity>();
     pParticle->SetName("TheParticle");
-    pParticle->SetPosition(gpVec3(100, 200, 0));
+    pParticle->GetProperties()->m_Position.Set(100, 200, 0);
     //pParticle->SetLinearVelocity(gpVec3(10, 10, 0));
     auto result = m_pWorld->AddEntity(pParticle);
     EZ_ASSERT(result.Succeeded(), "");
@@ -115,8 +116,22 @@ void gpAndyParticlesApp::Update(ezTime dt)
 {
     static bool bAddedParticle = false;
 
-    auto GameClickState = ezInputManager::GetInputActionState("Game", "Click");
-    if (GameClickState != ezKeyState::Pressed)
+    auto ResetSpawning = [&]{
+        bAddedParticle = false;
+        gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyParticlesApp::ExtractVelocityData, this));
+    };
+
+    if (ezInputManager::GetInputActionState("Game", "CancelSpawn") == ezKeyState::Pressed
+        && bAddedParticle)
+    {
+        ResetSpawning();
+        EZ_VERIFY(m_pWorld->RemoveEntity(m_pCurrentParticle).Succeeded(), "Failed to remove the current particle!");
+        m_pCurrentParticle->ReleaseRef();
+        m_pCurrentParticle = nullptr;
+        m_pWorld->CollectGarbage();
+    }
+
+    if (ezInputManager::GetInputActionState("Game", "Spawn") != ezKeyState::Pressed)
         return;
 
     if(!bAddedParticle)
@@ -151,12 +166,13 @@ void gpAndyParticlesApp::Update(ezTime dt)
         ezInputManager::GetInputSlotState(ezInputSlot_MousePositionY, &fY);
         fY *= gpWindow::GetHeightCVar()->GetValue();
 
+        // Set the new linear velocity of the particle.
         gpVec3 MousePos(fX, fY, 0.0f);
-        auto Velocity = MousePos - m_pCurrentParticle->GetPosition();
-        m_pCurrentParticle->SetLinearVelocity(Velocity);
-        bAddedParticle = false;
+        auto pProps = m_pCurrentParticle->GetProperties();
+        pProps->m_LinearVelocity = MousePos - pProps->m_Position;
+        pProps->m_fGravityFactor = 1.0f;
 
-        gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyParticlesApp::ExtractVelocityData, this));
+        ResetSpawning();
 
         // Stat
         ezStringBuilder sbStat;
@@ -168,7 +184,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
 void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 {
     auto pLine = pExtractor->AllocateRenderData<gpDrawData::Line>();
-    pLine->m_Start = m_pCurrentParticle->GetPosition();
+    pLine->m_Start = m_pCurrentParticle->GetProperties()->m_Position;
     pLine->m_End.SetZero();
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &pLine->m_End.x);
     pLine->m_End.x *= gpWindow::GetWidthCVar()->GetValue();
@@ -188,7 +204,9 @@ void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
         m_pCurrentParticle->SetName(s.GetData());
     }
     m_pCurrentParticle->AddRef();
-    m_pCurrentParticle->SetPosition(Position);
+    auto pProps = m_pCurrentParticle->GetProperties();
+    pProps->m_Position = Position;
+    pProps->m_fGravityFactor = 0.0f;
     EZ_VERIFY(m_pWorld->AddEntity(m_pCurrentParticle).Succeeded(), "Failed to add new particle?!");
     m_pWorld->GetEntityDrawInfo(m_pCurrentParticle).m_Color = ezColor(1, 0, 0, 0.9f);
     ezLog::Success("Added new particle %s @ {%.3f, %.3f, %.3f}",

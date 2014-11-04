@@ -13,7 +13,8 @@ static void ExtractParticleData(gpRenderExtractor* pExtractor,
                                 const gpEntityDrawInfo* pDrawInfo)
 {
     auto pData = pExtractor->AllocateRenderData<gpDrawData::Point>();
-    pData->m_Position = pParticle->GetPosition();
+    auto pProps = pParticle->GetProperties();
+    pData->m_Position = pProps->m_Position;
     pData->m_fPointSize = 3;
     if(pDrawInfo)
     {
