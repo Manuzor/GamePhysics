@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <GP_UniqueOutputName>WinVs$(PlatformToolsetVersion)$(Configuration)$(PlatformArchitecture)</GP_UniqueOutputName>
     <GP_RootDir>$(SolutionDir)..\..</GP_RootDir>
     <GP_OutputRootDir>$(GP_RootDir)\Output</GP_OutputRootDir>
     <GP_CodeRootDir>$(GP_RootDir)\Code</GP_CodeRootDir>
@@ -12,6 +11,7 @@
     <GP_Architecture>$(PlatformArchitecture)</GP_Architecture>
     <GP_PlatformName>$(Platform)</GP_PlatformName>
     <GP_VsToolset>$(PlatformToolsetVersion)</GP_VsToolset>
+    <GP_UniqueOutputName>WinVs$(PlatformToolsetVersion)$(Configuration)$(PlatformArchitecture)</GP_UniqueOutputName>
     <GP_Tool_CopyDependencies>$(SolutionDir)CopyDependencies.py</GP_Tool_CopyDependencies>
   </PropertyGroup>
   <PropertyGroup>
@@ -20,7 +20,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(GP_CodeRootDir);$(EZ_ENGINE_DIR)\Code\Engine;$(OPENGL_GLEW_DIR)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\$(ProjectName)\;$(EZ_ENGINE_DIR)\Code\Engine\;$(OPENGL_GLEW_DIR)\include\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
@@ -28,7 +28,7 @@
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
-      <ImportLibrary>$(GP_OutputRootDir)\Bin\$(GP_UniqueOutputName)\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary>$(GP_LibRootDir)\Lib\$(GP_UniqueOutputName)\$(TargetName).lib</ImportLibrary>
       <AdditionalLibraryDirectories>$(GP_OutputRootDir)\Lib\$(GP_UniqueOutputName)\;$(EZ_ENGINE_DIR)\Output\Lib\WinVs2013$(GP_Config)$(GP_Architecture)\;$(EZ_ENGINE_DIR)\Output\Lib\WinVs2012$(GP_Config)$(GP_Architecture)\;$(OPENGL_GLEW_DIR)\Lib\Release\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>ezFoundation.lib;ezCore.lib;ezSystem.lib;ezInputXBox360.lib;ezThirdParty.lib;OpenGL32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

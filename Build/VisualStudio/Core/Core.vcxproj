@@ -19,17 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\AndyParticles.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Input.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Rendering.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\ApplicationBase_Tests.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Application\Implementation\Experiments.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Implementation\Task_Tests.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Implementation\Window.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Main.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Memory\Implementation\Allocators.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\PCH.cpp">
+    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\AndyParticles.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase_Input.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase_Rendering.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase_Tests.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\Experiments.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Implementation\Task_Tests.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Implementation\Window.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Main.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Memory\Implementation\Allocators.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gp\PCH.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -39,54 +39,54 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gp\PCH.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\AsyncRendering.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\Renderer.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Rendering\Implementation\RenderExtractor.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Rendering\OpenGL\Implementation\OpenGL.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\Shapes\Implementation\Circle.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\World\Implementation\EntityBase.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\World\Implementation\Particle.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\World\Implementation\World.cpp" />
-    <ClCompile Include="..\..\..\Code\gp\World\Implementation\World_Rendering.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\Implementation\AsyncRendering.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\Implementation\Renderer.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\Implementation\RenderExtractor.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\OpenGL\Implementation\OpenGL.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\Shapes\Implementation\Circle.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\EntityBase.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\Particle.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\World.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\World_Rendering.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\gp\Application\AndyPatricles.h" />
-    <ClInclude Include="..\..\..\Code\gp\Application\ApplicationBase.h" />
-    <ClInclude Include="..\..\..\Code\gp\Application\Experiments.h" />
-    <ClInclude Include="..\..\..\Code\gp\Common.h" />
-    <ClInclude Include="..\..\..\Code\gp\Config.h" />
-    <ClInclude Include="..\..\..\Code\gp\Dependencies\EzEngine.h" />
-    <ClInclude Include="..\..\..\Code\gp\Dependencies\OpenGL.h" />
-    <ClInclude Include="..\..\..\Code\gp\Dependencies\Stl.h" />
-    <ClInclude Include="..\..\..\Code\gp\Memory\Allocators.h" />
-    <ClInclude Include="..\..\..\Code\gp\Memory\FixedStackAllocator.h" />
-    <ClInclude Include="..\..\..\Code\gp\PCH.h" />
-    <ClInclude Include="..\..\..\Code\gp\Rendering\AsyncRendering.h" />
-    <ClInclude Include="..\..\..\Code\gp\Rendering\Implementation\RenderThread.h" />
-    <ClInclude Include="..\..\..\Code\gp\Rendering\OpenGL\OpenGL.h" />
-    <ClInclude Include="..\..\..\Code\gp\Rendering\Renderer.h" />
-    <ClInclude Include="..\..\..\Code\gp\Rendering\RenderExtractor.h" />
-    <ClInclude Include="..\..\..\Code\gp\Rendering\Rendering.h" />
-    <ClInclude Include="..\..\..\Code\gp\Shapes\Circle.h" />
-    <ClInclude Include="..\..\..\Code\gp\Task.h" />
-    <ClInclude Include="..\..\..\Code\gp\Types.h" />
-    <ClInclude Include="..\..\..\Code\gp\Utilities\EzMathExtensions.h" />
-    <ClInclude Include="..\..\..\Code\gp\Window.h" />
-    <ClInclude Include="..\..\..\Code\gp\World\EntityBase.h" />
-    <ClInclude Include="..\..\..\Code\gp\World\EntityType.h" />
-    <ClInclude Include="..\..\..\Code\gp\World\Particle.h" />
-    <ClInclude Include="..\..\..\Code\gp\World\World.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Application\AndyPatricles.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Application\ApplicationBase.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Application\Experiments.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Common.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Config.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Dependencies\EzEngine.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Dependencies\OpenGL.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Dependencies\Stl.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Memory\Allocators.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Memory\FixedStackAllocator.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\PCH.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\AsyncRendering.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\Implementation\RenderThread.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\OpenGL\OpenGL.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\Renderer.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\RenderExtractor.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\Rendering.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Shapes\Circle.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Task.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Types.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Utilities\EzMathExtensions.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\Window.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\World\EntityBase.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\World\EntityType.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\World\Particle.h" />
+    <ClInclude Include="..\..\..\Code\Core\gp\World\World.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Code\gp\Memory\Implementation\FixedStackAllocator.inl" />
-    <None Include="..\..\..\Code\gp\Rendering\Implementation\Renderer_Async.inl" />
-    <None Include="..\..\..\Code\gp\Rendering\Implementation\Renderer_NonAsync.inl" />
-    <None Include="..\..\..\Code\gp\Shapes\Implementation\Circle.inl" />
+    <None Include="..\..\..\Code\Core\gp\Memory\Implementation\FixedStackAllocator.inl" />
+    <None Include="..\..\..\Code\Core\gp\Rendering\Implementation\Renderer_Async.inl" />
+    <None Include="..\..\..\Code\Core\gp\Rendering\Implementation\Renderer_NonAsync.inl" />
+    <None Include="..\..\..\Code\Core\gp\Shapes\Implementation\Circle.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{64B962F4-03D4-491E-8FC7-C10C23595E83}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GamePhysics</RootNamespace>
+    <RootNamespace>gp</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
