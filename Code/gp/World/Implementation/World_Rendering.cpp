@@ -29,12 +29,10 @@ static void ExtractParticleData(gpRenderExtractor* pExtractor,
     if (!ezMath::IsZero(pDrawInfo->m_LinearVelocityColor.a)
         && !pProps->m_LinearVelocity.IsZero())
     {
-        // TODO Draw an arrow instead!
-        auto pVel = pExtractor->AllocateRenderData<gpDrawData::Line>();
+        auto pVel = pExtractor->AllocateRenderData<gpDrawData::Arrow>();
         pVel->m_Start = pProps->m_Position;
         pVel->m_End = pProps->m_Position + pProps->m_LinearVelocity;
         pVel->m_Color = pDrawInfo->m_LinearVelocityColor;
-        //pVel->m_fWingScale = ???;
     }
 }
 

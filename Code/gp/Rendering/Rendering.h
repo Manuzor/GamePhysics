@@ -66,10 +66,10 @@ namespace gpDrawData
         /// --->
         ///   /
         /// => The angle between --- and / but NOT \ and /
-        ezAngle m_WingAngle = ezAngle::Degree(45);
+        ezAngle m_WingAngle = ezAngle::Degree(30);
 
         /// \brief The scale of the arrow wings shape in relation to the arrow body.
-        float m_fWingScale = 0.2f;
+        float m_fWingLength = 10.0f;
     };
 
     struct Polygon : public ExtendBaseHelper<Polygon, Type::Polygon>

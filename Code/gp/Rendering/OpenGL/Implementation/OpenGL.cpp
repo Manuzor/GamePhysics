@@ -39,15 +39,18 @@ void gpDraw(const gpDrawData::Arrow& Data)
     if (IsEqual(Data.m_Color.a, 0.0f))
         return;
 
-    auto line = Data.m_End - Data.m_Start;
-    auto fScale = line.GetLength();
-    line.Normalize();
+    gpVec3 BaseLine(1, 0, 0);
+    auto Line = Data.m_End - Data.m_Start;
 
-    auto LeftWing = gpVec3(Cos(Data.m_WingAngle), Sin(Data.m_WingAngle), 0.0f) * Data.m_fWingScale;
-    auto RightWing = gpVec3(Cos(Data.m_WingAngle), -Sin(Data.m_WingAngle), 0.0f) * Data.m_fWingScale;
+    auto Angle = Line.GetNormalized().GetAngleBetween(BaseLine);
+    if(Line.y > 0.0f)
+        Angle = -Angle;
 
-    LeftWing = LeftWing + Data.m_End;
-    RightWing = RightWing + Data.m_End;
+    auto AngleLeftWing = Angle - Data.m_WingAngle;
+    auto AngleRightWing = Angle + Data.m_WingAngle;
+
+    auto LeftWing =  Data.m_End + gpVec3(-Cos(AngleLeftWing),  Sin(AngleLeftWing), 0.0f) * Data.m_fWingLength;
+    auto RightWing = Data.m_End + gpVec3(-Cos(AngleRightWing), Sin(AngleRightWing), 0.0f) * Data.m_fWingLength;
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glColor4fv(&Data.m_Color.r);
@@ -57,18 +60,8 @@ void gpDraw(const gpDrawData::Arrow& Data)
     {
         GP_OpenGLScope_BeginEnd(GL_LINES);
         glVertex3fv(&Data.m_Start.x); glVertex3fv(&Data.m_End.x);
-        //glVertex3fv(&Data.m_End.x);   glVertex3fv(&left.x);
-        //glVertex3fv(&Data.m_End.x);   glVertex3fv(&right.x);
-        glColor3f(1.0f, 0.0f, 0.0f);
         glVertex3fv(&Data.m_End.x); glVertex3fv(&LeftWing.x);
         glVertex3fv(&Data.m_End.x); glVertex3fv(&RightWing.x);
-    }
-    {
-        GP_OpenGLScope_BeginEnd(GL_POINTS);
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex3fv(&Data.m_Start.x);
-        glColor3f(0.0f, 1.0f, 0.0f);
-        glVertex3fv(&Data.m_End.x);
     }
 }
 
