@@ -104,7 +104,8 @@ void gpAndyParticlesApp::PopulateWorld()
 {
     auto pParticle = m_pWorld->CreateEntity<gpParticleEntity>();
     pParticle->SetName("TheParticle");
-    pParticle->SetLinearVelocity(gpVec3(10, 10, 0));
+    pParticle->SetPosition(gpVec3(100, 200, 0));
+    //pParticle->SetLinearVelocity(gpVec3(10, 10, 0));
     auto result = m_pWorld->AddEntity(pParticle);
     EZ_ASSERT(result.Succeeded(), "");
     m_pWorld->GetEntityDrawInfo(pParticle).m_Color = ezColor(1, 0, 0, 0.9f);
@@ -151,7 +152,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
         fY *= gpWindow::GetHeightCVar()->GetValue();
 
         gpVec3 MousePos(fX, fY, 0.0f);
-        auto Velocity = MousePos - m_pCurrentParticle->GetLinearVelocity();
+        auto Velocity = MousePos - m_pCurrentParticle->GetPosition();
         m_pCurrentParticle->SetLinearVelocity(Velocity);
         bAddedParticle = false;
 
@@ -170,7 +171,11 @@ void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
     pLine->m_Start = m_pCurrentParticle->GetPosition();
     pLine->m_End.SetZero();
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &pLine->m_End.x);
+    pLine->m_End.x *= gpWindow::GetWidthCVar()->GetValue();
+
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionY, &pLine->m_End.y);
+    pLine->m_End.y *= gpWindow::GetHeightCVar()->GetValue();
+
 }
 
 void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
@@ -184,7 +189,8 @@ void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
     }
     m_pCurrentParticle->AddRef();
     m_pCurrentParticle->SetPosition(Position);
-    m_pWorld->AddEntity(m_pCurrentParticle);
+    EZ_VERIFY(m_pWorld->AddEntity(m_pCurrentParticle).Succeeded(), "Failed to add new particle?!");
+    m_pWorld->GetEntityDrawInfo(m_pCurrentParticle).m_Color = ezColor(1, 0, 0, 0.9f);
     ezLog::Success("Added new particle %s @ {%.3f, %.3f, %.3f}",
                    m_pCurrentParticle->GetName().GetData(),
                    Position.x, Position.y, Position.z);

@@ -44,7 +44,7 @@ void gpRenderer::Render()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, s_Resolution.width, -(ezInt32)s_Resolution.height, 0, -10, 10);
+    glOrtho(0, s_Resolution.width, s_Resolution.height, 0, -10, 10);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
