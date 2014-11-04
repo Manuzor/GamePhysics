@@ -33,6 +33,8 @@ static void ExtractParticleData(gpRenderExtractor* pExtractor,
         pVel->m_Start = pProps->m_Position;
         pVel->m_End = pProps->m_Position + pProps->m_LinearVelocity;
         pVel->m_Color = pDrawInfo->m_LinearVelocityColor;
+        pVel->m_WingAngle = pDrawInfo->m_LinearVelocityArrowWingAngle;
+        pVel->m_fWingLength = pDrawInfo->m_fLinearVelocityArrowWingLength;
     }
 }
 
