@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AndyParticles", "AndyPartic
 		{64B962F4-03D4-491E-8FC7-C10C23595E83} = {64B962F4-03D4-491E-8FC7-C10C23595E83}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5F556870-6A47-4A59-BF42-EFB778FA679D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -84,6 +86,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{B4300525-63FE-40BC-B2F2-A7E2315E0155} = {5F556870-6A47-4A59-BF42-EFB778FA679D}
 		{01B29E3D-A316-4716-9E92-57775CE5C115} = {B0295852-31C8-4378-8FF8-B45F8A00A1BE}
 		{486EC64D-A786-44F7-90B7-5A4440CDFC9A} = {B0295852-31C8-4378-8FF8-B45F8A00A1BE}
 	EndGlobalSection

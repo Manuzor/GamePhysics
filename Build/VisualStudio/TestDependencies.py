@@ -7,14 +7,6 @@ EzConfig = {
     "SupportedArchitectures" : [ "32", "64" ],
 }
 
-# Some info about GLEW
-GlewConfig = {
-    "Root" : os.getenv("OPENGL_GLEW_DIR"),
-    # Supporting Debug and Release, but only the release version will be used.
-    "SupportedConfigs" : [ "Debug", "Release" ],
-    "SupportedArchitectures" : [ "32", "64" ],
-}
-
 # Generates ezEngine module dependency generator functions.
 def EzModule(Name):
     def GenerateFilePattern(FileList, Config, Arch):
@@ -26,23 +18,8 @@ def EzModule(Name):
             FileList.append(FileName + ".pdb")
     return GenerateFilePattern
 
-def GlewModule(Name):
-    def GenerateFilePattern(FileList, Config, Arch):
-        assert Config in GlewConfig["SupportedConfigs"],       "Unsupported configuration '{0}'".format(Config)
-        assert Arch   in GlewConfig["SupportedArchitectures"], "Unsupported architecture '{0}'".format(Arch)
-        SubDir = "Win32" if Arch == "32" else "x64"
-        FileList.append(os.path.join(GlewConfig["Root"], "bin", "Release", SubDir, Name + ".dll"))
-    return GenerateFilePattern
-
 Dependencies = [
-    EzModule("ezFoundation"),
-    EzModule("ezCore"),
-    EzModule("ezSystem"),
-    EzModule("ezInputXBox360"),
-    EzModule("ezThirdParty"),
-    EzModule("ezInspectorPlugin"),
-
-    GlewModule("glew32"),
+    EzModule("ezTestFramework"),
 ]
 
 # Required by the API.

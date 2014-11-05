@@ -38,8 +38,6 @@ void gpAndyParticlesApp::AfterEngineInit()
         SetupRendering();
     }
 
-    RunTestsIfEnabled();
-
     m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PrimaryWorld");
     m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
     gpRenderExtractor::AddExtractionListener(

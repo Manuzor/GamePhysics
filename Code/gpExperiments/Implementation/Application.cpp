@@ -92,8 +92,6 @@ void gpExperimentsApp::AfterEngineInit()
         SetupRendering();
     }
 
-    RunTestsIfEnabled();
-
     //gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, &g_World));

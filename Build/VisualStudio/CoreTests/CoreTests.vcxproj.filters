@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{443b9a8f-abec-4917-b428-324d349f48c2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\gpCoreTests\Main.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCoreTests\PCH.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCoreTests\Tests\Test_Tasks.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\gpCoreTests\PCH.h" />
+  </ItemGroup>
+</Project>

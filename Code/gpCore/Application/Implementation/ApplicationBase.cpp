@@ -50,26 +50,6 @@ void gpApplicationBase::SetupWindow()
     m_pWindow->AddEventHandler(gpWindow::Event::Handler(AddressOf(gpApplicationBase::WindowEventHandler), this));
 }
 
-ezInt32 gpApplicationBase::RunTestsIfEnabled()
-{
-    ezInt32 iNumFailedTests = 0;
-    auto& cmd = GetCommandLine();
-    if(cmd.GetBoolOption("-test"))
-    {
-        EZ_LOG_BLOCK("Running Unit Tests");
-        ezLog::Info("Be patient...");
-        iNumFailedTests = RunTests();
-        if (iNumFailedTests > 0)
-        {
-            ezLog::Warning("%d unit test%s failed!", iNumFailedTests, iNumFailedTests == 1 ? "s" : "");
-            SetReturnCode(iNumFailedTests);
-            m_bQuit = true;
-        }
-    }
-
-    return iNumFailedTests;
-}
-
 void gpApplicationBase::LogSystemInformation()
 {
     EZ_LOG_BLOCK("System Information");

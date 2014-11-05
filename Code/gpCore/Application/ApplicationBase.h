@@ -15,14 +15,6 @@ public:
     gpApplicationBase(const char* szTitle);
     ~gpApplicationBase();
 
-    // Unit test related
-    //////////////////////////////////////////////////////////////////////////
-    /// \brief Will call gpApplicationBase::RunTests if the -test option is given as command line parameter.
-    ezInt32 RunTestsIfEnabled();
-
-    /// \brief Runs the tests and returns the number of failed tests.
-    ezInt32 RunTests();
-
     // Input
     //////////////////////////////////////////////////////////////////////////
     /// \brief Sets some basic input stuff (e.g. register Quit action).

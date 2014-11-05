@@ -57,9 +57,6 @@
     <ClCompile Include="..\..\..\Code\gpCore\Implementation\Window.cpp">
       <Filter>Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\Implementation\Task_Tests.cpp">
-      <Filter>Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\OpenGL\Implementation\OpenGL.cpp">
       <Filter>Rendering\OpenGL\Implementation</Filter>
     </ClCompile>
@@ -70,9 +67,6 @@
       <Filter>Application\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Rendering.cpp">
-      <Filter>Application\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Tests.cpp">
       <Filter>Application\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\RenderExtractor.cpp">
