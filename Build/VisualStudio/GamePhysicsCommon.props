@@ -21,7 +21,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\$(ProjectName)\;$(EZ_ENGINE_DIR)\Code\Engine\;$(OPENGL_GLEW_DIR)\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\;$(EZ_ENGINE_DIR)\Code\Engine\;$(OPENGL_GLEW_DIR)\include\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>

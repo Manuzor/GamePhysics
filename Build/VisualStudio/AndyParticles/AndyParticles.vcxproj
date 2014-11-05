@@ -151,13 +151,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\AndyParticles\gpAndyParticles\Application.h" />
-    <ClInclude Include="..\..\..\Code\AndyParticles\gpAndyParticles\PCH.h" />
+    <ClInclude Include="..\..\..\Code\gpAndyParticles\Application.h" />
+    <ClInclude Include="..\..\..\Code\gpAndyParticles\PCH.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\AndyParticles\gpAndyParticles\Implementation\Application.cpp" />
-    <ClCompile Include="..\..\..\Code\AndyParticles\gpAndyParticles\Main.cpp" />
-    <ClCompile Include="..\..\..\Code\AndyParticles\gpAndyParticles\PCH.cpp">
+    <ClCompile Include="..\..\..\Code\gpAndyParticles\Implementation\Application.cpp" />
+    <ClCompile Include="..\..\..\Code\gpAndyParticles\Main.cpp" />
+    <ClCompile Include="..\..\..\Code\gpAndyParticles\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gpAndyParticles/PCH.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

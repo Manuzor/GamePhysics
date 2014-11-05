@@ -147,13 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\Experiments\gpExperiments\Application.h" />
-    <ClInclude Include="..\..\..\Code\Experiments\gpExperiments\PCH.h" />
+    <ClInclude Include="..\..\..\Code\gpExperiments\Application.h" />
+    <ClInclude Include="..\..\..\Code\gpExperiments\PCH.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\Experiments\gpExperiments\Implementation\Application.cpp" />
-    <ClCompile Include="..\..\..\Code\Experiments\gpExperiments\Main.cpp" />
-    <ClCompile Include="..\..\..\Code\Experiments\gpExperiments\PCH.cpp">
+    <ClCompile Include="..\..\..\Code\gpExperiments\Implementation\Application.cpp" />
+    <ClCompile Include="..\..\..\Code\gpExperiments\Main.cpp" />
+    <ClCompile Include="..\..\..\Code\gpExperiments\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gpExperiments/PCH.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

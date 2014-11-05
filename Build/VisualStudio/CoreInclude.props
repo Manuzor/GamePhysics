@@ -4,9 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup>
-    <ClCompile>
-      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\Core\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+    <ClCompile />
     <Link>
       <AdditionalDependencies>gpCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

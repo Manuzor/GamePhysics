@@ -19,64 +19,64 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase_Input.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase_Rendering.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase_Tests.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\Implementation\Task_Tests.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\Implementation\Window.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\Memory\Implementation\Allocators.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\PCH.cpp">
+    <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Input.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Rendering.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Tests.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Implementation\Task_Tests.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Implementation\Window.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gp\PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gpCore\PCH.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">gp\PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">gpCore\PCH.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gp\PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gpCore\PCH.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gp\PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gpCore\PCH.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\Implementation\AsyncRendering.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\Implementation\Renderer.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\Implementation\RenderExtractor.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\OpenGL\Implementation\OpenGL.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\Shapes\Implementation\Circle.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\EntityBase.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\Particle.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\World.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\World_Rendering.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\AsyncRendering.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\RenderExtractor.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Rendering\OpenGL\Implementation\OpenGL.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\EntityBase.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Particle.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World_Rendering.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\Core\gp\Application\ApplicationBase.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Common.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Config.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Dependencies\EzEngine.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Dependencies\OpenGL.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Dependencies\Stl.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Memory\Allocators.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Memory\FixedStackAllocator.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\PCH.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\AsyncRendering.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\Implementation\RenderThread.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\OpenGL\OpenGL.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\Renderer.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\RenderExtractor.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\Rendering.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Shapes\Circle.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Task.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Types.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Utilities\EzMathExtensions.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\Window.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\World\EntityBase.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\World\EntityType.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\World\Particle.h" />
-    <ClInclude Include="..\..\..\Code\Core\gp\World\World.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Application\ApplicationBase.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Common.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Config.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Dependencies\EzEngine.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Dependencies\OpenGL.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Dependencies\Stl.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Memory\FixedStackAllocator.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\PCH.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\AsyncRendering.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\Implementation\RenderThread.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\OpenGL\OpenGL.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\Renderer.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\RenderExtractor.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\Rendering.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Circle.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\EntityBase.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\EntityType.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\Particle.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\World.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Code\Core\gp\Memory\Implementation\FixedStackAllocator.inl" />
-    <None Include="..\..\..\Code\Core\gp\Rendering\Implementation\Renderer_Async.inl" />
-    <None Include="..\..\..\Code\Core\gp\Rendering\Implementation\Renderer_NonAsync.inl" />
-    <None Include="..\..\..\Code\Core\gp\Shapes\Implementation\Circle.inl" />
+    <None Include="..\..\..\Code\gpCore\Memory\Implementation\FixedStackAllocator.inl" />
+    <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_Async.inl" />
+    <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_NonAsync.inl" />
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{64B962F4-03D4-491E-8FC7-C10C23595E83}</ProjectGuid>
@@ -152,13 +152,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>GP_CoreExport;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>
       </MinimalRebuild>
+      <PrecompiledHeaderFile>gpCore\PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -180,13 +180,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>GP_CoreExport;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>
       </MinimalRebuild>
+      <PrecompiledHeaderFile>gpCore\PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -209,13 +209,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>GP_CoreExport;WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild />
+      <PrecompiledHeaderFile>gpCore\PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -240,13 +240,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>GP_CoreExport;WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild />
+      <PrecompiledHeaderFile>gpCore\PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

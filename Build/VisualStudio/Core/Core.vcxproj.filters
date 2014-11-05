@@ -1,194 +1,177 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="gp">
-      <UniqueIdentifier>{62b12802-b8f6-43f9-8ed7-aaf27b10c973}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Implementation">
-      <UniqueIdentifier>{5876c4a1-4641-4757-8900-13621b07aa57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Memory">
-      <UniqueIdentifier>{d2d03521-99e0-4cf8-8c19-911414d4baa5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Memory\Implementation">
-      <UniqueIdentifier>{d778e84f-b7bf-4bd0-9eb1-6882b6ee1e92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Shapes">
-      <UniqueIdentifier>{b74a1553-fd7d-4d2e-bb01-66364fd0a754}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Shapes\Implementation">
-      <UniqueIdentifier>{8a1721ab-7f25-45ef-be8c-63e64461bb0f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Rendering">
-      <UniqueIdentifier>{93975fa6-4823-4957-9397-2b5ffae4fda0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Rendering\OpenGL">
-      <UniqueIdentifier>{7abafda6-0efe-45ed-ab1e-9d7a70ce544e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Rendering\OpenGL\Implementation">
-      <UniqueIdentifier>{c724cc28-7730-4d85-af89-76da3930ec0f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Dependencies">
-      <UniqueIdentifier>{7237a0df-ba03-4880-a9bb-99518a73a906}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Utilities">
-      <UniqueIdentifier>{546ad133-596d-4bd7-97d5-6ecb583ba4c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gp\Application">
+    <Filter Include="Application">
       <UniqueIdentifier>{79518afa-d046-4e37-b5ea-84248cd60fed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gp\Application\Implementation">
+    <Filter Include="Application\Implementation">
       <UniqueIdentifier>{8011e18c-d0cf-4e78-a73e-0a87add61653}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gp\Rendering\Implementation">
+    <Filter Include="Dependencies">
+      <UniqueIdentifier>{7237a0df-ba03-4880-a9bb-99518a73a906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementation">
+      <UniqueIdentifier>{5876c4a1-4641-4757-8900-13621b07aa57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{d2d03521-99e0-4cf8-8c19-911414d4baa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Implementation">
+      <UniqueIdentifier>{d778e84f-b7bf-4bd0-9eb1-6882b6ee1e92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{93975fa6-4823-4957-9397-2b5ffae4fda0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\OpenGL">
+      <UniqueIdentifier>{7abafda6-0efe-45ed-ab1e-9d7a70ce544e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\OpenGL\Implementation">
+      <UniqueIdentifier>{c724cc28-7730-4d85-af89-76da3930ec0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Implementation">
       <UniqueIdentifier>{5164e4a6-bd66-4ac9-90cf-5f117793246b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gp\World">
+    <Filter Include="Shapes">
+      <UniqueIdentifier>{b74a1553-fd7d-4d2e-bb01-66364fd0a754}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\Implementation">
+      <UniqueIdentifier>{8a1721ab-7f25-45ef-be8c-63e64461bb0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{546ad133-596d-4bd7-97d5-6ecb583ba4c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
       <UniqueIdentifier>{07e4f84c-58b4-4c27-b75f-c31f0e4dd25e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gp\World\Implementation">
+    <Filter Include="World\Implementation">
       <UniqueIdentifier>{31e2b37e-5872-4922-ac6b-36a36fbabb4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\Core\gp\PCH.cpp">
-      <Filter>gp</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp">
+      <Filter>Memory\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Memory\Implementation\Allocators.cpp">
-      <Filter>gp\Memory\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.cpp">
+      <Filter>Shapes\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Shapes\Implementation\Circle.cpp">
-      <Filter>gp\Shapes\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Implementation\Window.cpp">
+      <Filter>Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Implementation\Window.cpp">
-      <Filter>gp\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Implementation\Task_Tests.cpp">
+      <Filter>Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Implementation\Task_Tests.cpp">
-      <Filter>gp\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Rendering\OpenGL\Implementation\OpenGL.cpp">
+      <Filter>Rendering\OpenGL\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\OpenGL\Implementation\OpenGL.cpp">
-      <Filter>gp\Rendering\OpenGL\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase.cpp">
+      <Filter>Application\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase.cpp">
-      <Filter>gp\Application\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Input.cpp">
+      <Filter>Application\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase_Input.cpp">
-      <Filter>gp\Application\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Rendering.cpp">
+      <Filter>Application\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase_Rendering.cpp">
-      <Filter>gp\Application\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Tests.cpp">
+      <Filter>Application\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase_Tests.cpp">
-      <Filter>gp\Application\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\RenderExtractor.cpp">
+      <Filter>Rendering\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\Implementation\RenderExtractor.cpp">
-      <Filter>gp\Rendering\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer.cpp">
+      <Filter>Rendering\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\Implementation\Renderer.cpp">
-      <Filter>gp\Rendering\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\AsyncRendering.cpp">
+      <Filter>Rendering\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Rendering\Implementation\AsyncRendering.cpp">
-      <Filter>gp\Rendering\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World.cpp">
+      <Filter>World\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\World.cpp">
-      <Filter>gp\World\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\EntityBase.cpp">
+      <Filter>World\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\EntityBase.cpp">
-      <Filter>gp\World\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World_Rendering.cpp">
+      <Filter>World\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\World_Rendering.cpp">
-      <Filter>gp\World\Implementation</Filter>
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Particle.cpp">
+      <Filter>World\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\World\Implementation\Particle.cpp">
-      <Filter>gp\World\Implementation</Filter>
-    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\PCH.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\Core\gp\PCH.h">
-      <Filter>gp</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h">
+      <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Memory\Allocators.h">
-      <Filter>gp\Memory</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Circle.h">
+      <Filter>Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Shapes\Circle.h">
-      <Filter>gp\Shapes</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\OpenGL\OpenGL.h">
+      <Filter>Rendering\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Types.h">
-      <Filter>gp</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\Rendering.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Window.h">
-      <Filter>gp</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Dependencies\EzEngine.h">
+      <Filter>Dependencies</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Common.h">
-      <Filter>gp</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Dependencies\OpenGL.h">
+      <Filter>Dependencies</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Task.h">
-      <Filter>gp</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Config.h">
-      <Filter>gp</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Application\ApplicationBase.h">
+      <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\OpenGL\OpenGL.h">
-      <Filter>gp\Rendering\OpenGL</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\Renderer.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\Rendering.h">
-      <Filter>gp\Rendering</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\RenderExtractor.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Dependencies\EzEngine.h">
-      <Filter>gp\Dependencies</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Memory\FixedStackAllocator.h">
+      <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Dependencies\OpenGL.h">
-      <Filter>gp\Dependencies</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Dependencies\Stl.h">
+      <Filter>Dependencies</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Utilities\EzMathExtensions.h">
-      <Filter>gp\Utilities</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\AsyncRendering.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Application\ApplicationBase.h">
-      <Filter>gp\Application</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\Rendering\Implementation\RenderThread.h">
+      <Filter>Rendering\Implementation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\Renderer.h">
-      <Filter>gp\Rendering</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\World\World.h">
+      <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\RenderExtractor.h">
-      <Filter>gp\Rendering</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\World\EntityBase.h">
+      <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Memory\FixedStackAllocator.h">
-      <Filter>gp\Memory</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\World\EntityType.h">
+      <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Dependencies\Stl.h">
-      <Filter>gp\Dependencies</Filter>
+    <ClInclude Include="..\..\..\Code\gpCore\World\Particle.h">
+      <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\AsyncRendering.h">
-      <Filter>gp\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Rendering\Implementation\RenderThread.h">
-      <Filter>gp\Rendering\Implementation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\World\World.h">
-      <Filter>gp\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\World\EntityBase.h">
-      <Filter>gp\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\World\EntityType.h">
-      <Filter>gp\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\World\Particle.h">
-      <Filter>gp\World</Filter>
-    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Common.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Config.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\PCH.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Code\Core\gp\Shapes\Implementation\Circle.inl">
-      <Filter>gp\Shapes\Implementation</Filter>
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl">
+      <Filter>Shapes\Implementation</Filter>
     </None>
-    <None Include="..\..\..\Code\Core\gp\Memory\Implementation\FixedStackAllocator.inl">
-      <Filter>gp\Memory\Implementation</Filter>
+    <None Include="..\..\..\Code\gpCore\Memory\Implementation\FixedStackAllocator.inl">
+      <Filter>Memory\Implementation</Filter>
     </None>
-    <None Include="..\..\..\Code\Core\gp\Rendering\Implementation\Renderer_Async.inl">
-      <Filter>gp\Rendering\Implementation</Filter>
+    <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_Async.inl">
+      <Filter>Rendering\Implementation</Filter>
     </None>
-    <None Include="..\..\..\Code\Core\gp\Rendering\Implementation\Renderer_NonAsync.inl">
-      <Filter>gp\Rendering\Implementation</Filter>
+    <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_NonAsync.inl">
+      <Filter>Rendering\Implementation</Filter>
     </None>
   </ItemGroup>
 </Project>
