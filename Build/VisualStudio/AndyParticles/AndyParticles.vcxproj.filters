@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="gpAndyParticles">
+      <UniqueIdentifier>{c81700d0-c2c2-4641-a1ef-25922a0e9669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpAndyParticles\Implementation">
+      <UniqueIdentifier>{25d5ecf5-aea5-48e7-b1ec-0374d8e55364}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\AndyParticles\gpAndyParticles\Application.h">
+      <Filter>gpAndyParticles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\AndyParticles\gpAndyParticles\PCH.h">
+      <Filter>gpAndyParticles</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\AndyParticles\gpAndyParticles\Main.cpp">
+      <Filter>gpAndyParticles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\AndyParticles\gpAndyParticles\PCH.cpp">
+      <Filter>gpAndyParticles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\AndyParticles\gpAndyParticles\Implementation\Application.cpp">
+      <Filter>gpAndyParticles\Implementation</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

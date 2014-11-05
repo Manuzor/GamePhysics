@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="gpExperiments">
+      <UniqueIdentifier>{a44d6d33-84f7-41fa-b41f-f8abc0562044}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpExperiments\Implementation">
+      <UniqueIdentifier>{3616ee86-9cd4-4c69-bb4e-e39b8a7ce2db}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Experiments\gpExperiments\PCH.h">
+      <Filter>gpExperiments</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Experiments\gpExperiments\Application.h">
+      <Filter>gpExperiments</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Experiments\gpExperiments\PCH.cpp">
+      <Filter>gpExperiments</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Experiments\gpExperiments\Main.cpp">
+      <Filter>gpExperiments</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Experiments\gpExperiments\Implementation\Application.cpp">
+      <Filter>gpExperiments\Implementation</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

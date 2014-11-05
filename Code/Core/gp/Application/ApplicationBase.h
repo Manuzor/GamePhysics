@@ -9,7 +9,7 @@ class gpRenderer;
 class gpRenderExtractor;
 
 /// \brief Provides some basic functionality that can be used by sub-classes.
-class gpApplicationBase : public ezApplication
+class GP_CoreAPI gpApplicationBase : public ezApplication
 {
 public:
     gpApplicationBase(const char* szTitle);

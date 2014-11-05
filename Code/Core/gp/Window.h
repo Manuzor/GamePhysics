@@ -3,7 +3,7 @@
 
 class gpRenderer;
 
-class gpWindow : public ezWindow
+class GP_CoreAPI gpWindow : public ezWindow
 {
     friend gpRenderer;
 public:

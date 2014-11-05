@@ -1,7 +1,7 @@
 #pragma once
 #include "gp/World/EntityBase.h"
 
-class gpParticleEntity : public gpEntityBase
+class GP_CoreAPI gpParticleEntity : public gpEntityBase
 {
 public:
     gpParticleEntity();

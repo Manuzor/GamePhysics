@@ -1,8 +1,8 @@
-#include "gp/PCH.h"
+#include "gpExperiments/PCH.h"
 
 #include <Core/Input/InputManager.h>
 
-#include "gp/Application/Experiments.h"
+#include "gpExperiments/Application.h"
 #include "gp/Rendering/Rendering.h"
 #include "gp/Rendering/RenderExtractor.h"
 #include "gp/World/World.h"

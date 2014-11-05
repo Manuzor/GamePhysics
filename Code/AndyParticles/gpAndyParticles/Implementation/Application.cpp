@@ -1,10 +1,10 @@
-#include "gp/PCH.h"
+#include "gpAndyParticles/PCH.h"
 
 #include <Core/Input/InputManager.h>
 #include <Foundation/Communication/Telemetry.h>
 #include <Foundation/Utilities/Stats.h>
 
-#include "gp/Application/AndyPatricles.h"
+#include "gpAndyParticles/Application.h"
 #include "gp/Rendering/Rendering.h"
 #include "gp/Rendering/RenderExtractor.h"
 #include "gp/World/World.h"

@@ -9,7 +9,7 @@ class gpRenderExtractor;
 using gpRenderExtractionEvent = ezEvent<gpRenderExtractor*>;
 using gpRenderExtractionListener = gpRenderExtractionEvent::Handler;
 
-class gpRenderExtractor
+class GP_CoreAPI gpRenderExtractor
 {
     friend gpRenderer;
 

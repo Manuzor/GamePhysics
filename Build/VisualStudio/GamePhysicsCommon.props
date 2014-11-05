@@ -17,6 +17,7 @@
   <PropertyGroup>
     <OutDir>$(GP_OutputRootDir)\Bin\$(GP_UniqueOutputName)\</OutDir>
     <IntDir>$(GP_TempRootDir)\$(ProjectName)\$(GP_UniqueOutputName)\</IntDir>
+    <TargetName>gp$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -26,9 +27,10 @@
       <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <PreprocessorDefinitions>_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <ImportLibrary>$(GP_LibRootDir)\Lib\$(GP_UniqueOutputName)\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary>$(GP_OutputRootDir)\Lib\$(GP_UniqueOutputName)\$(TargetName).lib</ImportLibrary>
       <AdditionalLibraryDirectories>$(GP_OutputRootDir)\Lib\$(GP_UniqueOutputName)\;$(EZ_ENGINE_DIR)\Output\Lib\WinVs2013$(GP_Config)$(GP_Architecture)\;$(EZ_ENGINE_DIR)\Output\Lib\WinVs2012$(GP_Config)$(GP_Architecture)\;$(OPENGL_GLEW_DIR)\Lib\Release\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>ezFoundation.lib;ezCore.lib;ezSystem.lib;ezInputXBox360.lib;ezThirdParty.lib;OpenGL32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

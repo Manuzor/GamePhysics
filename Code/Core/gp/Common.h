@@ -3,6 +3,12 @@
 #include "gp/Config.h"
 #include "gp/Types.h"
 
+#ifdef GP_CoreExport
+#define GP_CoreAPI __declspec(dllexport)
+#else
+#define GP_CoreAPI __declspec(dllimport)
+#endif
+
 #define GP_NotImplemented do {             \
     EZ_REPORT_FAILURE("Not implemented."); \
     throw gpNotImplementedException();     \

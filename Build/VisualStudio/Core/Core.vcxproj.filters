@@ -54,9 +54,6 @@
     <ClCompile Include="..\..\..\Code\Core\gp\PCH.cpp">
       <Filter>gp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Main.cpp">
-      <Filter>gp</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\gp\Memory\Implementation\Allocators.cpp">
       <Filter>gp\Memory\Implementation</Filter>
     </ClCompile>
@@ -82,12 +79,6 @@
       <Filter>gp\Application\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\ApplicationBase_Tests.cpp">
-      <Filter>gp\Application\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\Experiments.cpp">
-      <Filter>gp\Application\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\gp\Application\Implementation\AndyParticles.cpp">
       <Filter>gp\Application\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\gp\Rendering\Implementation\RenderExtractor.cpp">
@@ -153,12 +144,6 @@
       <Filter>gp\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\gp\Application\ApplicationBase.h">
-      <Filter>gp\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Application\Experiments.h">
-      <Filter>gp\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\gp\Application\AndyPatricles.h">
       <Filter>gp\Application</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\gp\Rendering\Renderer.h">

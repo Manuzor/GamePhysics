@@ -10,7 +10,7 @@ struct gpEntityProperties
     gpScalar m_fGravityFactor = 1.0f;
 };
 
-class gpEntityBase : public ezRefCounted
+class GP_CoreAPI gpEntityBase : public ezRefCounted
 {
     friend gpWorld;
 public:

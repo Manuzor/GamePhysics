@@ -3,7 +3,7 @@
 
 class gpRenderExtractor;
 
-class gpWorld
+class GP_CoreAPI gpWorld
 {
 public:
     gpWorld(const char* szName);
