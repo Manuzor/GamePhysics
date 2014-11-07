@@ -75,7 +75,11 @@ ezResult gpWorld::RemoveEntity(gpEntityBase* pEntity)
     }
 
     // Remove draw data.
-    m_EntityDrawInfos.Erase(m_EntityDrawInfos.Find(pEntity));
+    {
+        auto it = m_EntityDrawInfos.Find(pEntity);
+        if(it.IsValid())
+            m_EntityDrawInfos.Erase(it);
+    }
 
     m_SimulatedEntities.RemoveSwap(pEntity);
     pEntity->m_pWorld = nullptr;
