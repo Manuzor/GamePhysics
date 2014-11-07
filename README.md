@@ -29,11 +29,6 @@ The Future
 
 If I find the time, I will try to make this project run on Linux using GCC or Clang.
 
-Credits
-=======
-
-* Source code written by [Manuel Maier][Manuzor]
-
 Third Party Software
 ====================
 
