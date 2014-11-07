@@ -12,10 +12,10 @@ static gpWorld g_World("World");
 
 static void PopulateWorld()
 {
-    auto pParticle = g_World.CreateEntity<gpParticleEntity>();
-    pParticle->SetName("TheParticle");
-    pParticle->GetProperties()->m_Position.Set(100, 200, 0);
-    EZ_VERIFY(g_World.AddEntity(pParticle).Succeeded(), "");
+    //auto pParticle = g_World.CreateEntity<gpParticleEntity>();
+    //pParticle->SetName("TheParticle");
+    //pParticle->GetProperties()->m_Position.Set(100, 200, 0);
+    //EZ_VERIFY(g_World.AddEntity(pParticle).Succeeded(), "");
 }
 
 static void Update(ezTime dt)
@@ -92,7 +92,7 @@ void gpExperimentsApp::AfterEngineInit()
         SetupRendering();
     }
 
-    //gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
+    gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, &g_World));
     PopulateWorld();

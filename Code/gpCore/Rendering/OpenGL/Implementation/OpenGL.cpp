@@ -41,8 +41,9 @@ void gpDraw(const gpDrawData::Arrow& Data)
 
     gpVec3 BaseLine(1, 0, 0);
     auto Line = Data.m_End - Data.m_Start;
+    Line.NormalizeIfNotZero();
 
-    auto Angle = Line.GetNormalized().GetAngleBetween(BaseLine);
+    auto Angle = Line.GetAngleBetween(BaseLine);
     if(Line.y > 0.0f)
         Angle = -Angle;
 

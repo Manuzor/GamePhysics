@@ -46,6 +46,9 @@
     <Filter Include="World\Implementation">
       <UniqueIdentifier>{31e2b37e-5872-4922-ac6b-36a36fbabb4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utilities\Implementation">
+      <UniqueIdentifier>{7e59986b-7bbb-4738-b8dc-8f92d0b6fe04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp">
@@ -91,6 +94,9 @@
       <Filter>World\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\PCH.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\TextFileLogWriter.cpp">
+      <Filter>Utilities\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h">
@@ -153,6 +159,9 @@
     <ClInclude Include="..\..\..\Code\gpCore\PCH.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\TextFileLogWriter.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl">

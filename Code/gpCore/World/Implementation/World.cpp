@@ -74,9 +74,13 @@ ezResult gpWorld::RemoveEntity(gpEntityBase* pEntity)
         ezStats::RemoveStat(sbStatName.GetData());
     }
 
+    // Remove draw data.
+    m_EntityDrawInfos.Erase(m_EntityDrawInfos.Find(pEntity));
+
     m_SimulatedEntities.RemoveSwap(pEntity);
     pEntity->m_pWorld = nullptr;
     pEntity->ReleaseRef();
+
     return EZ_SUCCESS;
 }
 
