@@ -23,6 +23,8 @@ static gpVec3 GetMousePosition()
     return gpVec3(fX, fY, 0.0f);
 }
 
+static bool g_bSkipUpdate = false;
+
 void gpAndyForceFieldsApp::AfterEngineInit()
 {
     SetupLogging();
@@ -52,10 +54,19 @@ void gpAndyForceFieldsApp::AfterEngineInit()
     }
 
     m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PrimaryWorld");
-    m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
+    //m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
     CreatePlayer();
+
+    m_pWindow->AddEventHandler([](gpWindow::EventData* pEvent){ if(pEvent->m_Reason == gpWindow::FocusGained) g_bSkipUpdate = true; });
+
+    {
+        EZ_LOG_BLOCK("Controls", "Keyboard & Mouse");
+        ezLog::Info("Escape Key  -> Exit Game");
+        ezLog::Info("Left Mouse  -> Spawn or Fire Player");
+        ezLog::Info("Right Mouse -> Despawn Player");
+    }
 }
 
 void gpAndyForceFieldsApp::BeforeEngineShutdown()
@@ -89,7 +100,16 @@ ezApplication::ApplicationExecution gpAndyForceFieldsApp::Run()
         bInputUpdated = true;
 
         UpdateInput(tUpdateInterval);
-        Update(tUpdateInterval);
+
+        if (g_bSkipUpdate)
+        {
+            g_bSkipUpdate = false;
+        }
+        else
+        {
+            Update(tUpdateInterval);
+        }
+
         m_pWorld->StepSimulation(tUpdateInterval);
 
         m_LastUpdate += tUpdateInterval;
