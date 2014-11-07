@@ -2,12 +2,14 @@
 
 #include <Foundation/Utilities/Stats.h>
 
-#include "gpCore/World/World.h"
-#include "gpCore/World/EntityBase.h"
-#include "gpCore/World/Particle.h"
 #include "gpCore/Rendering/Rendering.h"
 #include "gpCore/Rendering/RenderExtractor.h"
 #include "gpCore/Utilities/EzMathExtensions.h"
+
+#include "gpCore/World/World.h"
+#include "gpCore/World/EntityBase.h"
+#include "gpCore/World/Particle.h"
+#include "gpCore/World/ForceField.h"
 
 static void ExtractParticleData(gpRenderExtractor* pExtractor,
                                 gpParticleEntity* pParticle,
@@ -38,6 +40,27 @@ static void ExtractParticleData(gpRenderExtractor* pExtractor,
     }
 }
 
+static void ExtractForceFieldData(gpRenderExtractor* pExtractor,
+                                  gpForceFieldEntity* pForceField,
+                                  const gpEntityDrawInfo* pDrawInfo)
+{
+    EZ_ASSERT(pDrawInfo, "Need a valid draw info!");
+
+    if (ezMath::IsZero(pDrawInfo->m_Color.a))
+        return;
+
+    auto pData = pExtractor->AllocateRenderData<gpDrawData::Circle>();
+    pData->m_OutlineColor = pDrawInfo->m_Color;
+    pData->m_OutlineColor.a *= 0.5f;
+    pData->m_FillColor = pDrawInfo->m_Color;
+    pData->m_FillColor.a *= 0.1f;
+    pData->m_uiNumLineSegments = 20;
+
+    auto pProps = pForceField->GetProperties();
+    pData->m_Position = pProps->m_Position;
+    pData->m_fRadius = pForceField->GetRadius();
+}
+
 void gpWorld::ExtractRenderingData(gpRenderExtractor* pExtractor) const
 {
     ezStringBuilder sbStatName;
@@ -45,9 +68,11 @@ void gpWorld::ExtractRenderingData(gpRenderExtractor* pExtractor) const
 
     ezStringBuilder sbToRecord;
 
-    for (ezUInt32 i = 0; i < m_SimulatedEntities.GetCount(); ++i)
+    for (ezUInt32 i = 0; i < m_CreatedEntities.GetCount(); ++i)
     {
-        auto pEntity = m_SimulatedEntities[i];
+        auto pEntity = m_CreatedEntities[i];
+        if(pEntity->GetWorld() != this)
+            continue;
         const gpEntityDrawInfo* pEntityDrawInfo = m_pEntityDrawInfoDefault;
         auto FindResult = m_EntityDrawInfos.Find(pEntity);
         if(FindResult.IsValid())
@@ -59,10 +84,16 @@ void gpWorld::ExtractRenderingData(gpRenderExtractor* pExtractor) const
                                 static_cast<gpParticleEntity*>(pEntity),
                                 pEntityDrawInfo);
             break;
+        case gpEntityType::ForceField:
+            ExtractForceFieldData(pExtractor,
+                                  static_cast<gpForceFieldEntity*>(pEntity),
+                                  pEntityDrawInfo);
+            break;
         case gpEntityType::RigidBody:
             GP_NotImplemented;
             break;
         default:
+            GP_NotImplemented;
             break;
         }
 

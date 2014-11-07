@@ -67,11 +67,13 @@
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\TextFileLogWriter.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\View.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\EntityBase.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\EntityType.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\ForceField.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\Particle.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\PhysicalProperties.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\World.h" />
   </ItemGroup>
   <ItemGroup>

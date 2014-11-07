@@ -23,7 +23,10 @@ private:
 
     gpParticleEntity* m_pPlayer;
 
+    static ezCVarFloat s_fPlayerMaxSpeed;
+
 private:
+    void CreateForceFields();
     void CreatePlayer();
     void BeginSpawningPlayer();
     void FinalizePlayerSpawning();

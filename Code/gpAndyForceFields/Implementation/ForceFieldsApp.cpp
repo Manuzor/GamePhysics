@@ -9,6 +9,9 @@
 #include "gpCore/Rendering/RenderExtractor.h"
 #include "gpCore/World/World.h"
 #include "gpCore/World/Particle.h"
+#include "gpCore/World/ForceField.h"
+
+ezCVarFloat gpAndyForceFieldsApp::s_fPlayerMaxSpeed("PlayerMaxSpeed", 150.0f, ezCVarFlags::Default, "The maximum speed the player may reach via user input.");
 
 static gpVec3 GetMousePosition()
 {
@@ -58,6 +61,7 @@ void gpAndyForceFieldsApp::AfterEngineInit()
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
     CreatePlayer();
+    CreateForceFields();
 
     m_pWindow->AddEventHandler([](gpWindow::EventData* pEvent){ if(pEvent->m_Reason == gpWindow::FocusGained) g_bSkipUpdate = true; });
 
@@ -132,6 +136,34 @@ ezApplication::ApplicationExecution gpAndyForceFieldsApp::Run()
     return Continue;
 }
 
+void gpAndyForceFieldsApp::CreateForceFields()
+{
+    gpVec3 Positions[] = {
+        { 250.0f, 200.0f, 0.0f },
+        { 300.0f, 250.0f, 0.0f },
+        { 200.0f, 250.0f, 0.0f },
+    };
+
+    for (size_t i = 0; i < EZ_ARRAY_SIZE(Positions); ++i)
+    {
+        auto pForceField = m_pWorld->CreateEntity<gpForceFieldEntity>();
+        // Name
+        {
+            ezStringBuilder sbName;
+            sbName.AppendFormat("ForceField#%u", i);
+            pForceField->SetName(sbName.GetData());
+        }
+
+        pForceField->SetRadius(150.0f);
+        pForceField->SetForce(150.0f);
+
+        auto pProps = pForceField->GetProperties();
+        pProps->m_Position = Positions[i];
+
+        m_pWorld->AddEntity(pForceField);
+    }
+}
+
 void gpAndyForceFieldsApp::CreatePlayer()
 {
     m_pPlayer = m_pWorld->CreateEntity<gpParticleEntity>();
@@ -163,8 +195,15 @@ void gpAndyForceFieldsApp::FinalizePlayerSpawning()
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
     auto pProps = m_pPlayer->GetProperties();
-    pProps->m_LinearVelocity = GetMousePosition() - pProps->m_Position;
     pProps->m_fGravityFactor = 1.0f;
+    pProps->m_LinearVelocity = GetMousePosition() - pProps->m_Position;
+
+    auto fMaxSpeed = s_fPlayerMaxSpeed.GetValue();
+
+    if (pProps->m_LinearVelocity.GetLengthSquared() > fMaxSpeed * fMaxSpeed)
+    {
+        pProps->m_LinearVelocity.SetLength(fMaxSpeed);
+    }
 }
 
 void gpAndyForceFieldsApp::DespawnPlayer()

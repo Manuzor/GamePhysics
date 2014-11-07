@@ -168,6 +168,12 @@
     <ClInclude Include="..\..\..\Code\gpCore\World\ForceField.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\World\PhysicalProperties.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\View.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl">
