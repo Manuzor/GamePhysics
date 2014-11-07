@@ -43,6 +43,13 @@ void gpAndyParticlesApp::AfterEngineInit()
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
     PopulateWorld();
+
+    {
+        EZ_LOG_BLOCK("Controls", "Keyboard & Mouse");
+        ezLog::Info("Escape Key  -> Exit Game");
+        ezLog::Info("Left Mouse  -> Spawn or Fire Player");
+        ezLog::Info("Right Mouse -> Despawn Player");
+    }
 }
 
 void gpAndyParticlesApp::BeforeEngineShutdown()
@@ -126,6 +133,10 @@ void gpAndyParticlesApp::Update(ezTime dt)
     {
         ResetSpawning();
         EZ_VERIFY(m_pWorld->RemoveEntity(m_pCurrentParticle).Succeeded(), "Failed to remove the current particle!");
+        auto& Position = m_pCurrentParticle->GetProperties()->m_Position;
+        ezLog::Info("Removed particle   '%s' @ {%.3f, %.3f, %.3f}",
+                    m_pCurrentParticle->GetName().GetData(),
+                    Position.x, Position.y, Position.z);
         m_pCurrentParticle->ReleaseRef();
         m_pCurrentParticle = nullptr;
         m_pWorld->CollectGarbage();
@@ -209,7 +220,7 @@ void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
     pProps->m_fGravityFactor = 0.0f;
     EZ_VERIFY(m_pWorld->AddEntity(m_pCurrentParticle).Succeeded(), "Failed to add new particle?!");
     //m_pWorld->GetEntityDrawInfo(m_pCurrentParticle).m_Color = ezColor(1, 0, 0, 0.9f);
-    ezLog::Success("Added new particle %s @ {%.3f, %.3f, %.3f}",
+    ezLog::Success("Added new particle '%s' @ {%.3f, %.3f, %.3f}",
                    m_pCurrentParticle->GetName().GetData(),
                    Position.x, Position.y, Position.z);
 }
