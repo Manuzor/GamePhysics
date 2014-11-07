@@ -1,7 +1,7 @@
 GamePhysics
 ===========
 
-Experimenting with physics using the @ezEngine for the lecture Game Physics by Prof. Dr. Roland Schmitz and Andreas Stiegler at Hochschule der Medien Stuttgart.
+Experimenting with physics using the [ezEngine][ezEngine] for the lecture Game Physics by Prof. Dr. Roland Schmitz and Andreas Stiegler at Hochschule der Medien Stuttgart.
 
 Build From Source
 =================
@@ -10,7 +10,7 @@ Requirements
 ------------
 
 * Visual Studio 2013 or later
-* @ezEngine Milestone 5, i.e. commit 3fe9867d6da8d46af99c5a8c864ee4b8f19148e7
+* [ezEngine][ezEngine] Milestone 5, i.e. commit 3fe9867d6da8d46af99c5a8c864ee4b8f19148e7
   * Needs CMake version 1.x
   * Either `Debug` or `RelWithDebInfo` builds
 * OpenGL 2.0 or later
@@ -32,10 +32,13 @@ If I find the time, I will try to make this project run on Linux using GCC or Cl
 Credits
 =======
 
-* Source code written by Manuel Maier (@Manuzor)
+* Source code written by [Manuel Maier][Manuzor]
 
 Third Party Software
 ====================
 
-* @ezEngine
+* [ezEngine][ezEngine]
 * OpenGL and GLEW 1.11.0
+
+[ezEngine]: https://github.com/ezEngine/ezEngine
+[Manuzor]: https://github.com/Manuzor
