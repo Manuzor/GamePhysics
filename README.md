@@ -9,6 +9,7 @@ Build From Source
 Requirements
 ------------
 
+* Python 3.4 or later
 * Visual Studio 2013 or later
 * [ezEngine][ezEngine] Milestone 5, i.e. commit 3fe9867d6da8d46af99c5a8c864ee4b8f19148e7
   * Needs CMake version 1.x
