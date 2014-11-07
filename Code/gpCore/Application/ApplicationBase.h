@@ -4,6 +4,7 @@
 #include <Foundation/Time/DefaultTimeStepSmoothing.h>
 
 #include "gpCore/Window.h"
+#include "gpCore/Utilities/TextFileLogWriter.h"
 
 class gpRenderer;
 class gpRenderExtractor;
@@ -63,6 +64,7 @@ protected:
     const char* m_szTitle;
     gpWindow* m_pWindow;
     bool m_bQuit;
+    ezLogWriter::TextFile m_TextFileLogger;
 
 private:
     bool m_bRegisteredLogging;

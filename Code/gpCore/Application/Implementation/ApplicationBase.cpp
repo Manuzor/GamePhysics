@@ -6,6 +6,7 @@
 #include <Core/Input/InputManager.h>
 #include <Foundation/System/SystemInformation.h>
 #include <Foundation/Threading/TaskSystem.h>
+#include <Foundation/IO/FileSystem/DataDirTypeFolder.h>
 
 #include "gpCore/Application/ApplicationBase.h"
 #include "gpCore/Window.h"
@@ -31,12 +32,22 @@ void gpApplicationBase::SetupLogging()
 {
     EZ_LOG_BLOCK("Setup");
 
+    ezFileSystem::RegisterDataDirectoryFactory(ezDataDirectory::FolderType::Factory);
+    ezFileSystem::AddDataDirectory(ezOSFile::GetApplicationDirectory());
+
+    // Assemble log file path for the text file log writer
+    ezStringBuilder sbLogFileName = GetArgument(0);
+    sbLogFileName.Append(".log");
+    sbLogFileName.MakeCleanPath();
+    m_TextFileLogger.BeginLog(sbLogFileName.GetData());
+
     // Setup the logging system
     ezGlobalLog::AddLogWriter(ezLogWriter::Console::LogMessageHandler);
     ezGlobalLog::AddLogWriter(ezLogWriter::VisualStudio::LogMessageHandler);
+    ezGlobalLog::AddLogWriter(ezLoggingEvent::Handler(&ezLogWriter::TextFile::LogMessageHandler, &m_TextFileLogger));
 
     auto logLevel = ezLogMsgType::All;
-    ezGlobalLog::SetLogLevel(ezLogMsgType::All);
+    ezGlobalLog::SetLogLevel(logLevel);
     ezLog::Info("Log Level: %u", logLevel);
 
     m_bRegisteredLogging = true;
@@ -70,6 +81,9 @@ void gpApplicationBase::Cleanup()
 
     if(m_bRegisteredLogging)
     {
+        ezLog::Success("Good bye!");
+        m_TextFileLogger.EndLog();
+        ezGlobalLog::RemoveLogWriter(ezLoggingEvent::Handler(&ezLogWriter::TextFile::LogMessageHandler, &m_TextFileLogger));
         ezGlobalLog::RemoveLogWriter(ezLogWriter::Console::LogMessageHandler);
         ezGlobalLog::RemoveLogWriter(ezLogWriter::VisualStudio::LogMessageHandler);
     }
