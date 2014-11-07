@@ -3,5 +3,6 @@
 enum class gpEntityType
 {
     Particle,
+    ForceField,
     RigidBody,
 };

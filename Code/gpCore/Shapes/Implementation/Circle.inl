@@ -1,10 +1,10 @@
 
-gpCircleShape::gpCircleShape() :
+EZ_FORCE_INLINE gpCircleShape::gpCircleShape() :
     m_fRadius(1.0f)
 {
 }
 
-gpCircleShape::gpCircleShape(gpScalar fRadius) :
+EZ_FORCE_INLINE gpCircleShape::gpCircleShape(gpScalar fRadius) :
     m_fRadius(fRadius)
 {
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-class gpCircleShape
+class GP_CoreAPI gpCircleShape
 {
 public:
     EZ_DECLARE_POD_TYPE();

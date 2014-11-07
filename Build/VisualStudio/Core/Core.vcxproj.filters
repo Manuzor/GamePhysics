@@ -97,6 +97,9 @@
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\TextFileLogWriter.cpp">
       <Filter>Utilities\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\ForceField.cpp">
+      <Filter>World\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h">
@@ -161,6 +164,9 @@
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\TextFileLogWriter.h">
       <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\World\ForceField.h">
+      <Filter>World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
