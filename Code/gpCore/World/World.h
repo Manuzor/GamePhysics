@@ -23,7 +23,10 @@ public:
 
     ezResult AddEntity(gpEntityBase* pEntity);
     ezResult RemoveEntity(gpEntityBase* pEntity);
+
     void ClearSimulatedEntities();
+    void ClearForceFields();
+    void ClearWorld() { ClearSimulatedEntities(); ClearForceFields(); }
 
     gpEntityDrawInfo& GetEntityDrawInfo(gpEntityBase* pEntity);
 

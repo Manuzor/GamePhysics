@@ -25,20 +25,30 @@ ezColor g_SpawnAreaColor(1.0f, 0.0f, 0.0f, 0.1f);
 
 ezStopwatch g_StopWatch;
 
-gpRigidBody* g_pPlayerTarget;
+gpRigidBody* g_pPlayerTarget = nullptr;
+ezDynamicArray<gpForceFieldEntity*> g_ForceFields;
 
-static void RespawnTarget(gpWorld* pWorld)
+static void SpawnTarget(gpWorld* pWorld)
 {
-    if (g_pPlayerTarget->GetWorld() == pWorld)
-    {
-        pWorld->RemoveEntity(g_pPlayerTarget);
-    }
+    EZ_ASSERT(g_pPlayerTarget, "Target not spawned yet.");
+    EZ_ASSERT(g_pPlayerTarget->GetWorld() == nullptr, "Target is already spawned.");
 
     // \todo Random position for target.
     g_pPlayerTarget->GetProperties()->m_Position.Set(450, 50, 0);
 
     pWorld->AddEntity(g_pPlayerTarget);
     pWorld->GetEntityDrawInfo(g_pPlayerTarget).m_Color = ezColor::GetYellow();
+
+    ezLog::Success("Target spawned.");
+}
+
+static void DespawnTarget(gpWorld* pWorld)
+{
+    if (g_pPlayerTarget->GetWorld() == pWorld)
+    {
+        pWorld->RemoveEntity(g_pPlayerTarget);
+        ezLog::Info("Target despawned.");
+    }
 }
 
 static void CreateTarget(gpWorld* pWorld)
@@ -53,11 +63,15 @@ static void CreateTarget(gpWorld* pWorld)
     }
 
     g_pPlayerTarget = pWorld->CreateEntity<gpRigidBody>();
+    g_pPlayerTarget->AddRef();
+    g_pPlayerTarget->SetName("Target");
     g_pPlayerTarget->SetShape(pCircle);
     auto pProps = g_pPlayerTarget->GetProperties();
     pProps->m_fGravityFactor = 0.0f;
 
-    RespawnTarget(pWorld);
+    ezLog::Success("Created target.");
+
+    SpawnTarget(pWorld);
 }
 
 static void ExtractSpawnData(gpRenderExtractor* pExtractor)
@@ -109,14 +123,13 @@ void gpAndyForceFieldsApp::AfterEngineInit()
         SetupInput();
         RegisterInputAction("Game", "Spawn", ezInputSlot_MouseButton0);
         RegisterInputAction("Game", "CancelSpawn", ezInputSlot_MouseButton1);
-        m_pWindow->GetInputDevice()->SetClipMouseCursor(true);
-        // Poll once to finish input initialization;
+        // Poll once to finish input initialization
         ezInputManager::PollHardware();
         SetupRendering();
     }
 
     m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PrimaryWorld");
-    //m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
+    m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
     gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
@@ -138,6 +151,8 @@ void gpAndyForceFieldsApp::AfterEngineInit()
 
 void gpAndyForceFieldsApp::BeforeEngineShutdown()
 {
+    g_pPlayerTarget->ReleaseRef();
+    m_pPlayer->ReleaseRef();
     EZ_DEFAULT_DELETE(m_pWorld);
 
     ezStartup::ShutdownEngine();
@@ -225,11 +240,14 @@ void gpAndyForceFieldsApp::CreateForceFields()
 
         m_pWorld->AddEntity(pForceField);
     }
+
+    ezLog::Success("Created %u force fields", EZ_ARRAY_SIZE(Positions));
 }
 
 void gpAndyForceFieldsApp::CreatePlayer()
 {
     m_pPlayer = m_pWorld->CreateEntity<gpParticleEntity>();
+    m_pPlayer->AddRef();
     m_pPlayer->SetName("Player");
     auto pProperties = m_pPlayer->GetProperties();
     pProperties->m_Position.Set(100, 200, 0);
@@ -261,6 +279,8 @@ ezResult gpAndyForceFieldsApp::BeginSpawningPlayer()
     DrawInfo.m_Color = ezColor(1, 0, 0, 0.9f);
     DrawInfo.m_fScale = 8.0f;
 
+    ezLog::Success("Player added to the world.");
+
     return EZ_SUCCESS;
 }
 
@@ -278,12 +298,15 @@ void gpAndyForceFieldsApp::FinalizePlayerSpawning()
     {
         pProps->m_LinearVelocity.SetLength(fMaxSpeed);
     }
+
+    ezLog::Success("Finished player spawning.");
 }
 
 void gpAndyForceFieldsApp::DespawnPlayer()
 {
     auto result = m_pWorld->RemoveEntity(m_pPlayer);
     EZ_VERIFY(result.Succeeded(), "Failed to despawn player.");
+    ezLog::Info("Despawned player.");
 }
 
 namespace
@@ -314,8 +337,14 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
             gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
         case PlayerSpawnState::Spawned:
             DespawnPlayer();
+            DespawnTarget(m_pWorld);
+
+            m_pWorld->ClearWorld();
+            CreateForceFields();
+            SpawnTarget(m_pWorld);
+            m_pWorld->CollectGarbage();
+
             gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
-            RespawnTarget(m_pWorld);
             break;
         default:
             break;
@@ -331,6 +360,7 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
         case PlayerSpawnState::NotInWorld:
             if(BeginSpawningPlayer().Failed())
             {
+                ezLog::Info("Failed to spawn player. Make sure to click in the spawn area.");
                 g_StopWatch.Resume();
                 g_SpawnAreaColor.a *= 2;
                 break;

@@ -131,7 +131,7 @@ void gpWorld::ExtractRenderingData(gpRenderExtractor* pExtractor) const
     for (ezUInt32 i = 0; i < m_CreatedEntities.GetCount(); ++i)
     {
         auto pEntity = m_CreatedEntities[i];
-        if(pEntity->GetWorld() != this)
+        if(pEntity == nullptr || pEntity->GetWorld() != this)
             continue;
         const gpEntityDrawInfo* pEntityDrawInfo = m_pEntityDrawInfoDefault;
         auto FindResult = m_EntityDrawInfos.Find(pEntity);

@@ -27,6 +27,8 @@ gpWorld::gpWorld(const char* szName) :
 
 gpWorld::~gpWorld()
 {
+    ClearWorld();
+
     ezProfilingSystem::DeleteId(m_ProfilingId_CreateEntity);
     ezProfilingSystem::DeleteId(m_ProfilingId_Simulation);
 
@@ -35,6 +37,7 @@ gpWorld::~gpWorld()
         auto pEntity = m_CreatedEntities[i];
         if(pEntity)
         {
+            EZ_ASSERT(!pEntity->IsReferenced(), "Someone did not release their reference!");
             ezFoundation::GetDefaultAllocator()->Deallocate(pEntity);
         }
     }
@@ -160,11 +163,18 @@ void gpWorld::DoRemoveForceField(gpForceFieldEntity* pForceField)
 
 void gpWorld::ClearSimulatedEntities()
 {
-    for (ezUInt32 i = 0; i < m_SimulatedEntities.GetCount(); ++i)
+    while(!m_SimulatedEntities.IsEmpty())
     {
-        DoRemoveSimulatedEntity(m_SimulatedEntities[i]);
+        DoRemoveSimulatedEntity(m_SimulatedEntities.PeekBack());
     }
-    m_SimulatedEntities.Clear();
+}
+
+void gpWorld::ClearForceFields()
+{
+    while(!m_ForceFields.IsEmpty())
+    {
+        DoRemoveForceField(m_ForceFields.PeekBack());
+    }
 }
 
 gpEntityDrawInfo& gpWorld::GetEntityDrawInfo(gpEntityBase* pEntity)
@@ -174,6 +184,8 @@ gpEntityDrawInfo& gpWorld::GetEntityDrawInfo(gpEntityBase* pEntity)
 
 static void AccumulateForces(gpVec3& out_Force, const gpPhysicalProperties* pProps , ezArrayPtr<const gpForceFieldEntity*> ForceFields)
 {
+    GP_OnScopeExit { out_Force *= pProps->m_fGravityFactor; };
+
     if (ezMath::IsEqual(pProps->m_fGravityFactor, 0.0f))
         return;
 
@@ -189,8 +201,6 @@ static void AccumulateForces(gpVec3& out_Force, const gpPhysicalProperties* pPro
             out_Force += Dir * pForceField->GetForce();
         }
     }
-
-    out_Force *= pProps->m_fGravityFactor;
 }
 
 void gpWorld::StepSimulation(ezTime dt)
