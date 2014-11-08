@@ -6,3 +6,8 @@ gpRigidBody::gpRigidBody() :
     m_pShape(nullptr)
 {
 }
+
+void gpUpdateStats(const ezStringView sStatName, const gpRigidBody& RigidBody)
+{
+    gpUpdateStats(sStatName, *RigidBody.GetProperties());
+}

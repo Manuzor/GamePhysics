@@ -7,3 +7,5 @@ struct gpPhysicalProperties
     gpScalar m_fGravityFactor = 1.0f;
     gpScalar m_fMass = 1.0f;
 };
+
+GP_CoreAPI void gpUpdateStats(const ezStringView sStatName, const gpPhysicalProperties& Props);

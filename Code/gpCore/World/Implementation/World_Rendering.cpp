@@ -15,9 +15,9 @@
 #include "gpCore/Shapes/ShapeBase.h"
 #include "gpCore/Shapes/Circle.h"
 
-static void ExtractParticleData(gpRenderExtractor* pExtractor,
-                                const gpParticleEntity* pParticle,
-                                const gpEntityDrawInfo* pDrawInfo)
+static void Extract(gpRenderExtractor* pExtractor,
+                    const gpParticleEntity* pParticle,
+                    const gpEntityDrawInfo* pDrawInfo)
 {
     EZ_ASSERT(pDrawInfo, "Need a valid draw info!");
 
@@ -44,9 +44,9 @@ static void ExtractParticleData(gpRenderExtractor* pExtractor,
     }
 }
 
-static void ExtractForceFieldData(gpRenderExtractor* pExtractor,
-                                  const gpForceFieldEntity* pForceField,
-                                  const gpEntityDrawInfo* pDrawInfo)
+static void Extract(gpRenderExtractor* pExtractor,
+                    const gpForceFieldEntity* pForceField,
+                    const gpEntityDrawInfo* pDrawInfo)
 {
     EZ_ASSERT(pDrawInfo, "Need a valid draw info!");
 
@@ -64,10 +64,10 @@ static void ExtractForceFieldData(gpRenderExtractor* pExtractor,
     pData->m_fRadius = pForceField->GetRadius();
 }
 
-static void ExtractShapeData(gpRenderExtractor* pExtractor,
-                             const gpPhysicalProperties* pProps,
-                             const gpShapeBase* pShape,
-                             const gpEntityDrawInfo* pDrawInfo)
+static void Extract(gpRenderExtractor* pExtractor,
+                    const gpPhysicalProperties* pProps,
+                    const gpShapeBase* pShape,
+                    const gpEntityDrawInfo* pDrawInfo)
 {
     switch(pShape->GetType())
     {
@@ -89,44 +89,18 @@ static void ExtractShapeData(gpRenderExtractor* pExtractor,
     }
 }
 
-static void ExtractRigidBodyData(gpRenderExtractor* pExtractor,
-                                 const gpRigidBody* pRigidBody,
-                                 const gpEntityDrawInfo* pDrawInfo)
+static void Extract(gpRenderExtractor* pExtractor,
+                    const gpRigidBody* pRigidBody,
+                    const gpEntityDrawInfo* pDrawInfo)
 {
-    ExtractShapeData(pExtractor, pRigidBody->GetProperties(), pRigidBody->GetShape(), pDrawInfo);
-}
-
-static void ExtractEntity(gpRenderExtractor* pExtractor, gpEntityBase* pEntity, const gpEntityDrawInfo* pDrawInfo)
-{
-    switch(pEntity->GetType())
-    {
-    case gpEntityType::Particle:
-        ExtractParticleData(pExtractor,
-                            static_cast<gpParticleEntity*>(pEntity),
-                            pDrawInfo);
-        break;
-    case gpEntityType::ForceField:
-        ExtractForceFieldData(pExtractor,
-                                static_cast<gpForceFieldEntity*>(pEntity),
-                                pDrawInfo);
-        break;
-    case gpEntityType::RigidBody:
-        ExtractRigidBodyData(pExtractor,
-                             static_cast<gpRigidBody*>(pEntity),
-                             pDrawInfo);
-        break;
-    default:
-        GP_NotImplemented;
-        break;
-    }
+    Extract(pExtractor, pRigidBody->GetProperties(), pRigidBody->GetShape(), pDrawInfo);
 }
 
 void gpWorld::ExtractRenderingData(gpRenderExtractor* pExtractor) const
 {
-    ezStringBuilder sbStatName;
-    sbStatName.Format("%s/", m_sName.GetData());
+    EZ_PROFILE(m_ProfilingId_Extraction);
 
-    ezStringBuilder sbToRecord;
+    ezStringBuilder sbStatName;
 
     for (ezUInt32 i = 0; i < m_CreatedEntities.GetCount(); ++i)
     {
@@ -138,13 +112,37 @@ void gpWorld::ExtractRenderingData(gpRenderExtractor* pExtractor) const
         if(FindResult.IsValid())
             pEntityDrawInfo = &FindResult.Value();
 
-        ExtractEntity(pExtractor, pEntity, pEntityDrawInfo);
+        auto EntityType = pEntity->GetType();
 
-        // Collect stats
-        sbToRecord.Clear();
-        gpGetStats(sbToRecord, pEntity);
-        sbStatName.Append(pEntity->m_sName.GetData());
-        ezStats::SetStat(sbStatName.GetData(), sbToRecord.GetData());
-        sbStatName.Shrink(0, pEntity->m_sName.GetCharacterCount());
+        sbStatName.Format("%s/%s", m_sName.GetData(), pEntity->GetName().GetData());
+        ezStats::SetStat(sbStatName, EntityType.ToString(EntityType));
+
+        switch(EntityType)
+        {
+        case gpEntityType::Particle:
+        {
+            auto pParticle = static_cast<gpParticleEntity*>(pEntity);
+            Extract(pExtractor, pParticle, pEntityDrawInfo);
+            gpUpdateStats(sbStatName, *pParticle);
+            break;
+        }
+        case gpEntityType::ForceField:
+        {
+            auto pForceField = static_cast<gpForceFieldEntity*>(pEntity);
+            Extract(pExtractor, pForceField, pEntityDrawInfo);
+            gpUpdateStats(sbStatName, *pForceField);
+            break;
+        }
+        case gpEntityType::RigidBody:
+        {
+            auto pRigidBody = static_cast<gpRigidBody*>(pEntity);
+            Extract(pExtractor, pRigidBody, pEntityDrawInfo);
+            gpUpdateStats(sbStatName, *pRigidBody);
+            break;
+        }
+        default:
+            GP_NotImplemented;
+            break;
+        }
     }
 }

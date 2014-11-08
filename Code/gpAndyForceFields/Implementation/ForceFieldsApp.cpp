@@ -221,7 +221,7 @@ void gpAndyForceFieldsApp::AfterEngineInit()
         SetupRendering();
     }
 
-    m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PrimaryWorld");
+    m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PhysicsWorld");
     //m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));

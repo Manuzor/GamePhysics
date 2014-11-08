@@ -16,3 +16,5 @@ public:
 private:
     gpShapeBase* m_pShape;
 };
+
+GP_CoreAPI void gpUpdateStats(const ezStringView sStatName, const gpRigidBody& RigidBody);

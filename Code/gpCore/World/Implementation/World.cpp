@@ -23,6 +23,8 @@ gpWorld::gpWorld(const char* szName) :
     m_ProfilingId_Simulation = ezProfilingSystem::CreateId(sbProfilingName.GetData());
     sbProfilingName.Format("%s/%s", m_sName.GetData(), "CreateEntity");
     m_ProfilingId_CreateEntity = ezProfilingSystem::CreateId(sbProfilingName.GetData());
+    sbProfilingName.Format("%s/%s", m_sName.GetData(), "Extraction");
+    m_ProfilingId_Extraction = ezProfilingSystem::CreateId(sbProfilingName.GetData());
 }
 
 gpWorld::~gpWorld()
@@ -75,8 +77,8 @@ void gpWorld::DoAddSimulatedEntity(gpEntityBase* pEntity)
     // Add stat
     {
         ezStringBuilder sbStatName;
-        sbStatName.Format("%s/Dynamic/%s", m_sName.GetData(), pEntity->m_sName.GetData());
-        ezStats::SetStat(sbStatName.GetData(), "<Added>");
+        sbStatName.Format("%s/%s", m_sName.GetData(), pEntity->m_sName.GetData());
+        ezStats::SetStat(sbStatName.GetData(), "");
     }
 }
 
@@ -90,8 +92,8 @@ void gpWorld::DoAddForceField(gpForceFieldEntity* pForceField)
     // Add stat
     {
         ezStringBuilder sbStatName;
-        sbStatName.Format("%s/ForceFields/%s", m_sName.GetData(), pForceField->m_sName.GetData());
-        ezStats::SetStat(sbStatName.GetData(), "<Added>");
+        sbStatName.Format("%s/%s", m_sName.GetData(), pForceField->m_sName.GetData());
+        ezStats::SetStat(sbStatName.GetData(), "");
     }
 }
 
@@ -122,7 +124,7 @@ void gpWorld::DoRemoveSimulatedEntity(gpEntityBase* pEntity)
     // Remove stat
     {
         ezStringBuilder sbStatName;
-        sbStatName.Format("%s/Dynamic/%s", m_sName.GetData(), pEntity->m_sName.GetData());
+        sbStatName.Format("%s/%s", m_sName.GetData(), pEntity->m_sName.GetData());
         ezStats::RemoveStat(sbStatName.GetData());
     }
 
@@ -144,7 +146,7 @@ void gpWorld::DoRemoveForceField(gpForceFieldEntity* pForceField)
     // Remove stat
     {
         ezStringBuilder sbStatName;
-        sbStatName.Format("%s/ForceFields/%s", m_sName.GetData(), pForceField->m_sName.GetData());
+        sbStatName.Format("%s/%s", m_sName.GetData(), pForceField->m_sName.GetData());
         ezStats::RemoveStat(sbStatName.GetData());
     }
 

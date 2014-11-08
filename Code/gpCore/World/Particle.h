@@ -7,3 +7,5 @@ public:
     gpParticleEntity();
 private:
 };
+
+GP_CoreAPI void gpUpdateStats(const ezStringView sStatName, const gpParticleEntity& Particle);

@@ -1,8 +1,18 @@
 #pragma once
 
-enum class gpEntityType
+namespace gpInternal
 {
-    Particle,
-    ForceField,
-    RigidBody,
-};
+    struct gpEntityTypeBase
+    {
+        enum Enum
+        {
+            Particle,
+            ForceField,
+            RigidBody,
+        };
+
+        EZ_ENUM_TO_STRING(Particle, ForceField, RigidBody);
+    };
+}
+
+using gpEntityType = ezEnum<gpInternal::gpEntityTypeBase, ezUInt8>;

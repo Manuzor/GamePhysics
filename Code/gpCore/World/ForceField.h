@@ -20,3 +20,5 @@ private:
     gpScalar m_fForce = 0.0f;
     gpCircleShape m_Area;
 };
+
+GP_CoreAPI void gpUpdateStats(const ezStringView sStatName, const gpForceFieldEntity& ForceField);

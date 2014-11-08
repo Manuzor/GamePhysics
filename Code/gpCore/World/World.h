@@ -54,6 +54,7 @@ private:
     ezString m_sName;
     ezProfilingId m_ProfilingId_Simulation;
     ezProfilingId m_ProfilingId_CreateEntity;
+    ezProfilingId m_ProfilingId_Extraction;
 
     gpVec3 m_Gravity;
     ezDynamicArray<gpForceFieldEntity*> m_ForceFields;
