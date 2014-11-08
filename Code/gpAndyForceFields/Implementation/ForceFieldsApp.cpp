@@ -46,11 +46,24 @@ namespace
 
 static PlayerSpawnState PlayerState = PlayerSpawnState::NotInWorld;
 
-ezCVarFloat gpAndyForceFieldsApp::s_fPlayerMaxSpeed("PlayerMaxSpeed", 150.0f, ezCVarFlags::Default, "The maximum speed the player may reach via user input.");
+ezCVarFloat gpAndyForceFieldsApp::s_fPlayerMaxSpeed("Player/MaxSpeed", 150.0f, ezCVarFlags::Default, "The maximum speed the player may reach via user input.");
 
-ezCVarInt g_iPlayerSpawnAreaWidth("PlayerSpawnAreaWidth", 150, ezCVarFlags::Default, "Width of the spawn area of the player.");
-ezCVarInt g_iPlayerSpawnAreaHeight("PlayerSpawnAreaHeight", 150, ezCVarFlags::Default, "Width of the spawn area of the player.");
-ezCVarFloat g_fPlayerTargetRadius("PlayerTargetRadius", 40.0f, ezCVarFlags::Default, "Radius of the target.");
+static ezCVarInt g_iPlayerSpawnAreaWidth("Player/SpawnArea/Width", 150, ezCVarFlags::Default, "Width of the spawn area of the player.");
+static ezCVarInt g_iPlayerSpawnAreaHeight("Player/SpawnArea/Height", 150, ezCVarFlags::Default, "Width of the spawn area of the player.");
+static ezCVarFloat g_fPlayerTargetRadius("PlayerTarget/Radius", 40.0f, ezCVarFlags::Default, "Radius of the target.");
+
+static ezCVarFloat g_fForceFieldMinPosX("ForceField/MinPosX", 190.0f, ezCVarFlags::Default, "The minimum x value a force field can be positioned at.");
+static ezCVarFloat g_fForceFieldMinPosY("ForceField/MinPosY", 110.0f, ezCVarFlags::Default, "The minimum y value a force field can be positioned at.");
+static ezCVarFloat g_fForceFieldMaxPosX("ForceField/MaxPosX", 400.0f, ezCVarFlags::Default, "The maximum x value a force field can be positioned at.");
+static ezCVarFloat g_fForceFieldMaxPosY("ForceField/MaxPosY", 330.0f, ezCVarFlags::Default, "The maximum y value a force field can be positioned at.");
+
+static ezCVarFloat g_fForceFieldMinRadius("ForceField/MinRadius", 100.0f, ezCVarFlags::Default, "The minimum radius of a force field.");
+static ezCVarFloat g_fForceFieldMaxRadius("ForceField/MaxRadius", 150.0f, ezCVarFlags::Default, "The minimum radius of a force field.");
+
+static ezCVarFloat g_fForceFieldMinForce("ForceField/MinForce", 50.0f, ezCVarFlags::Default, "The minimum force of a force field.");
+static ezCVarFloat g_fForceFieldMaxForce("ForceField/MaxForce", 200.0f, ezCVarFlags::Default, "The minimum force of a force field.");
+
+static ezCVarBool g_bForceFieldDrawSpawnArea("ForceField/DrawSpawnArea", false, ezCVarFlags::Default, "Whether the spawn area of force fields should be rendered.");
 
 ezColor g_SpawnAreaColor(1.0f, 0.0f, 0.0f, 0.1f);
 
@@ -137,6 +150,33 @@ static void EnableSpawnDataExtraction(bool bEnabled)
     }
 }
 
+static void ExtractForceFieldSpawnArea(gpRenderExtractor* pExtractor)
+{
+    auto pArea = pExtractor->AllocateRenderData<gpDrawData::Box>();
+    pArea->m_Box.x       = (ezUInt32)g_fForceFieldMinPosX.GetValue();
+    pArea->m_Box.y       = (ezUInt32)g_fForceFieldMinPosY.GetValue();
+    pArea->m_Box.width   = (ezUInt32)g_fForceFieldMaxPosX.GetValue() - pArea->m_Box.x;
+    pArea->m_Box.height  = (ezUInt32)g_fForceFieldMaxPosY.GetValue() - pArea->m_Box.y;
+    pArea->m_FillColor   = ezColor::GetGreen();
+    pArea->m_FillColor.a = 0.1f;
+}
+
+static void EnableForceFieldSpawnAreaExtraction(bool bEnabled)
+{
+    static bool bIsExtracting = false;
+
+    if(bEnabled && !bIsExtracting)
+    {
+        gpRenderExtractor::AddExtractionListener(ExtractForceFieldSpawnArea);
+        bIsExtracting = true;
+    }
+    else if(!bEnabled && bIsExtracting)
+    {
+        gpRenderExtractor::RemoveExtractionListener(ExtractForceFieldSpawnArea);
+        bIsExtracting = false;
+    }
+}
+
 static gpVec3 GetMousePosition()
 {
     float fX;
@@ -200,6 +240,13 @@ void gpAndyForceFieldsApp::AfterEngineInit()
     }
 
     g_StopWatch.StopAndReset();
+
+    g_bForceFieldDrawSpawnArea.m_CVarEvents.AddEventHandler([](const ezCVar::CVarEvent& Data)
+    {
+        if(Data.m_EventType != ezCVar::CVarEvent::ValueChanged)
+            return;
+        EnableForceFieldSpawnAreaExtraction(g_bForceFieldDrawSpawnArea.GetValue());
+    });
 }
 
 void gpAndyForceFieldsApp::BeforeEngineShutdown()
@@ -271,19 +318,8 @@ void gpAndyForceFieldsApp::CreateForceFields()
 {
     static ezUInt32 uiInstanceCount = 0;
 
-    static ezCVarFloat fMinX("ForceFieldMinPosX", 190.0f, ezCVarFlags::Default, "");
-    static ezCVarFloat fMinY("ForceFieldMinPosY", 110.0f, ezCVarFlags::Default, "");
-    static ezCVarFloat fMaxX("ForceFieldMaxPosX", 400.0f, ezCVarFlags::Default, "");
-    static ezCVarFloat fMaxY("ForceFieldMaxPosY", 330.0f, ezCVarFlags::Default, "");
-
-    gpVec3 MinPosition(fMinX.GetValue(), fMinY.GetValue(), 0.0f);
-    gpVec3 MaxPosition(fMaxX.GetValue(), fMaxY.GetValue(), 0.0f);
-
-    static gpScalar MinRadius = 100.0f;
-    static gpScalar MaxRadius = 150.0f;
-
-    static gpScalar MinForce = 50.0f;
-    static gpScalar MaxForce = 200.0f;
+    gpVec3 MinPosition(g_fForceFieldMinPosX.GetValue(), g_fForceFieldMinPosY.GetValue(), 0.0f);
+    gpVec3 MaxPosition(g_fForceFieldMaxPosX.GetValue(), g_fForceFieldMaxPosY.GetValue(), 0.0f);
 
     const auto uiNumForceFields = g_Rand.GenerateInteger<ezUInt64>(2, 3);
 
@@ -297,8 +333,8 @@ void gpAndyForceFieldsApp::CreateForceFields()
             pForceField->SetName(sbName.GetData());
         }
 
-        pForceField->SetRadius(g_Rand.GenerateFloat(MinRadius, MaxRadius));
-        pForceField->SetForce(g_Rand.GenerateFloat(MinForce, MinForce));
+        pForceField->SetRadius(g_Rand.GenerateFloat(g_fForceFieldMinRadius.GetValue(), g_fForceFieldMaxRadius.GetValue()));
+        pForceField->SetForce(g_Rand.GenerateFloat(g_fForceFieldMinForce.GetValue(), g_fForceFieldMaxForce.GetValue()));
 
         auto pProps = pForceField->GetProperties();
         gpRandomize(g_Rand, pProps->m_Position, MinPosition, MaxPosition);
@@ -307,23 +343,6 @@ void gpAndyForceFieldsApp::CreateForceFields()
     }
 
     ezLog::Success("Created %u force fields", uiNumForceFields);
-
-    // Debugging:
-    static bool bDrawSpawnBounds = true;
-    if(bDrawSpawnBounds)
-    {
-        bDrawSpawnBounds = false;
-
-        gpRenderExtractor::AddExtractionListener([](gpRenderExtractor* pExtractor){
-            auto pArea = pExtractor->AllocateRenderData<gpDrawData::Box>();
-            pArea->m_Box.x       = (ezUInt32)fMinX.GetValue();
-            pArea->m_Box.y       = (ezUInt32)fMinY.GetValue();
-            pArea->m_Box.width   = (ezUInt32)fMaxX.GetValue() - pArea->m_Box.x;
-            pArea->m_Box.height  = (ezUInt32)fMaxY.GetValue() - pArea->m_Box.y;
-            pArea->m_FillColor   = ezColor::GetGreen();
-            pArea->m_FillColor.a = 0.1f;
-        });
-    }
 }
 
 void gpAndyForceFieldsApp::CreatePlayer()
