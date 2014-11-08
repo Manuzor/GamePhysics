@@ -39,6 +39,7 @@
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\RenderExtractor.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\OpenGL\Implementation\OpenGL.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\RandomNumbers.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\TextFileLogWriter.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\EntityBase.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\ForceField.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\RandomNumbers.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\TextFileLogWriter.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\View.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
