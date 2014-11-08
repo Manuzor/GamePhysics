@@ -63,6 +63,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\RenderExtractor.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\Rendering.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Circle.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />
@@ -81,6 +82,7 @@
     <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_Async.inl" />
     <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_NonAsync.inl" />
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl" />
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Rectangle.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{64B962F4-03D4-491E-8FC7-C10C23595E83}</ProjectGuid>

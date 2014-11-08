@@ -3,6 +3,8 @@
 #include <Core/Input/InputManager.h>
 #include <Foundation/Communication/Telemetry.h>
 #include <Foundation/Utilities/Stats.h>
+#include <Foundation/Threading/TaskSystem.h>
+#include <Foundation/Time/Stopwatch.h>
 
 #include "gpAndyForceFields/ForceFieldsApp.h"
 #include "gpCore/Rendering/Rendering.h"
@@ -10,8 +12,28 @@
 #include "gpCore/World/World.h"
 #include "gpCore/World/Particle.h"
 #include "gpCore/World/ForceField.h"
+#include "gpCore/Shapes/Rectangle.h"
+#include "gpCore/Task.h"
 
 ezCVarFloat gpAndyForceFieldsApp::s_fPlayerMaxSpeed("PlayerMaxSpeed", 150.0f, ezCVarFlags::Default, "The maximum speed the player may reach via user input.");
+
+ezCVarInt g_iPlayerSpawnAreaWidth("PlayerSpawnAreaWidth", 150, ezCVarFlags::Default, "Width of the spawn area of the player.");
+ezCVarInt g_iPlayerSpawnAreaHeight("PlayerSpawnAreaHeight", 150, ezCVarFlags::Default, "Width of the spawn area of the player.");
+
+ezColor g_SpawnAreaColor(1.0f, 0.0f, 0.0f, 0.1f);
+
+ezStopwatch g_StopWatch;
+
+static void ExtractSpawnData(gpRenderExtractor* pExtractor)
+{
+    auto pArea = pExtractor->AllocateRenderData<gpDrawData::Box>();
+    pArea->m_Box.x = 0;
+    pArea->m_Box.y = gpWindow::GetHeightCVar()->GetValue();
+    pArea->m_Box.width = g_iPlayerSpawnAreaWidth.GetValue();
+    pArea->m_Box.height = -g_iPlayerSpawnAreaHeight.GetValue();
+    pArea->m_OutlineColor = g_SpawnAreaColor; pArea->m_OutlineColor.a *= 2.0f;
+    pArea->m_FillColor = g_SpawnAreaColor;
+}
 
 static gpVec3 GetMousePosition()
 {
@@ -49,10 +71,11 @@ void gpAndyForceFieldsApp::AfterEngineInit()
         ezClock::Get()->SetTimeStepSmoothing(AddressOf(m_TimeStepSmoother));
         m_LastUpdate = ezTime::Now();
         SetupInput();
-        // Poll once to finish input initialization;
-        ezInputManager::PollHardware();
         RegisterInputAction("Game", "Spawn", ezInputSlot_MouseButton0);
         RegisterInputAction("Game", "CancelSpawn", ezInputSlot_MouseButton1);
+        m_pWindow->GetInputDevice()->SetClipMouseCursor(true);
+        // Poll once to finish input initialization;
+        ezInputManager::PollHardware();
         SetupRendering();
     }
 
@@ -60,6 +83,7 @@ void gpAndyForceFieldsApp::AfterEngineInit()
     //m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
+    gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
     CreatePlayer();
     CreateForceFields();
 
@@ -71,6 +95,8 @@ void gpAndyForceFieldsApp::AfterEngineInit()
         ezLog::Info("Left Mouse  -> Spawn or Fire Player");
         ezLog::Info("Right Mouse -> Despawn Player");
     }
+
+    g_StopWatch.StopAndReset();
 }
 
 void gpAndyForceFieldsApp::BeforeEngineShutdown()
@@ -174,12 +200,21 @@ void gpAndyForceFieldsApp::CreatePlayer()
     //m_pPlayer->SetLinearVelocity(gpVec3(10, 10, 0));
 }
 
-void gpAndyForceFieldsApp::BeginSpawningPlayer()
+ezResult gpAndyForceFieldsApp::BeginSpawningPlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
+    auto MousePos = GetMousePosition();
+    gpRectF SpawnArea; // From bottom left to upper right
+    SpawnArea.x = 0.0f;
+    SpawnArea.y = static_cast<gpScalar>(gpWindow::GetWidthCVar()->GetValue());
+    SpawnArea.width =   static_cast<gpScalar>(g_iPlayerSpawnAreaWidth.GetValue());
+    SpawnArea.height = -static_cast<gpScalar>(g_iPlayerSpawnAreaHeight.GetValue());
+    if (!gpContains(SpawnArea, MousePos))
+        return EZ_FAILURE;
+
     auto pProps = m_pPlayer->GetProperties();
-    pProps->m_Position = GetMousePosition();
+    pProps->m_Position = MousePos;
     pProps->m_LinearVelocity.SetZero();
     pProps->m_fGravityFactor = 0.0f;
 
@@ -188,6 +223,8 @@ void gpAndyForceFieldsApp::BeginSpawningPlayer()
     auto& DrawInfo = m_pWorld->GetEntityDrawInfo(m_pPlayer);
     DrawInfo.m_Color = ezColor(1, 0, 0, 0.9f);
     DrawInfo.m_fScale = 8.0f;
+
+    return EZ_SUCCESS;
 }
 
 void gpAndyForceFieldsApp::FinalizePlayerSpawning()
@@ -225,6 +262,11 @@ namespace
 void gpAndyForceFieldsApp::Update(ezTime dt)
 {
     static PlayerSpawnState PlayerState = PlayerSpawnState::NotInWorld;
+    if(g_StopWatch.GetRunningTotal() > ezTime::Milliseconds(500))
+    {
+        g_StopWatch.StopAndReset();
+        g_SpawnAreaColor.a = 0.1f;
+    }
 
     // If cancel spawning and the player is in the world => despawn player.
     if (ezInputManager::GetInputActionState("Game", "CancelSpawn") == ezKeyState::Pressed)
@@ -235,6 +277,7 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
             gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
         case PlayerSpawnState::Spawned:
             DespawnPlayer();
+            gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
             break;
         default:
             break;
@@ -248,7 +291,13 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
         switch(PlayerState)
         {
         case PlayerSpawnState::NotInWorld:
-            BeginSpawningPlayer();
+            if(BeginSpawningPlayer().Failed())
+            {
+                g_StopWatch.Resume();
+                g_SpawnAreaColor.a *= 2;
+                break;
+            }
+            gpRenderExtractor::RemoveExtractionListener(ExtractSpawnData);
             gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
             PlayerState = PlayerSpawnState::Spawning;
             break;

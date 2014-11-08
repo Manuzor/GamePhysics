@@ -28,7 +28,7 @@ private:
 private:
     void CreateForceFields();
     void CreatePlayer();
-    void BeginSpawningPlayer();
+    ezResult BeginSpawningPlayer();
     void FinalizePlayerSpawning();
     void DespawnPlayer();
 

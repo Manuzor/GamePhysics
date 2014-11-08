@@ -174,6 +174,9 @@
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\View.h">
       <Filter>Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl">
@@ -187,6 +190,9 @@
     </None>
     <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_NonAsync.inl">
       <Filter>Rendering\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Rectangle.inl">
+      <Filter>Shapes\Implementation</Filter>
     </None>
   </ItemGroup>
 </Project>

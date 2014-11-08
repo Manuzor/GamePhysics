@@ -50,8 +50,7 @@ static void ExtractForceFieldData(gpRenderExtractor* pExtractor,
         return;
 
     auto pData = pExtractor->AllocateRenderData<gpDrawData::Circle>();
-    pData->m_OutlineColor = pDrawInfo->m_Color;
-    pData->m_OutlineColor.a *= 0.5f;
+    pData->m_OutlineColor.a = 0.0f; // no outline
     pData->m_FillColor = pDrawInfo->m_Color;
     pData->m_FillColor.a *= 0.1f;
     pData->m_uiNumLineSegments = 20;
