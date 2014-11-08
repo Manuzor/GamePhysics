@@ -66,9 +66,9 @@ EZ_CREATE_SIMPLE_TEST(Random, Randomize)
         gpVec3 ToRandomize(0.0f);
         gpVec3 ToCompare(1.0f);
 
-        gpRandomize(&Rand, ToRandomize);
+        gpRandomize(Rand, ToRandomize);
         Rand.Reset();
-        gpRandomize(&Rand, ToCompare);
+        gpRandomize(Rand, ToCompare);
 
         EZ_TEST_VEC3(ToRandomize, ToCompare, 0.0001f);
     }

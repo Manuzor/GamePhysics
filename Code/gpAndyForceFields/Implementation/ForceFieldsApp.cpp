@@ -16,6 +16,35 @@
 #include "gpCore/Shapes/Rectangle.h"
 #include "gpCore/Task.h"
 #include "gpCore/World/RigidBody.h"
+#include "gpCore/Utilities/RandomNumbers.h"
+
+namespace
+{
+    //enum class PlayerSpawnState
+    //{
+    //    NotInWorld,
+    //    Spawning,
+    //    Spawned
+    //};
+
+    struct PlayerSpawnStateBase
+    {
+        enum Enum
+        {
+            NotInWorld,
+            Spawning,
+            Spawned,
+
+            DefaultInit = NotInWorld
+        };
+
+        EZ_FORCE_INLINE static EZ_ENUM_TO_STRING(NotInWorld, Spawning, Spawned);
+    };
+
+    using PlayerSpawnState = ezEnum<PlayerSpawnStateBase, ezUInt8>;
+}
+
+static PlayerSpawnState PlayerState = PlayerSpawnState::NotInWorld;
 
 ezCVarFloat gpAndyForceFieldsApp::s_fPlayerMaxSpeed("PlayerMaxSpeed", 150.0f, ezCVarFlags::Default, "The maximum speed the player may reach via user input.");
 
@@ -30,10 +59,14 @@ ezStopwatch g_StopWatch;
 gpRigidBody* g_pPlayerTarget = nullptr;
 ezDynamicArray<gpForceFieldEntity*> g_ForceFields;
 
+gpRandomNumberGenerator g_Rand;
+
 static void SpawnTarget(gpWorld* pWorld)
 {
-    EZ_ASSERT(g_pPlayerTarget, "Target not spawned yet.");
-    EZ_ASSERT(g_pPlayerTarget->GetWorld() == nullptr, "Target is already spawned.");
+    EZ_ASSERT(g_pPlayerTarget, "Target not created yet.");
+
+    if (g_pPlayerTarget->GetWorld() != nullptr)
+        return;
 
     // \todo Random position for target.
     g_pPlayerTarget->GetProperties()->m_Position.Set(450, 50, 0);
@@ -48,11 +81,11 @@ static void SpawnTarget(gpWorld* pWorld)
 
 static void DespawnTarget(gpWorld* pWorld)
 {
-    if (g_pPlayerTarget->GetWorld() == pWorld)
-    {
-        pWorld->RemoveEntity(g_pPlayerTarget);
-        ezLog::Info("Target despawned.");
-    }
+    if (g_pPlayerTarget->GetWorld() != pWorld)
+        return;
+
+    pWorld->RemoveEntity(g_pPlayerTarget);
+    ezLog::Info("Target despawned.");
 }
 
 static void CreateTarget(gpWorld* pWorld)
@@ -86,6 +119,22 @@ static void ExtractSpawnData(gpRenderExtractor* pExtractor)
     pArea->m_Box.height = -g_iPlayerSpawnAreaHeight.GetValue();
     pArea->m_OutlineColor = g_SpawnAreaColor; pArea->m_OutlineColor.a *= 2.0f;
     pArea->m_FillColor = g_SpawnAreaColor;
+}
+
+static void EnableSpawnDataExtraction(bool bEnabled)
+{
+    static bool bIsExtracting = false;
+
+    if(bEnabled && !bIsExtracting)
+    {
+        gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
+        bIsExtracting = true;
+    }
+    else if(!bEnabled && bIsExtracting)
+    {
+        gpRenderExtractor::RemoveExtractionListener(ExtractSpawnData);
+        bIsExtracting = false;
+    }
 }
 
 static gpVec3 GetMousePosition()
@@ -126,16 +175,17 @@ void gpAndyForceFieldsApp::AfterEngineInit()
         SetupInput();
         RegisterInputAction("Game", "Spawn", ezInputSlot_MouseButton0);
         RegisterInputAction("Game", "CancelSpawn", ezInputSlot_MouseButton1);
+        RegisterInputAction("Game", "Reset", ezInputSlot_KeySpace);
         // Poll once to finish input initialization
         ezInputManager::PollHardware();
         SetupRendering();
     }
 
     m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PrimaryWorld");
-    m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
+    //m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
     gpRenderExtractor::AddExtractionListener(
         gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
-    gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
+    EnableSpawnDataExtraction(true);
     CreatePlayer();
     CreateForceFields();
     CreateTarget(m_pWorld);
@@ -219,32 +269,61 @@ ezApplication::ApplicationExecution gpAndyForceFieldsApp::Run()
 
 void gpAndyForceFieldsApp::CreateForceFields()
 {
-    gpVec3 Positions[] = {
-        { 250.0f, 200.0f, 0.0f },
-        { 300.0f, 250.0f, 0.0f },
-        { 200.0f, 250.0f, 0.0f },
-    };
+    static ezUInt32 uiInstanceCount = 0;
 
-    for (size_t i = 0; i < EZ_ARRAY_SIZE(Positions); ++i)
+    static ezCVarFloat fMinX("ForceFieldMinPosX", 190.0f, ezCVarFlags::Default, "");
+    static ezCVarFloat fMinY("ForceFieldMinPosY", 110.0f, ezCVarFlags::Default, "");
+    static ezCVarFloat fMaxX("ForceFieldMaxPosX", 400.0f, ezCVarFlags::Default, "");
+    static ezCVarFloat fMaxY("ForceFieldMaxPosY", 330.0f, ezCVarFlags::Default, "");
+
+    gpVec3 MinPosition(fMinX.GetValue(), fMinY.GetValue(), 0.0f);
+    gpVec3 MaxPosition(fMaxX.GetValue(), fMaxY.GetValue(), 0.0f);
+
+    static gpScalar MinRadius = 100.0f;
+    static gpScalar MaxRadius = 150.0f;
+
+    static gpScalar MinForce = 50.0f;
+    static gpScalar MaxForce = 200.0f;
+
+    const auto uiNumForceFields = g_Rand.GenerateInteger<ezUInt64>(2, 3);
+
+    for (ezUInt64 i = 0; i < uiNumForceFields; ++i)
     {
         auto pForceField = m_pWorld->CreateEntity<gpForceFieldEntity>();
         // Name
         {
             ezStringBuilder sbName;
-            sbName.AppendFormat("ForceField#%u", i);
+            sbName.AppendFormat("ForceField#%u", uiInstanceCount++);
             pForceField->SetName(sbName.GetData());
         }
 
-        pForceField->SetRadius(150.0f);
-        pForceField->SetForce(150.0f);
+        pForceField->SetRadius(g_Rand.GenerateFloat(MinRadius, MaxRadius));
+        pForceField->SetForce(g_Rand.GenerateFloat(MinForce, MinForce));
 
         auto pProps = pForceField->GetProperties();
-        pProps->m_Position = Positions[i];
+        gpRandomize(g_Rand, pProps->m_Position, MinPosition, MaxPosition);
 
         m_pWorld->AddEntity(pForceField);
     }
 
-    ezLog::Success("Created %u force fields", EZ_ARRAY_SIZE(Positions));
+    ezLog::Success("Created %u force fields", uiNumForceFields);
+
+    // Debugging:
+    static bool bDrawSpawnBounds = true;
+    if(bDrawSpawnBounds)
+    {
+        bDrawSpawnBounds = false;
+
+        gpRenderExtractor::AddExtractionListener([](gpRenderExtractor* pExtractor){
+            auto pArea = pExtractor->AllocateRenderData<gpDrawData::Box>();
+            pArea->m_Box.x       = (ezUInt32)fMinX.GetValue();
+            pArea->m_Box.y       = (ezUInt32)fMinY.GetValue();
+            pArea->m_Box.width   = (ezUInt32)fMaxX.GetValue() - pArea->m_Box.x;
+            pArea->m_Box.height  = (ezUInt32)fMaxY.GetValue() - pArea->m_Box.y;
+            pArea->m_FillColor   = ezColor::GetGreen();
+            pArea->m_FillColor.a = 0.1f;
+        });
+    }
 }
 
 void gpAndyForceFieldsApp::CreatePlayer()
@@ -258,7 +337,7 @@ void gpAndyForceFieldsApp::CreatePlayer()
     //m_pPlayer->SetLinearVelocity(gpVec3(10, 10, 0));
 }
 
-ezResult gpAndyForceFieldsApp::BeginSpawningPlayer()
+bool gpAndyForceFieldsApp::CanSpawnPlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
@@ -268,11 +347,19 @@ ezResult gpAndyForceFieldsApp::BeginSpawningPlayer()
     SpawnArea.y = static_cast<gpScalar>(gpWindow::GetWidthCVar()->GetValue());
     SpawnArea.width =   static_cast<gpScalar>(g_iPlayerSpawnAreaWidth.GetValue());
     SpawnArea.height = -static_cast<gpScalar>(g_iPlayerSpawnAreaHeight.GetValue());
-    if (!gpContains(SpawnArea, MousePos))
-        return EZ_FAILURE;
+
+    return gpContains(SpawnArea, MousePos);
+}
+
+void gpAndyForceFieldsApp::SpawnAndFreezePlayer()
+{
+    EZ_ASSERT(m_pPlayer, "Not initialized.");
+
+    if(m_pPlayer->GetWorld() != nullptr)
+        return; // Player is already spawned.
 
     auto pProps = m_pPlayer->GetProperties();
-    pProps->m_Position = MousePos;
+    pProps->m_Position = GetMousePosition();
     pProps->m_LinearVelocity.SetZero();
     pProps->m_fGravityFactor = 0.0f;
 
@@ -283,15 +370,17 @@ ezResult gpAndyForceFieldsApp::BeginSpawningPlayer()
     DrawInfo.m_fScale = 8.0f;
 
     ezLog::Success("Player added to the world.");
-
-    return EZ_SUCCESS;
 }
 
-void gpAndyForceFieldsApp::FinalizePlayerSpawning()
+void gpAndyForceFieldsApp::UnfreezePlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
     auto pProps = m_pPlayer->GetProperties();
+
+    if(!ezMath::IsZero(pProps->m_LinearVelocity.GetLengthSquared(), 0.01f))
+        return; // Player is already moving
+
     pProps->m_fGravityFactor = 1.0f;
     pProps->m_LinearVelocity = GetMousePosition() - pProps->m_Position;
 
@@ -302,41 +391,39 @@ void gpAndyForceFieldsApp::FinalizePlayerSpawning()
         pProps->m_LinearVelocity.SetLength(fMaxSpeed);
     }
 
-    ezLog::Success("Finished player spawning.");
+    ezLog::Success("Player is moving.");
 }
 
 void gpAndyForceFieldsApp::DespawnPlayer()
 {
+    EZ_ASSERT(m_pPlayer, "Player not created.");
+
+    if(m_pPlayer->GetWorld() == nullptr)
+        return;
+
     auto result = m_pWorld->RemoveEntity(m_pPlayer);
     EZ_VERIFY(result.Succeeded(), "Failed to despawn player.");
     ezLog::Info("Despawned player.");
 }
 
-namespace
-{
-    enum class PlayerSpawnState
-    {
-        NotInWorld,
-        Spawning,
-        Spawned
-    };
-}
-
 void gpAndyForceFieldsApp::Update(ezTime dt)
 {
-    static PlayerSpawnState PlayerState = PlayerSpawnState::NotInWorld;
     if(g_StopWatch.GetRunningTotal() > ezTime::Milliseconds(500))
     {
         g_StopWatch.StopAndReset();
         g_SpawnAreaColor.a = 0.1f;
     }
 
-    bool bReset = false;
-
     // If cancel spawning and the player is in the world => despawn player.
     if (ezInputManager::GetInputActionState("Game", "CancelSpawn") == ezKeyState::Pressed)
     {
-        bReset = true;
+        PlayerState = PlayerSpawnState::NotInWorld;
+    }
+
+    if (ezInputManager::GetInputActionState("Game", "Reset") == ezKeyState::Pressed)
+    {
+        ResetWorld();
+        PlayerState = PlayerSpawnState::NotInWorld;
     }
 
     if (ezInputManager::GetInputActionState("Game", "Spawn") == ezKeyState::Pressed)
@@ -344,53 +431,79 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
         switch(PlayerState)
         {
         case PlayerSpawnState::NotInWorld:
-            if(BeginSpawningPlayer().Failed())
+            if(CanSpawnPlayer())
             {
-                ezLog::Info("Failed to spawn player. Make sure to click in the spawn area.");
-                g_StopWatch.Resume();
-                g_SpawnAreaColor.a *= 2;
+                PlayerState = PlayerSpawnState::Spawning;
                 break;
             }
-            gpRenderExtractor::RemoveExtractionListener(ExtractSpawnData);
-            gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
-            PlayerState = PlayerSpawnState::Spawning;
+
+            ezLog::Info("Failed to spawn player. Make sure to click in the spawn area.");
+            g_StopWatch.Resume();
+            g_SpawnAreaColor.a *= 2;
             break;
         case PlayerSpawnState::Spawning:
-            gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
-            FinalizePlayerSpawning();
             PlayerState = PlayerSpawnState::Spawned;
             break;
         default:
             break;
         }
     }
-
-    if (bReset ||
-        PlayerState != PlayerSpawnState::NotInWorld && gpContains(g_pPlayerTarget->GetProperties(), *static_cast<gpCircleShape*>(g_pPlayerTarget->GetShape()),
-                             m_pPlayer->GetProperties()->m_Position))
+    else if (PlayerState != PlayerSpawnState::NotInWorld)
     {
-        EZ_LOG_BLOCK("Reset");
-
-        switch(PlayerState)
+        auto& Pos = m_pPlayer->GetProperties()->m_Position;
+        if (Pos.x < 0.0f || Pos.x > gpWindow::GetWidthCVar()->GetValue()
+         || Pos.y < 0.0f || Pos.y > gpWindow::GetHeightCVar()->GetValue())
         {
-        case PlayerSpawnState::Spawning:
-            gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
-        case PlayerSpawnState::Spawned:
-            DespawnPlayer();
-            DespawnTarget(m_pWorld);
-
-            m_pWorld->ClearWorld();
-            CreateForceFields();
-            SpawnTarget(m_pWorld);
-            m_pWorld->CollectGarbage();
-            gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
-            break;
-        default:
-            break;
+            PlayerState = PlayerSpawnState::NotInWorld;
+            ezLog::Info("Player left the world");
         }
 
-        PlayerState = PlayerSpawnState::NotInWorld;
+        if (gpContains(g_pPlayerTarget->GetProperties(), *static_cast<gpCircleShape*>(g_pPlayerTarget->GetShape()),
+                       m_pPlayer->GetProperties()->m_Position))
+        {
+            ezLog::Info("Player hit the target!");
+            ResetWorld();
+            PlayerState = PlayerSpawnState::NotInWorld;
+        }
     }
+
+    EZ_LOG_BLOCK("Update", PlayerSpawnState::ToString(PlayerState));
+
+    switch(PlayerState)
+    {
+    case PlayerSpawnState::NotInWorld:
+        DespawnPlayer();
+        EnableVelocityDataExtraction(false);
+        EnableSpawnDataExtraction(true);
+        break;
+    case PlayerSpawnState::Spawning:
+        SpawnAndFreezePlayer();
+        EnableVelocityDataExtraction(true);
+        EnableSpawnDataExtraction(false);
+        break;
+    case PlayerSpawnState::Spawned:
+        UnfreezePlayer();
+        EnableVelocityDataExtraction(false);
+        EnableSpawnDataExtraction(false);
+        break;
+    default:
+        EZ_REPORT_FAILURE("Should never reach this code.");
+        break;
+    }
+}
+
+void gpAndyForceFieldsApp::ResetWorld()
+{
+    DespawnPlayer();
+    DespawnTarget(m_pWorld);
+
+    m_pWorld->ClearWorld();
+
+    CreateForceFields();
+    SpawnTarget(m_pWorld);
+
+    m_pWorld->CollectGarbage();
+    EnableSpawnDataExtraction(true);
 }
 
 void gpAndyForceFieldsApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
@@ -403,4 +516,20 @@ void gpAndyForceFieldsApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionY, &pVelVector->m_End.y);
     pVelVector->m_End.y *= gpWindow::GetHeightCVar()->GetValue();
+}
+
+void gpAndyForceFieldsApp::EnableVelocityDataExtraction(bool bEnabled)
+{
+    static bool bIsExtracting = false;
+
+    if (bEnabled && !bIsExtracting)
+    {
+        gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
+        bIsExtracting = true;
+    }
+    else if(!bEnabled && bIsExtracting)
+    {
+        gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
+        bIsExtracting = false;
+    }
 }

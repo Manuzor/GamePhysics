@@ -31,9 +31,9 @@ private:
     std::default_random_engine m_Engine;
 };
 
-void gpRandomize(gpRandomNumberGenerator* pRand, gpVec3& Vector, gpScalar fMin = 0.0f, gpScalar fMax = 1.0f)
+void gpRandomize(gpRandomNumberGenerator& Rand, gpVec3& Vector, gpVec3 Min = gpVec3(0.0f), gpVec3 Max = gpVec3(1.0f))
 {
-    Vector.x = pRand->GenerateFloat(fMin, fMax);
-    Vector.y = pRand->GenerateFloat(fMin, fMax);
-    Vector.z = pRand->GenerateFloat(fMin, fMax);
+    Vector.x = Rand.GenerateFloat(Min.x, Max.x);
+    Vector.y = Rand.GenerateFloat(Min.y, Max.y);
+    Vector.z = Rand.GenerateFloat(Min.z, Max.z);
 }

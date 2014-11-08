@@ -28,9 +28,13 @@ private:
 private:
     void CreateForceFields();
     void CreatePlayer();
-    ezResult BeginSpawningPlayer();
-    void FinalizePlayerSpawning();
+    bool CanSpawnPlayer();
+    void SpawnAndFreezePlayer();
+    void UnfreezePlayer();
     void DespawnPlayer();
 
+    void ResetWorld();
+
+    void EnableVelocityDataExtraction(bool bEnabled);
     void ExtractVelocityData(gpRenderExtractor* pExtractor);
 };
