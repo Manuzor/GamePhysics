@@ -12,6 +12,7 @@
 #include "gpCore/World/World.h"
 #include "gpCore/World/Particle.h"
 #include "gpCore/World/ForceField.h"
+#include "gpCore/Shapes/Circle.h"
 #include "gpCore/Shapes/Rectangle.h"
 #include "gpCore/Task.h"
 #include "gpCore/World/RigidBody.h"
@@ -20,6 +21,7 @@ ezCVarFloat gpAndyForceFieldsApp::s_fPlayerMaxSpeed("PlayerMaxSpeed", 150.0f, ez
 
 ezCVarInt g_iPlayerSpawnAreaWidth("PlayerSpawnAreaWidth", 150, ezCVarFlags::Default, "Width of the spawn area of the player.");
 ezCVarInt g_iPlayerSpawnAreaHeight("PlayerSpawnAreaHeight", 150, ezCVarFlags::Default, "Width of the spawn area of the player.");
+ezCVarFloat g_fPlayerTargetRadius("PlayerTargetRadius", 40.0f, ezCVarFlags::Default, "Radius of the target.");
 
 ezColor g_SpawnAreaColor(1.0f, 0.0f, 0.0f, 0.1f);
 
@@ -38,6 +40,8 @@ static void SpawnTarget(gpWorld* pWorld)
 
     pWorld->AddEntity(g_pPlayerTarget);
     pWorld->GetEntityDrawInfo(g_pPlayerTarget).m_Color = ezColor::GetYellow();
+
+    static_cast<gpCircleShape*>(g_pPlayerTarget->GetShape())->SetRadius(g_fPlayerTargetRadius.GetValue());
 
     ezLog::Success("Target spawned.");
 }
@@ -58,7 +62,6 @@ static void CreateTarget(gpWorld* pWorld)
     if(pCircle == nullptr)
     {
         static gpCircleShape Circle;
-        Circle.SetRadius(40.0f);
         pCircle = &Circle;
     }
 
@@ -328,29 +331,12 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
         g_SpawnAreaColor.a = 0.1f;
     }
 
+    bool bReset = false;
+
     // If cancel spawning and the player is in the world => despawn player.
     if (ezInputManager::GetInputActionState("Game", "CancelSpawn") == ezKeyState::Pressed)
     {
-        switch(PlayerState)
-        {
-        case PlayerSpawnState::Spawning:
-            gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
-        case PlayerSpawnState::Spawned:
-            DespawnPlayer();
-            DespawnTarget(m_pWorld);
-
-            m_pWorld->ClearWorld();
-            CreateForceFields();
-            SpawnTarget(m_pWorld);
-            m_pWorld->CollectGarbage();
-
-            gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
-            break;
-        default:
-            break;
-        }
-
-        PlayerState = PlayerSpawnState::NotInWorld;
+        bReset = true;
     }
 
     if (ezInputManager::GetInputActionState("Game", "Spawn") == ezKeyState::Pressed)
@@ -377,6 +363,33 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
         default:
             break;
         }
+    }
+
+    if (bReset ||
+        PlayerState != PlayerSpawnState::NotInWorld && gpContains(g_pPlayerTarget->GetProperties(), *static_cast<gpCircleShape*>(g_pPlayerTarget->GetShape()),
+                             m_pPlayer->GetProperties()->m_Position))
+    {
+        EZ_LOG_BLOCK("Reset");
+
+        switch(PlayerState)
+        {
+        case PlayerSpawnState::Spawning:
+            gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
+        case PlayerSpawnState::Spawned:
+            DespawnPlayer();
+            DespawnTarget(m_pWorld);
+
+            m_pWorld->ClearWorld();
+            CreateForceFields();
+            SpawnTarget(m_pWorld);
+            m_pWorld->CollectGarbage();
+            gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
+            break;
+        default:
+            break;
+        }
+
+        PlayerState = PlayerSpawnState::NotInWorld;
     }
 }
 
