@@ -43,6 +43,7 @@
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\EntityBase.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\ForceField.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Particle.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\RigidBody.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World_Rendering.cpp" />
   </ItemGroup>
@@ -64,6 +65,8 @@
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\Rendering.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Circle.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />
@@ -75,6 +78,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\World\ForceField.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\Particle.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\PhysicalProperties.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\RigidBody.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\World.h" />
   </ItemGroup>
   <ItemGroup>

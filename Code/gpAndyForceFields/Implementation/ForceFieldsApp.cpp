@@ -14,6 +14,7 @@
 #include "gpCore/World/ForceField.h"
 #include "gpCore/Shapes/Rectangle.h"
 #include "gpCore/Task.h"
+#include "gpCore/World/RigidBody.h"
 
 ezCVarFloat gpAndyForceFieldsApp::s_fPlayerMaxSpeed("PlayerMaxSpeed", 150.0f, ezCVarFlags::Default, "The maximum speed the player may reach via user input.");
 
@@ -23,6 +24,41 @@ ezCVarInt g_iPlayerSpawnAreaHeight("PlayerSpawnAreaHeight", 150, ezCVarFlags::De
 ezColor g_SpawnAreaColor(1.0f, 0.0f, 0.0f, 0.1f);
 
 ezStopwatch g_StopWatch;
+
+gpRigidBody* g_pPlayerTarget;
+
+static void RespawnTarget(gpWorld* pWorld)
+{
+    if (g_pPlayerTarget->GetWorld() == pWorld)
+    {
+        pWorld->RemoveEntity(g_pPlayerTarget);
+    }
+
+    // \todo Random position for target.
+    g_pPlayerTarget->GetProperties()->m_Position.Set(450, 50, 0);
+
+    pWorld->AddEntity(g_pPlayerTarget);
+    pWorld->GetEntityDrawInfo(g_pPlayerTarget).m_Color = ezColor::GetYellow();
+}
+
+static void CreateTarget(gpWorld* pWorld)
+{
+    static gpCircleShape* pCircle;
+
+    if(pCircle == nullptr)
+    {
+        static gpCircleShape Circle;
+        Circle.SetRadius(40.0f);
+        pCircle = &Circle;
+    }
+
+    g_pPlayerTarget = pWorld->CreateEntity<gpRigidBody>();
+    g_pPlayerTarget->SetShape(pCircle);
+    auto pProps = g_pPlayerTarget->GetProperties();
+    pProps->m_fGravityFactor = 0.0f;
+
+    RespawnTarget(pWorld);
+}
 
 static void ExtractSpawnData(gpRenderExtractor* pExtractor)
 {
@@ -86,6 +122,7 @@ void gpAndyForceFieldsApp::AfterEngineInit()
     gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
     CreatePlayer();
     CreateForceFields();
+    CreateTarget(m_pWorld);
 
     m_pWindow->AddEventHandler([](gpWindow::EventData* pEvent){ if(pEvent->m_Reason == gpWindow::FocusGained) g_bSkipUpdate = true; });
 
@@ -278,6 +315,7 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
         case PlayerSpawnState::Spawned:
             DespawnPlayer();
             gpRenderExtractor::AddExtractionListener(ExtractSpawnData);
+            RespawnTarget(m_pWorld);
             break;
         default:
             break;

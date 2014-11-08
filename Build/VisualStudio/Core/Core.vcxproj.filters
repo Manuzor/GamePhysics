@@ -100,6 +100,9 @@
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\ForceField.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\RigidBody.cpp">
+      <Filter>World\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h">
@@ -175,6 +178,15 @@
       <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\World\RigidBody.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h">
       <Filter>Shapes</Filter>
     </ClInclude>
   </ItemGroup>
