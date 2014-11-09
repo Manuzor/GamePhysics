@@ -11,6 +11,8 @@ public:
     enum EventReason
     {
         ClickClose,
+        FocusGained,
+        FocusLost,
     };
 
     struct EventData
@@ -44,6 +46,8 @@ public:
 private:
     ezResult CreateContextOpenGL();
     ezResult DestroyContextOpenGL();
+
+    virtual void OnFocusMessage(bool bHasFocus) override;
 
 private:
     Event m_WindowEvent;

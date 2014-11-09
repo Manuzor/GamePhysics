@@ -17,7 +17,8 @@ using gpScalar = float;
 
 using gpVec2 = ezVec2Template<gpScalar>;
 using gpVec3 = ezVec3Template<gpScalar>;
-using gpRect = ezRectTemplate<gpScalar>;
+using gpRectI = ezRectTemplate<ezUInt32>;
+using gpRectF = ezRectTemplate<gpScalar>;
 using gpMat3 = ezMat3Template<gpScalar>;
 using gpMat4 = ezMat4Template<gpScalar>;
 

@@ -52,6 +52,13 @@ void gpWindow::OnClickCloseMessage()
     m_WindowEvent.Broadcast(&data);
 }
 
+void gpWindow::OnFocusMessage(bool bHasFocus)
+{
+    EventData data;
+    data.m_Reason = bHasFocus ? FocusGained : FocusLost;
+    m_WindowEvent.Broadcast(&data);
+}
+
 void gpWindow::PresentFrame()
 {
     ::SwapBuffers(m_hDeviceContext);

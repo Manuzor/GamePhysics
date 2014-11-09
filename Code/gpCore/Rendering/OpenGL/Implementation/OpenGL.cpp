@@ -41,8 +41,9 @@ void gpDraw(const gpDrawData::Arrow& Data)
 
     gpVec3 BaseLine(1, 0, 0);
     auto Line = Data.m_End - Data.m_Start;
+    Line.NormalizeIfNotZero();
 
-    auto Angle = Line.GetNormalized().GetAngleBetween(BaseLine);
+    auto Angle = Line.GetAngleBetween(BaseLine);
     if(Line.y > 0.0f)
         Angle = -Angle;
 
@@ -133,5 +134,16 @@ void gpDraw(const gpDrawData::Circle& Data)
 
 void gpDraw(const gpDrawData::Box& Data)
 {
-    GP_NotImplemented;
+    gpVec3 Vertices[4];
+    Vertices[0] = gpVec3(static_cast<gpScalar>(Data.m_Box.x),                    static_cast<gpScalar>(Data.m_Box.y),                     0.0f);
+    Vertices[1] = gpVec3(static_cast<gpScalar>(Data.m_Box.x),                    static_cast<gpScalar>(Data.m_Box.y + Data.m_Box.height), 0.0f);
+    Vertices[2] = gpVec3(static_cast<gpScalar>(Data.m_Box.x + Data.m_Box.width), static_cast<gpScalar>(Data.m_Box.y + Data.m_Box.height), 0.0f);
+    Vertices[3] = gpVec3(static_cast<gpScalar>(Data.m_Box.x + Data.m_Box.width), static_cast<gpScalar>(Data.m_Box.y),                     0.0f);
+
+    gpDrawData::Polygon Polygon;
+    Polygon.m_Vertices = Vertices;
+    Polygon.m_FillColor = Data.m_FillColor;
+    Polygon.m_OutlineColor = Data.m_OutlineColor;
+    Polygon.m_fOutlineWidth = Data.m_fOutlineWidth;
+    gpDraw(Polygon);
 }

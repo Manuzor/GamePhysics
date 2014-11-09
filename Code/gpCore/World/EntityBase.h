@@ -1,14 +1,8 @@
 #pragma once
 #include "gpCore/World/EntityType.h"
+#include "gpCore/World/PhysicalProperties.h"
 
 class gpWorld;
-
-struct gpEntityProperties
-{
-    gpVec3 m_Position = { 0, 0, 0 };
-    gpVec3 m_LinearVelocity = { 0, 0, 0 };
-    gpScalar m_fGravityFactor = 1.0f;
-};
 
 class GP_CoreAPI gpEntityBase : public ezRefCounted
 {
@@ -19,10 +13,10 @@ public:
 
     /// \brief Gets the physical entity properties of this entity.
     /// \remarks Use this non-const version to set the individual properties.
-    EZ_FORCE_INLINE gpEntityProperties* GetProperties() { return &m_Properties; }
+    EZ_FORCE_INLINE gpPhysicalProperties* GetProperties() { return &m_Properties; }
 
     /// \brief Gets a read-only view on the physical entity properties of this entity.
-    EZ_FORCE_INLINE const gpEntityProperties* GetProperties() const { return &m_Properties; }
+    EZ_FORCE_INLINE const gpPhysicalProperties* GetProperties() const { return &m_Properties; }
 
     EZ_FORCE_INLINE gpEntityType GetType() const { return m_Type; }
 
@@ -38,7 +32,7 @@ private:
     const gpEntityType m_Type;
     gpWorld* m_pWorld;
 
-    gpEntityProperties m_Properties;
+    gpPhysicalProperties m_Properties;
     ezString m_sName;
 };
 

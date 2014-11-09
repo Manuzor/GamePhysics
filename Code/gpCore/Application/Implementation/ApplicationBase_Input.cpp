@@ -31,6 +31,7 @@ void gpApplicationBase::SetupInput()
     m_pWindow->GetInputDevice()->SetMouseSpeed(ezVec2(0.002f));
 
     RegisterInputAction("Main", "Quit", ezInputSlot_KeyEscape);
+    RegisterInputAction("Main", "ClipMouse", ezInputSlot_KeyC);
 }
 
 void gpApplicationBase::UpdateInput(ezTime dt)
@@ -41,5 +42,17 @@ void gpApplicationBase::UpdateInput(ezTime dt)
     {
         m_bQuit = true;
         return;
+    }
+
+    if (ezInputManager::GetInputActionState("Main", "ClipMouse") == ezKeyState::Pressed)
+    {
+        auto pInput = m_pWindow->GetInputDevice();
+        auto bDoClip = !pInput->GetClipMouseCursor();
+        pInput->SetClipMouseCursor(bDoClip);
+
+        if(bDoClip)
+            ezLog::Info("Mouse cursor will be clipped. Click inside the window.");
+        else
+            ezLog::Info("Mouse cursor is no longer clipped.");
     }
 }

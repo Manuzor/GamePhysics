@@ -47,7 +47,7 @@
       <UniqueIdentifier>{31e2b37e-5872-4922-ac6b-36a36fbabb4e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utilities\Implementation">
-      <UniqueIdentifier>{c6077835-6d1e-48e7-bf2d-c3f859c40c19}</UniqueIdentifier>
+      <UniqueIdentifier>{7e59986b-7bbb-4738-b8dc-8f92d0b6fe04}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +96,18 @@
     <ClCompile Include="..\..\..\Code\gpCore\PCH.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\TextFileLogWriter.cpp">
       <Filter>Utilities\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\ForceField.cpp">
+      <Filter>World\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\RigidBody.cpp">
+      <Filter>World\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\RandomNumbers.cpp">
+      <Filter>Utilities\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\PhysicalProperties.cpp">
+      <Filter>World\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +174,30 @@
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\TextFileLogWriter.h">
       <Filter>Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\World\ForceField.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\World\PhysicalProperties.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\View.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\World\RigidBody.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\RandomNumbers.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl">
@@ -175,6 +211,9 @@
     </None>
     <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_NonAsync.inl">
       <Filter>Rendering\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Rectangle.inl">
+      <Filter>Shapes\Implementation</Filter>
     </None>
   </ItemGroup>
 </Project>

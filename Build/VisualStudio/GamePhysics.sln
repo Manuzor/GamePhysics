@@ -23,6 +23,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AndyParticles", "AndyPartic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5F556870-6A47-4A59-BF42-EFB778FA679D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AndyForceFields", "AndyForceFields\AndyForceFields.vcxproj", "{D0CF6110-FF55-41CB-9250-19BE932C6BEE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{64B962F4-03D4-491E-8FC7-C10C23595E83} = {64B962F4-03D4-491E-8FC7-C10C23595E83}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -81,6 +86,18 @@ Global
 		{486EC64D-A786-44F7-90B7-5A4440CDFC9A}.Release|Win32.Build.0 = Release|Win32
 		{486EC64D-A786-44F7-90B7-5A4440CDFC9A}.Release|x64.ActiveCfg = Release|x64
 		{486EC64D-A786-44F7-90B7-5A4440CDFC9A}.Release|x64.Build.0 = Release|x64
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Debug|Win32.Build.0 = Debug|Win32
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Debug|x64.ActiveCfg = Debug|x64
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Debug|x64.Build.0 = Debug|x64
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Release|Win32.ActiveCfg = Release|Win32
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Release|Win32.Build.0 = Release|Win32
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Release|x64.ActiveCfg = Release|x64
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,5 +106,6 @@ Global
 		{B4300525-63FE-40BC-B2F2-A7E2315E0155} = {5F556870-6A47-4A59-BF42-EFB778FA679D}
 		{01B29E3D-A316-4716-9E92-57775CE5C115} = {B0295852-31C8-4378-8FF8-B45F8A00A1BE}
 		{486EC64D-A786-44F7-90B7-5A4440CDFC9A} = {B0295852-31C8-4378-8FF8-B45F8A00A1BE}
+		{D0CF6110-FF55-41CB-9250-19BE932C6BEE} = {B0295852-31C8-4378-8FF8-B45F8A00A1BE}
 	EndGlobalSection
 EndGlobal

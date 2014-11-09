@@ -2,6 +2,7 @@
 #include "gpCore/World/EntityBase.h"
 
 class gpRenderExtractor;
+class gpForceFieldEntity;
 
 class GP_CoreAPI gpWorld
 {
@@ -23,6 +24,10 @@ public:
     ezResult AddEntity(gpEntityBase* pEntity);
     ezResult RemoveEntity(gpEntityBase* pEntity);
 
+    void ClearSimulatedEntities();
+    void ClearForceFields();
+    void ClearWorld() { ClearSimulatedEntities(); ClearForceFields(); }
+
     gpEntityDrawInfo& GetEntityDrawInfo(gpEntityBase* pEntity);
 
     gpVec3 GetGravity() const { return m_Gravity; }
@@ -38,11 +43,21 @@ public:
     EZ_FORCE_INLINE gpEntityDrawInfo* GetEntityDrawInfoDefault() { return m_pEntityDrawInfoDefault; }
 
 private:
+
+    void DoAddSimulatedEntity(gpEntityBase* pEntity);
+    void DoRemoveSimulatedEntity(gpEntityBase* pEntity);
+
+    void DoAddForceField(gpForceFieldEntity* pForceField);
+    void DoRemoveForceField(gpForceFieldEntity* pForceField);
+
+private:
     ezString m_sName;
     ezProfilingId m_ProfilingId_Simulation;
     ezProfilingId m_ProfilingId_CreateEntity;
+    ezProfilingId m_ProfilingId_Extraction;
 
     gpVec3 m_Gravity;
+    ezDynamicArray<gpForceFieldEntity*> m_ForceFields;
     ezDynamicArray<gpEntityBase*> m_CreatedEntities;
     ezDynamicArray<gpEntityBase*> m_SimulatedEntities;
     ezMap<gpEntityBase*, gpEntityDrawInfo> m_EntityDrawInfos;
