@@ -1,7 +1,5 @@
 #pragma once
 
-#define GP_AsyncRendering EZ_OFF
-
 class gpAsyncRendering
 {
     gpAsyncRendering() = delete;
@@ -16,4 +14,12 @@ public:
 private:
     static ezThreadSignal s_RenderSignal;
     static ezThreadSignal s_ExtractionSignal;
+};
+
+namespace gpAsyncRenderingStartup
+{
+    extern GP_CoreAPI ezDelegate<ezResult()> s_InitializeOnRenderThread;
+    extern GP_CoreAPI ezResult s_InitializationResult;
+    extern GP_CoreAPI ezThreadSignal s_MainThreadSignal;
+    extern GP_CoreAPI ezThreadSignal s_RenderThreadSignal;
 };

@@ -215,5 +215,11 @@
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Rectangle.inl">
       <Filter>Shapes\Implementation</Filter>
     </None>
+    <None Include="..\..\..\Code\gpCore\Implementation\Window_AsyncGraphicsContext.inl">
+      <Filter>Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gpCore\Implementation\Window_GraphicsContext.inl">
+      <Filter>Implementation</Filter>
+    </None>
   </ItemGroup>
 </Project>

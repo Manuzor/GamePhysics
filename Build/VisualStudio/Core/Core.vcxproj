@@ -85,6 +85,8 @@
     <ClInclude Include="..\..\..\Code\gpCore\World\World.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\Code\gpCore\Implementation\Window_AsyncGraphicsContext.inl" />
+    <None Include="..\..\..\Code\gpCore\Implementation\Window_GraphicsContext.inl" />
     <None Include="..\..\..\Code\gpCore\Memory\Implementation\FixedStackAllocator.inl" />
     <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_Async.inl" />
     <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_NonAsync.inl" />

@@ -3,6 +3,8 @@
 /// Rendering
 //////////////////////////////////////////////////////////////////////////
 
+#define GP_AsyncRendering EZ_OFF
+
 #define GP_UseDirect3D EZ_OFF
 #define GP_UseOpenGL EZ_ON
 

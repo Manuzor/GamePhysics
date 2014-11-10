@@ -28,3 +28,12 @@ class gpNotImplementedException : public std::exception
 {
     const char* what() const override { return "Not implemented."; }
 };
+
+class gpStaticClass
+{
+    gpStaticClass() = delete;
+    ~gpStaticClass() = delete;
+    gpStaticClass(gpStaticClass&&) = delete;
+    gpStaticClass(const gpStaticClass&) = delete;
+    void operator=(const gpStaticClass&) = delete;
+};

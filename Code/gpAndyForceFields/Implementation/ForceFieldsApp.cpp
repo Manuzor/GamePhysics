@@ -207,8 +207,8 @@ void gpAndyForceFieldsApp::AfterEngineInit()
             ezLog::SeriousWarning("Failed to load ezInspectorPlugin.");
         }
 
-        SetupWindow();
         ezStartup::StartupEngine();
+        SetupWindow();
         ezClock::SetNumGlobalClocks();
         ezClock::Get()->SetTimeStepSmoothing(AddressOf(m_TimeStepSmoother));
         m_LastUpdate = ezTime::Now();
