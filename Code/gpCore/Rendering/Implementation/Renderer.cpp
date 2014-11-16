@@ -7,6 +7,8 @@ bool gpRenderer::s_bInitialized = false;
 gpRenderExtractor* gpRenderer::s_pExtractor = nullptr;
 ezSizeU32 gpRenderer::s_Resolution;
 
+static ezProfilingId g_ProfilingId_Render;
+
 EZ_BEGIN_SUBSYSTEM_DECLARATION(GamePhysics, Renderer)
     ON_ENGINE_STARTUP
     {
@@ -40,6 +42,8 @@ static void DrawHelper(gpDrawData::Base* pDrawData)
 
 void gpRenderer::Render()
 {
+    EZ_PROFILE(g_ProfilingId_Render);
+
     glViewport(0, 0, s_Resolution.width, s_Resolution.height);
 
     glMatrixMode(GL_PROJECTION);

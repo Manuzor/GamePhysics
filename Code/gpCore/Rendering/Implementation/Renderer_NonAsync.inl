@@ -18,6 +18,8 @@ void gpRenderer::Initialize()
         pHeight->m_CVarEvents.AddEventHandler(HeightChangedCallback);
     }
 
+    g_ProfilingId_Render = ezProfilingSystem::CreateId("gpRenderer::Render");
+
     s_bInitialized = true;
 }
 
@@ -25,6 +27,8 @@ void gpRenderer::Shutdown()
 {
     if (!IsInitialized())
         return;
+
+    ezProfilingSystem::DeleteId(g_ProfilingId_Render);
 
     {
         auto pWidth = static_cast<ezCVarInt*>(ezCVar::FindCVarByName("Window.Width"));
