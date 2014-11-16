@@ -4,11 +4,11 @@
 
 using ezMath::Cos;
 using ezMath::Sin;
-using ezMath::IsEqual;
+using ezMath::IsZero;
 
 void gpDraw(const gpDrawData::Point& Data)
 {
-    if (IsEqual(Data.m_Color.a, 0.0f))
+    if (IsZero(Data.m_Color.a))
         return;
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
@@ -21,7 +21,7 @@ void gpDraw(const gpDrawData::Point& Data)
 
 void gpDraw(const gpDrawData::Line& Data)
 {
-    if (IsEqual(Data.m_Color.a, 0.0f))
+    if (IsZero(Data.m_Color.a))
         return;
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -36,7 +36,7 @@ void gpDraw(const gpDrawData::Line& Data)
 
 void gpDraw(const gpDrawData::Arrow& Data)
 {
-    if (IsEqual(Data.m_Color.a, 0.0f))
+    if (IsZero(Data.m_Color.a))
         return;
 
     gpVec3 BaseLine(1, 0, 0);
@@ -85,12 +85,12 @@ void gpDraw(const gpDrawData::Polygon& Data)
 {
     EZ_ASSERT(Data.m_Vertices.GetCount() >= 3, "Need at least 3 vertices for a polygon!");
 
-    if (!IsEqual(Data.m_FillColor.a, 0.0f))
+    if (!IsZero(Data.m_FillColor.a))
     {
         gpDrawPolygonHelper(Data, GL_FILL, Data.m_FillColor);
     }
 
-    if (!IsEqual(Data.m_OutlineColor.a, 0.0f))
+    if (!IsZero(Data.m_OutlineColor.a))
     {
         glLineWidth(Data.m_fOutlineWidth);
         gpDrawPolygonHelper(Data, GL_LINE, Data.m_OutlineColor);
@@ -120,12 +120,12 @@ void gpDraw(const gpDrawData::Circle& Data)
 {
     EZ_ASSERT(Data.m_uiNumLineSegments >= 3, "");
 
-    if (!IsEqual(Data.m_FillColor.a, 0.0f))
+    if (!IsZero(Data.m_FillColor.a))
     {
         gpDrawCircleHelper(Data, GL_FILL, Data.m_FillColor);
     }
 
-    if (!IsEqual(Data.m_OutlineColor.a, 0.0f))
+    if (!IsZero(Data.m_OutlineColor.a))
     {
         glLineWidth(Data.m_fOutlineWidth);
         gpDrawCircleHelper(Data, GL_LINE, Data.m_OutlineColor);

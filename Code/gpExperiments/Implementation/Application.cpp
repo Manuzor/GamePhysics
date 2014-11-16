@@ -55,7 +55,7 @@ static void OnRenderExtraction(gpRenderExtractor* pExtractor)
     pCircle->m_uiNumLineSegments = 100;
 
     auto pPoly = pExtractor->AllocateRenderData<gpDrawData::Polygon>();
-    pPoly->m_FillColor = ezColor(1.0f, 1.0f, 0.0f, 0.5f);
+    pPoly->m_FillColor = ezColor(1.0f, 0.0f, 0.0f, 0.5f);
     pPoly->m_OutlineColor = ezColor(1.0f, 1.0f, 0.0f, 1.0f);
     static gpVec3 vertices[3] =
     {
