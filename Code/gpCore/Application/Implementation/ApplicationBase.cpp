@@ -51,15 +51,6 @@ void gpApplicationBase::SetupFileSystem()
     }
 }
 
-void gpApplicationBase::LoadSettings()
-{
-    EZ_LOG_BLOCK("Load And Parse Settings File");
-
-    ezFileReader reader;
-    EZ_VERIFY(reader.Open("<Settings>default.json").Succeeded(), "Failed to open default settings file.");
-    /// \todo Load settings into global settings data structure.
-}
-
 void gpApplicationBase::SetupLogging()
 {
     EZ_LOG_BLOCK("Setup");

@@ -46,8 +46,6 @@ public:
     /// \brief Logs some basic system information (host OS, etc).
     void LogSystemInformation();
 
-    void LoadSettings();
-
     void SetupFileSystem();
 
     /// \brief Cleans everything up that was created during setup.

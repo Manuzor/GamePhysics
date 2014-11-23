@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCore\Application\ApplicationBase.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Application\Settings.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Common.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Config.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Dependencies\EzEngine.h" />
