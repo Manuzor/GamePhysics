@@ -12,6 +12,7 @@
 
 void gpAndyParticlesApp::AfterEngineInit()
 {
+    SetupFileSystem();
     SetupLogging();
     LogSystemInformation();
 
@@ -54,6 +55,7 @@ void gpAndyParticlesApp::AfterEngineInit()
 
 void gpAndyParticlesApp::BeforeEngineShutdown()
 {
+
     EZ_DEFAULT_DELETE(m_pWorld);
 
     ezStartup::ShutdownEngine();
@@ -214,7 +216,6 @@ void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
         s.AppendFormat("Particle #%u", uiCount++);
         m_pCurrentParticle->SetName(s.GetData());
     }
-    m_pCurrentParticle->AddRef();
     auto pProps = m_pCurrentParticle->GetProperties();
     pProps->m_Position = Position;
     pProps->m_fGravityFactor = 0.0f;

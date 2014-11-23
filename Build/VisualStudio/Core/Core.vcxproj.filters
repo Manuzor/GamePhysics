@@ -109,6 +109,9 @@
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\PhysicalProperties.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\FileSystem.cpp">
+      <Filter>Utilities\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h">
@@ -196,6 +199,9 @@
       <Filter>Shapes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\RandomNumbers.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\FileSystem.h">
       <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>

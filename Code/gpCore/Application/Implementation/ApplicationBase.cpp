@@ -13,6 +13,7 @@
 #include "gpCore/Task.h"
 #include "gpCore/Rendering/Renderer.h"
 #include "gpCore/Rendering/RenderExtractor.h"
+#include "gpCore/Utilities/FileSystem.h"
 
 gpApplicationBase::gpApplicationBase(const char* szTitle) :
     m_szTitle(szTitle),
@@ -28,23 +29,44 @@ gpApplicationBase::~gpApplicationBase()
     m_szTitle = nullptr;
 }
 
+void gpApplicationBase::SetupFileSystem()
+{
+    ezFileSystem::RegisterDataDirectoryFactory(ezDataDirectory::FolderType::Factory);
+
+    // Log files dir
+    {
+        ezStringBuilder sDir = gpGetApplicationDirectory();
+        sDir.AppendPath("Logs");
+        ezOSFile::CreateDirectoryStructure(sDir);
+        auto result = ezFileSystem::AddDataDirectory(sDir, ezFileSystem::AllowWrites, "Logs", "Logs");
+        EZ_VERIFY(result.Succeeded(), "Failed to mount Logs directory");
+    }
+
+    // Settings dir
+    {
+        ezStringBuilder sDir = gpGetWorkingDirectory();
+        sDir.AppendPath("Data", "Settings");
+        auto result = ezFileSystem::AddDataDirectory(sDir, ezFileSystem::AllowWrites, "Settings", "Settings");
+        EZ_VERIFY(result.Succeeded(), "Failed to mount Settings directory");
+    }
+}
+
 void gpApplicationBase::SetupLogging()
 {
     EZ_LOG_BLOCK("Setup");
 
-    ezFileSystem::RegisterDataDirectoryFactory(ezDataDirectory::FolderType::Factory);
-    ezFileSystem::AddDataDirectory(ezOSFile::GetApplicationDirectory());
-
     // Assemble log file path for the text file log writer
-    ezStringBuilder sbLogFileName = GetArgument(0);
-    sbLogFileName.Append(".log");
-    sbLogFileName.MakeCleanPath();
-    m_TextFileLogger.BeginLog(sbLogFileName.GetData());
+    {
+        ezStringBuilder sbAbsFileName = GetArgument(0);
+        ezStringBuilder sbLogFileName = "<Logs>";
+        sbLogFileName.Append(sbAbsFileName.GetFileNameAndExtension().GetData(), ".log");
+        m_TextFileLogger.BeginLog(sbLogFileName);
+    }
 
     // Setup the logging system
     ezGlobalLog::AddLogWriter(ezLogWriter::Console::LogMessageHandler);
     ezGlobalLog::AddLogWriter(ezLogWriter::VisualStudio::LogMessageHandler);
-    ezGlobalLog::AddLogWriter(ezLoggingEvent::Handler(&ezLogWriter::TextFile::LogMessageHandler, &m_TextFileLogger));
+    ezGlobalLog::AddLogWriter({ &ezLogWriter::TextFile::LogMessageHandler, &m_TextFileLogger });
 
     auto logLevel = ezLogMsgType::All;
     ezGlobalLog::SetLogLevel(logLevel);
@@ -87,6 +109,9 @@ void gpApplicationBase::Cleanup()
         ezGlobalLog::RemoveLogWriter(ezLogWriter::Console::LogMessageHandler);
         ezGlobalLog::RemoveLogWriter(ezLogWriter::VisualStudio::LogMessageHandler);
     }
+
+    ezFileSystem::ClearAllDataDirectories();
+    ezFileSystem::ClearAllDataDirectoryFactories();
 }
 
 void gpApplicationBase::WindowEventHandler(gpWindow::EventData* pEventData)
