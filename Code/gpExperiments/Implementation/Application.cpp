@@ -68,6 +68,8 @@ static void OnRenderExtraction(gpRenderExtractor* pExtractor)
 
 void gpExperimentsApp::AfterEngineInit()
 {
+    SetupFileSystem();
+    LoadSettings();
     SetupLogging();
     LogSystemInformation();
 

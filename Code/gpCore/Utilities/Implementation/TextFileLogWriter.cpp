@@ -12,6 +12,17 @@ static const char* g_MessageTypeNames[] = {
     "  Debug", ///< DebugMsg          = 7, // A debug message.
 };
 
+static const char* g_ShortMessageTypeNames[] = {
+    "   ", ///< Used for padding.
+    "Err", ///< ErrorMsg          = 1, // An error message.
+    "Srs", ///< SeriousWarningMsg = 2, // A serious warning message.
+    "Wrn", ///< WarningMsg        = 3, // A warning message.
+    "Suc", ///< SuccessMsg        = 4, // A success message.
+    "Ifo", ///< InfoMsg           = 5, // An info message.
+    "Dev", ///< DevMsg            = 6, // A development message.
+    "Dbg", ///< DebugMsg          = 7, // A debug message.
+};
+
 ezLogWriter::TextFile::TextFile() :
     m_BlockBegin(">>"),
     m_BlockEnd("<<")
@@ -21,7 +32,9 @@ ezLogWriter::TextFile::TextFile() :
 void ezLogWriter::TextFile::BeginLog(const char* szFileName)
 {
     EZ_VERIFY(m_File.Open(szFileName).Succeeded(), "Unable to open file %s", szFileName);
-    m_File.WriteBytes(szFileName, strlen(szFileName));
+    auto sAbsFilePath = m_File.GetFilePathAbsolute();
+    m_File.WriteBytes(sAbsFilePath.GetData(),
+                      sAbsFilePath.GetElementCount());
     m_File.WriteBytes("\n", 1);
 }
 
@@ -40,11 +53,11 @@ void ezLogWriter::TextFile::LogMessageHandler(const ezLoggingEventData& eventDat
 
     if (eventData.m_EventType > ezLogMsgType::None && eventData.m_EventType < ezLogMsgType::All)
     {
-        sbText.AppendFormat(szPrefixFormat, g_MessageTypeNames[eventData.m_EventType]);
+        sbText.AppendFormat(szPrefixFormat, g_ShortMessageTypeNames[eventData.m_EventType]);
     }
     else
     {
-        sbText.AppendFormat(szPrefixFormat, g_MessageTypeNames[0]);
+        sbText.AppendFormat(szPrefixFormat, g_ShortMessageTypeNames[0]);
     }
 
     auto indentation = eventData.m_uiIndentation;

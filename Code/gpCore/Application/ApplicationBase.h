@@ -2,6 +2,7 @@
 #include <Core/Application/Application.h>
 #include <Foundation/Memory/Allocator.h>
 #include <Foundation/Time/DefaultTimeStepSmoothing.h>
+#include <Foundation/IO/ExtendedJSONReader.h>
 
 #include "gpCore/Window.h"
 #include "gpCore/Utilities/TextFileLogWriter.h"
@@ -44,6 +45,10 @@ public:
     //////////////////////////////////////////////////////////////////////////
     /// \brief Logs some basic system information (host OS, etc).
     void LogSystemInformation();
+
+    void LoadSettings();
+
+    void SetupFileSystem();
 
     /// \brief Cleans everything up that was created during setup.
     void Cleanup();

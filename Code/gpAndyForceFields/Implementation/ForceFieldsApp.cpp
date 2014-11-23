@@ -194,6 +194,7 @@ static bool g_bSkipUpdate = false;
 
 void gpAndyForceFieldsApp::AfterEngineInit()
 {
+    SetupFileSystem();
     SetupLogging();
     LogSystemInformation();
 
