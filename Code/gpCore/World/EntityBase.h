@@ -4,35 +4,18 @@
 
 class gpWorld;
 
-class GP_CoreAPI gpEntityBase : public ezRefCounted
+struct GP_CoreAPI gpEntityBase : public ezRefCounted
 {
-    friend gpWorld;
-public:
-    gpEntityBase(gpEntityType TheType);
-    ~gpEntityBase();
+    gpEntityBase(gpEntityType TheType) : m_Type(TheType) {}
+    gpEntityBase(const gpEntityBase&) = delete;
 
-    /// \brief Gets the physical entity properties of this entity.
-    /// \remarks Use this non-const version to set the individual properties.
-    EZ_FORCE_INLINE gpPhysicalProperties* GetProperties() { return &m_Properties; }
+    // Data
+    //////////////////////////////////////////////////////////////////////////
 
-    /// \brief Gets a read-only view on the physical entity properties of this entity.
-    EZ_FORCE_INLINE const gpPhysicalProperties* GetProperties() const { return &m_Properties; }
-
-    EZ_FORCE_INLINE gpEntityType GetType() const { return m_Type; }
-
-    EZ_FORCE_INLINE gpWorld* GetWorld() { return m_pWorld; }
-    EZ_FORCE_INLINE const gpWorld* GetWorld() const { return m_pWorld; }
-
-    EZ_FORCE_INLINE ezString& GetName() { return m_sName; }
-    EZ_FORCE_INLINE const ezString& GetName() const { return m_sName; }
-    EZ_FORCE_INLINE void SetName(const ezString& sNewName) { m_sName = sNewName; }
-    EZ_FORCE_INLINE void SetName(const char* szNewName) { m_sName = szNewName; }
-
-private:
     const gpEntityType m_Type;
-    gpWorld* m_pWorld;
+    gpWorld* m_pWorld = nullptr;
 
-    gpPhysicalProperties m_Properties;
+    gpPhysicalProperties m_PhysicalProperties;
     ezString m_sName;
 };
 
@@ -45,4 +28,35 @@ struct gpEntityDrawInfo
     gpScalar m_fLinearVelocityArrowWingLength = 10.0f;
 };
 
-void gpGetStats(ezStringBuilder& out_Stats, const gpEntityBase* pEntity);
+// Utility functions
+//////////////////////////////////////////////////////////////////////////
+void gpGetStats(ezStringBuilder& out_Stats, const gpEntityBase& entity);
+
+EZ_FORCE_INLINE gpEntityType gpTypeOf(const gpEntityBase& entity) { return entity.m_Type; }
+
+EZ_FORCE_INLINE       gpWorld*& gpWorldPtrOf(      gpEntityBase& entity) { return entity.m_pWorld; }
+EZ_FORCE_INLINE const gpWorld*  gpWorldPtrOf(const gpEntityBase& entity) { return entity.m_pWorld; }
+
+EZ_FORCE_INLINE       ezString& gpNameOf(      gpEntityBase& entity) { return entity.m_sName; }
+EZ_FORCE_INLINE const ezString& gpNameOf(const gpEntityBase& entity) { return entity.m_sName; }
+
+EZ_FORCE_INLINE       gpPhysicalProperties& gpPhysicalPropertiesOf(      gpEntityBase& entity) { return entity.m_PhysicalProperties; }
+EZ_FORCE_INLINE const gpPhysicalProperties& gpPhysicalPropertiesOf(const gpEntityBase& entity) { return entity.m_PhysicalProperties; }
+
+EZ_FORCE_INLINE       gpTransform& gpTransformOf(      gpEntityBase& entity) { return gpTransformOf(gpPhysicalPropertiesOf(entity)); }
+EZ_FORCE_INLINE const gpTransform& gpTransformOf(const gpEntityBase& entity) { return gpTransformOf(gpPhysicalPropertiesOf(entity)); }
+
+EZ_FORCE_INLINE       gpVec3& gpPositionOf(      gpEntityBase& entity) { return gpPositionOf(gpPhysicalPropertiesOf(entity)); }
+EZ_FORCE_INLINE const gpVec3& gpPositionOf(const gpEntityBase& entity) { return gpPositionOf(gpPhysicalPropertiesOf(entity)); }
+
+EZ_FORCE_INLINE       gpMat3& gpRotationOf(      gpEntityBase& entity)  { return gpRotationOf(gpPhysicalPropertiesOf(entity)); }
+EZ_FORCE_INLINE const gpMat3& gpRotationOf(const gpEntityBase& entity)  { return gpRotationOf(gpPhysicalPropertiesOf(entity)); }
+
+EZ_FORCE_INLINE       gpVec3& gpLinearVelocityOf(      gpEntityBase& entity) { return gpLinearVelocityOf(gpPhysicalPropertiesOf(entity)); }
+EZ_FORCE_INLINE const gpVec3& gpLinearVelocityOf(const gpEntityBase& entity) { return gpLinearVelocityOf(gpPhysicalPropertiesOf(entity)); }
+
+EZ_FORCE_INLINE       gpScalar& gpGravityFactorOf(      gpEntityBase& entity) { return gpGravityFactorOf(gpPhysicalPropertiesOf(entity)); }
+EZ_FORCE_INLINE const gpScalar& gpGravityFactorOf(const gpEntityBase& entity) { return gpGravityFactorOf(gpPhysicalPropertiesOf(entity)); }
+
+EZ_FORCE_INLINE       gpScalar& gpMassOf(      gpEntityBase& entity) { return gpMassOf(gpPhysicalPropertiesOf(entity)); }
+EZ_FORCE_INLINE const gpScalar& gpMassOf(const gpEntityBase& entity) { return gpMassOf(gpPhysicalPropertiesOf(entity)); }

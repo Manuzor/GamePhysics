@@ -11,7 +11,9 @@ void gpUpdateStats(const ezStringView sStatName, const gpPhysicalProperties& Pro
 
     // Position
     sbStatName.Format("%s/Position", sStatName.GetData());
-    sbStatValue.Format("{%f, %f, %f}", Props.m_Position.x, Props.m_Position.y, Props.m_Position.z);
+    sbStatValue.Format("{%f, %f, %f}", Props.m_Transform.m_vPosition.x,
+                                       Props.m_Transform.m_vPosition.y,
+                                       Props.m_Transform.m_vPosition.z);
     ezStats::SetStat(sbStatName, sbStatValue);
 
     // Linear Velocity

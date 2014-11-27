@@ -70,34 +70,39 @@ ezColor g_SpawnAreaColor(1.0f, 0.0f, 0.0f, 0.1f);
 ezStopwatch g_StopWatch;
 
 gpRigidBody* g_pPlayerTarget = nullptr;
+#define playerTarget Deref(g_pPlayerTarget)
+
 ezDynamicArray<gpForceFieldEntity*> g_ForceFields;
 
 gpRandomNumberGenerator g_Rand;
+
+// Easy access
+#define player Deref(m_pPlayer)
 
 static void SpawnTarget(gpWorld* pWorld)
 {
     EZ_ASSERT(g_pPlayerTarget, "Target not created yet.");
 
-    if (g_pPlayerTarget->GetWorld() != nullptr)
+    if (gpWorldPtrOf(playerTarget) != nullptr)
         return;
 
     // \todo Random position for target.
-    g_pPlayerTarget->GetProperties()->m_Position.Set(450, 50, 0);
+    gpPositionOf(playerTarget).Set(450, 50, 0);
 
-    pWorld->AddEntity(g_pPlayerTarget);
-    pWorld->GetEntityDrawInfo(g_pPlayerTarget).m_Color = ezColor::GetYellow();
+    pWorld->AddEntity(playerTarget);
+    pWorld->GetEntityDrawInfo(playerTarget).m_Color = ezColor::GetYellow();
 
-    static_cast<gpCircleShape*>(g_pPlayerTarget->GetShape())->SetRadius(g_fPlayerTargetRadius.GetValue());
+    gpRadiusOf(static_cast<gpCircleShape&>(gpShapeOf(playerTarget))) = g_fPlayerTargetRadius.GetValue();
 
     ezLog::Success("Target spawned.");
 }
 
 static void DespawnTarget(gpWorld* pWorld)
 {
-    if (g_pPlayerTarget->GetWorld() != pWorld)
+    if (gpWorldPtrOf(playerTarget) != pWorld)
         return;
 
-    pWorld->RemoveEntity(g_pPlayerTarget);
+    pWorld->RemoveEntity(playerTarget);
     ezLog::Info("Target despawned.");
 }
 
@@ -112,11 +117,12 @@ static void CreateTarget(gpWorld* pWorld)
     }
 
     g_pPlayerTarget = pWorld->CreateEntity<gpRigidBody>();
-    g_pPlayerTarget->AddRef();
-    g_pPlayerTarget->SetName("Target");
-    g_pPlayerTarget->SetShape(pCircle);
-    auto pProps = g_pPlayerTarget->GetProperties();
-    pProps->m_fGravityFactor = 0.0f;
+    EZ_ASSERT(g_pPlayerTarget, "Failed to create player target (rigid body)");
+
+    gpAddReference(playerTarget);
+    gpNameOf(playerTarget) = "Target";
+    gpShapePtrOf(playerTarget) = pCircle;
+    gpGravityFactorOf(playerTarget) = 0.0f;
 
     ezLog::Success("Created target.");
 
@@ -177,7 +183,10 @@ static void EnableForceFieldSpawnAreaExtraction(bool bEnabled)
     }
 }
 
-static gpVec3 GetMousePosition()
+enum gpPositionOfOverloadHelper { MouseCursor };
+
+// Call like this: gpPositionOf(MouseCursor)
+static gpVec3 gpPositionOf(gpPositionOfOverloadHelper)
 {
     float fX;
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &fX);
@@ -327,20 +336,23 @@ void gpAndyForceFieldsApp::CreateForceFields()
     for (ezUInt64 i = 0; i < uiNumForceFields; ++i)
     {
         auto pForceField = m_pWorld->CreateEntity<gpForceFieldEntity>();
+        EZ_ASSERT(pForceField, "Failed to create force field.");
+
+        auto& forceField = Deref(pForceField);
+
         // Name
         {
             ezStringBuilder sbName;
             sbName.AppendFormat("ForceField#%u", uiInstanceCount++);
-            pForceField->SetName(sbName.GetData());
+            gpNameOf(forceField) = sbName;
         }
 
-        pForceField->SetRadius(g_Rand.GenerateFloat(g_fForceFieldMinRadius.GetValue(), g_fForceFieldMaxRadius.GetValue()));
-        pForceField->SetForce(g_Rand.GenerateFloat(g_fForceFieldMinForce.GetValue(), g_fForceFieldMaxForce.GetValue()));
+        gpRadiusOf(forceField) = g_Rand.GenerateFloat(g_fForceFieldMinRadius.GetValue(), g_fForceFieldMaxRadius.GetValue());
+        gpForceOf(forceField) = g_Rand.GenerateFloat(g_fForceFieldMinForce.GetValue(), g_fForceFieldMaxForce.GetValue());
 
-        auto pProps = pForceField->GetProperties();
-        gpRandomize(g_Rand, pProps->m_Position, MinPosition, MaxPosition);
+        gpRandomize(g_Rand, gpPositionOf(forceField), MinPosition, MaxPosition);
 
-        m_pWorld->AddEntity(pForceField);
+        m_pWorld->AddEntity(forceField);
     }
 
     ezLog::Success("Created %u force fields", uiNumForceFields);
@@ -349,43 +361,42 @@ void gpAndyForceFieldsApp::CreateForceFields()
 void gpAndyForceFieldsApp::CreatePlayer()
 {
     m_pPlayer = m_pWorld->CreateEntity<gpParticleEntity>();
-    m_pPlayer->AddRef();
-    m_pPlayer->SetName("Player");
-    auto pProperties = m_pPlayer->GetProperties();
-    pProperties->m_Position.Set(100, 200, 0);
-    pProperties->m_fGravityFactor = 0.0f;
-    //m_pPlayer->SetLinearVelocity(gpVec3(10, 10, 0));
+    EZ_ASSERT(m_pPlayer, "Failed to create player (particle)");
+
+    gpAddReference(player);
+    gpNameOf(player) = "Player";
+    gpPositionOf(player).Set(100, 200, 0);
+    gpGravityFactorOf(player) = 0.0f;
+    //gpLinearVelocityOf(player).Set(10, 10, 0);
 }
 
 bool gpAndyForceFieldsApp::CanSpawnPlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
-    auto MousePos = GetMousePosition();
     gpRectF SpawnArea; // From bottom left to upper right
     SpawnArea.x = 0.0f;
     SpawnArea.y = static_cast<gpScalar>(gpWindow::GetWidthCVar()->GetValue());
     SpawnArea.width =   static_cast<gpScalar>(g_iPlayerSpawnAreaWidth.GetValue());
     SpawnArea.height = -static_cast<gpScalar>(g_iPlayerSpawnAreaHeight.GetValue());
 
-    return gpContains(SpawnArea, MousePos);
+    return gpContains(SpawnArea, gpPositionOf(MouseCursor));
 }
 
 void gpAndyForceFieldsApp::SpawnAndFreezePlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
-    if(m_pPlayer->GetWorld() != nullptr)
+    if(gpWorldPtrOf(player) != nullptr)
         return; // Player is already spawned.
 
-    auto pProps = m_pPlayer->GetProperties();
-    pProps->m_Position = GetMousePosition();
-    pProps->m_LinearVelocity.SetZero();
-    pProps->m_fGravityFactor = 0.0f;
+    gpPositionOf(player) = gpPositionOf(MouseCursor);
+    gpLinearVelocityOf(player).SetZero();
+    gpGravityFactorOf(player) = 0.0f;
 
-    auto result = m_pWorld->AddEntity(m_pPlayer);
+    auto result = m_pWorld->AddEntity(player);
     EZ_ASSERT(result.Succeeded(), "Failed to spawn player");
-    auto& DrawInfo = m_pWorld->GetEntityDrawInfo(m_pPlayer);
+    auto& DrawInfo = m_pWorld->GetEntityDrawInfo(player);
     DrawInfo.m_Color = ezColor(1, 0, 0, 0.9f);
     DrawInfo.m_fScale = 8.0f;
 
@@ -396,19 +407,17 @@ void gpAndyForceFieldsApp::UnfreezePlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
-    auto pProps = m_pPlayer->GetProperties();
-
-    if(!ezMath::IsZero(pProps->m_LinearVelocity.GetLengthSquared(), 0.01f))
+    if(!ezMath::IsZero(gpLinearVelocityOf(player).GetLengthSquared(), 0.01f))
         return; // Player is already moving
 
-    pProps->m_fGravityFactor = 1.0f;
-    pProps->m_LinearVelocity = GetMousePosition() - pProps->m_Position;
+    gpGravityFactorOf(player) = 1.0f;
+    gpLinearVelocityOf(player) = gpPositionOf(MouseCursor) - gpPositionOf(player);
 
     auto fMaxSpeed = s_fPlayerMaxSpeed.GetValue();
 
-    if (pProps->m_LinearVelocity.GetLengthSquared() > fMaxSpeed * fMaxSpeed)
+    if (gpLinearVelocityOf(player).GetLengthSquared() > fMaxSpeed * fMaxSpeed)
     {
-        pProps->m_LinearVelocity.SetLength(fMaxSpeed);
+        gpLinearVelocityOf(player).SetLength(fMaxSpeed);
     }
 
     ezLog::Success("Player is moving.");
@@ -418,10 +427,10 @@ void gpAndyForceFieldsApp::DespawnPlayer()
 {
     EZ_ASSERT(m_pPlayer, "Player not created.");
 
-    if(m_pPlayer->GetWorld() == nullptr)
+    if(gpWorldPtrOf(player) == nullptr)
         return;
 
-    auto result = m_pWorld->RemoveEntity(m_pPlayer);
+    auto result = m_pWorld->RemoveEntity(player);
     EZ_VERIFY(result.Succeeded(), "Failed to despawn player.");
     ezLog::Info("Despawned player.");
 }
@@ -470,7 +479,7 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
     }
     else if (PlayerState != PlayerSpawnState::NotInWorld)
     {
-        auto& Pos = m_pPlayer->GetProperties()->m_Position;
+        auto& Pos = gpPositionOf(player);
         if (Pos.x < 0.0f || Pos.x > gpWindow::GetWidthCVar()->GetValue()
          || Pos.y < 0.0f || Pos.y > gpWindow::GetHeightCVar()->GetValue())
         {
@@ -478,8 +487,8 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
             ezLog::Info("Player left the world");
         }
 
-        if (gpContains(g_pPlayerTarget->GetProperties(), *static_cast<gpCircleShape*>(g_pPlayerTarget->GetShape()),
-                       m_pPlayer->GetProperties()->m_Position))
+        if (gpContains(gpPhysicalPropertiesOf(playerTarget), static_cast<gpCircleShape&>(gpShapeOf(playerTarget)),
+                       gpPositionOf(player)))
         {
             ezLog::Info("Player hit the target!");
             ResetWorld();
@@ -529,7 +538,7 @@ void gpAndyForceFieldsApp::ResetWorld()
 void gpAndyForceFieldsApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 {
     auto pVelVector = pExtractor->AllocateRenderData<gpDrawData::Arrow>();
-    pVelVector->m_Start = m_pPlayer->GetProperties()->m_Position;
+    pVelVector->m_Start = gpPositionOf(player);
     pVelVector->m_End.SetZero();
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &pVelVector->m_End.x);
     pVelVector->m_End.x *= gpWindow::GetWidthCVar()->GetValue();

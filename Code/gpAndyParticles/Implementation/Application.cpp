@@ -111,12 +111,14 @@ ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
 void gpAndyParticlesApp::PopulateWorld()
 {
     auto pParticle = m_pWorld->CreateEntity<gpParticleEntity>();
-    pParticle->SetName("TheParticle");
-    pParticle->GetProperties()->m_Position.Set(100, 200, 0);
-    //pParticle->SetLinearVelocity(gpVec3(10, 10, 0));
-    auto result = m_pWorld->AddEntity(pParticle);
+    EZ_ASSERT(pParticle, "Failed to create particle");
+    auto& particle = Deref(pParticle);
+    gpNameOf(particle) = "TheParticle";
+    gpPositionOf(particle).Set(100, 200, 0);
+    //gpLinearVelocityOf(particle).Set(10, 10, 0);
+    auto result = m_pWorld->AddEntity(particle);
     EZ_ASSERT(result.Succeeded(), "");
-    auto& DrawInfo = m_pWorld->GetEntityDrawInfo(pParticle);
+    auto& DrawInfo = m_pWorld->GetEntityDrawInfo(particle);
     DrawInfo.m_Color = ezColor(1, 0, 0, 0.9f);
     DrawInfo.m_fScale = 8.0f;
 }
@@ -134,12 +136,12 @@ void gpAndyParticlesApp::Update(ezTime dt)
         && bAddedParticle)
     {
         ResetSpawning();
-        EZ_VERIFY(m_pWorld->RemoveEntity(m_pCurrentParticle).Succeeded(), "Failed to remove the current particle!");
-        auto& Position = m_pCurrentParticle->GetProperties()->m_Position;
+        auto& currentParticle = Deref(m_pCurrentParticle);
+        EZ_VERIFY(m_pWorld->RemoveEntity(currentParticle).Succeeded(), "Failed to remove the current particle!");
         ezLog::Info("Removed particle   '%s' @ {%.3f, %.3f, %.3f}",
-                    m_pCurrentParticle->GetName().GetData(),
-                    Position.x, Position.y, Position.z);
-        m_pCurrentParticle->ReleaseRef();
+                    gpNameOf(currentParticle).GetData(),
+                    gpPositionOf(currentParticle).x, gpPositionOf(currentParticle).y, gpPositionOf(currentParticle).z);
+        gpReleaseReference(currentParticle);
         m_pCurrentParticle = nullptr;
         m_pWorld->CollectGarbage();
     }
@@ -181,9 +183,9 @@ void gpAndyParticlesApp::Update(ezTime dt)
 
         // Set the new linear velocity of the particle.
         gpVec3 MousePos(fX, fY, 0.0f);
-        auto pProps = m_pCurrentParticle->GetProperties();
-        pProps->m_LinearVelocity = MousePos - pProps->m_Position;
-        pProps->m_fGravityFactor = 1.0f;
+        auto& currentParticle = Deref(m_pCurrentParticle);
+        gpLinearVelocityOf(currentParticle) = MousePos - gpPositionOf(currentParticle);
+        gpGravityFactorOf(currentParticle) = 1.0f;
 
         ResetSpawning();
 
@@ -197,7 +199,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
 void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 {
     auto pLine = pExtractor->AllocateRenderData<gpDrawData::Line>();
-    pLine->m_Start = m_pCurrentParticle->GetProperties()->m_Position;
+    pLine->m_Start = gpPositionOf(Deref(m_pCurrentParticle));
     pLine->m_End.SetZero();
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &pLine->m_End.x);
     pLine->m_End.x *= gpWindow::GetWidthCVar()->GetValue();
@@ -211,17 +213,19 @@ void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
 {
     static ezUInt32 uiCount = 0;
     m_pCurrentParticle = m_pWorld->CreateEntity<gpParticleEntity>();
+    EZ_ASSERT(m_pCurrentParticle, "Failed to create new particle");
+
+    auto& particle = Deref(m_pCurrentParticle);
     {
         ezStringBuilder s;
         s.AppendFormat("Particle #%u", uiCount++);
-        m_pCurrentParticle->SetName(s.GetData());
+        gpNameOf(particle) = s;
     }
-    auto pProps = m_pCurrentParticle->GetProperties();
-    pProps->m_Position = Position;
-    pProps->m_fGravityFactor = 0.0f;
-    EZ_VERIFY(m_pWorld->AddEntity(m_pCurrentParticle).Succeeded(), "Failed to add new particle?!");
+    gpPositionOf(particle) = Position;
+    gpGravityFactorOf(particle) = 0.0f;
+    EZ_VERIFY(m_pWorld->AddEntity(particle).Succeeded(), "Failed to add new particle?!");
     //m_pWorld->GetEntityDrawInfo(m_pCurrentParticle).m_Color = ezColor(1, 0, 0, 0.9f);
     ezLog::Success("Added new particle '%s' @ {%.3f, %.3f, %.3f}",
-                   m_pCurrentParticle->GetName().GetData(),
+                   gpNameOf(particle).GetData(),
                    Position.x, Position.y, Position.z);
 }

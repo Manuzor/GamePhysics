@@ -12,13 +12,13 @@ void gpUpdateStats(const ezStringView sStatName, const gpForceFieldEntity& Force
 
         // Radius
         sbStatName.Format("%s/Radius", sStatName.GetData());
-        sbStatValue.Format("%f", ForceField.GetRadius());
+        sbStatValue.Format("%f", gpRadiusOf(ForceField));
         ezStats::SetStat(sbStatName, sbStatValue);
 
         // Force
         sbStatName.Format("%s/Force", sStatName.GetData());
-        sbStatValue.Format("%f", ForceField.GetForce());
+        sbStatValue.Format("%f", gpForceOf(ForceField));
         ezStats::SetStat(sbStatName, sbStatValue);
     }
-    gpUpdateStats(sStatName, *ForceField.GetProperties());
+    gpUpdateStats(sStatName, gpPhysicalPropertiesOf(ForceField));
 }

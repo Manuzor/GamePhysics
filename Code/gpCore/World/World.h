@@ -2,7 +2,7 @@
 #include "gpCore/World/EntityBase.h"
 
 class gpRenderExtractor;
-class gpForceFieldEntity;
+struct gpForceFieldEntity;
 
 class GP_CoreAPI gpWorld
 {
@@ -21,14 +21,14 @@ public:
         return pEntity;
     }
 
-    ezResult AddEntity(gpEntityBase* pEntity);
-    ezResult RemoveEntity(gpEntityBase* pEntity);
+    ezResult AddEntity(gpEntityBase& entity);
+    ezResult RemoveEntity(gpEntityBase& entity);
 
     void ClearSimulatedEntities();
     void ClearForceFields();
     void ClearWorld() { ClearSimulatedEntities(); ClearForceFields(); }
 
-    gpEntityDrawInfo& GetEntityDrawInfo(gpEntityBase* pEntity);
+    gpEntityDrawInfo& GetEntityDrawInfo(gpEntityBase& entity);
 
     gpVec3 GetGravity() const { return m_Gravity; }
     void SetGravity(const gpVec3& NewGravity) { m_Gravity = NewGravity; }
@@ -44,11 +44,11 @@ public:
 
 private:
 
-    void DoAddSimulatedEntity(gpEntityBase* pEntity);
-    void DoRemoveSimulatedEntity(gpEntityBase* pEntity);
+    void DoAddSimulatedEntity(gpEntityBase& entity);
+    void DoRemoveSimulatedEntity(gpEntityBase& entity);
 
-    void DoAddForceField(gpForceFieldEntity* pForceField);
-    void DoRemoveForceField(gpForceFieldEntity* pForceField);
+    void DoAddForceField(gpForceFieldEntity& forceField);
+    void DoRemoveForceField(gpForceFieldEntity& forceField);
 
 private:
     ezString m_sName;

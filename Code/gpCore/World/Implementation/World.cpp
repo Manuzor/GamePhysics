@@ -45,129 +45,129 @@ gpWorld::~gpWorld()
     }
 }
 
-ezResult gpWorld::AddEntity(gpEntityBase* pEntity)
+ezResult gpWorld::AddEntity(gpEntityBase& entity)
 {
-    if(pEntity->m_pWorld != nullptr)
+    if(gpWorldPtrOf(entity) != nullptr)
     {
-        EZ_ASSERT(pEntity->m_pWorld == this,
+        EZ_ASSERT(gpWorldPtrOf(entity) == this,
                   "The entity you tried to add to this world already exists in another world.");
         return EZ_FAILURE;
     }
 
-    switch(pEntity->GetType())
+    switch(gpTypeOf(entity))
     {
     case gpEntityType::ForceField:
-        DoAddForceField(static_cast<gpForceFieldEntity*>(pEntity));
+        DoAddForceField(static_cast<gpForceFieldEntity&>(entity));
         break;
     default:
-        DoAddSimulatedEntity(pEntity);
+        DoAddSimulatedEntity(entity);
         break;
     }
 
     return EZ_SUCCESS;
 }
 
-void gpWorld::DoAddSimulatedEntity(gpEntityBase* pEntity)
+void gpWorld::DoAddSimulatedEntity(gpEntityBase& entity)
 {
-    pEntity->AddRef();
-    pEntity->m_pWorld = this;
+    gpAddReference(entity);
+    gpWorldPtrOf(entity) = this;
 
-    m_SimulatedEntities.PushBack(pEntity);
+    m_SimulatedEntities.PushBack(AddressOf(entity));
 
     // Add stat
     {
         ezStringBuilder sbStatName;
-        sbStatName.Format("%s/%s", m_sName.GetData(), pEntity->m_sName.GetData());
+        sbStatName.Format("%s/%s", m_sName.GetData(), gpNameOf(entity).GetData());
         ezStats::SetStat(sbStatName.GetData(), "");
     }
 }
 
-void gpWorld::DoAddForceField(gpForceFieldEntity* pForceField)
+void gpWorld::DoAddForceField(gpForceFieldEntity& forceField)
 {
-    pForceField->AddRef();
-    pForceField->m_pWorld = this;
+    gpAddReference(forceField);
+    gpWorldPtrOf(forceField) = this;
 
-    m_ForceFields.PushBack(pForceField);
+    m_ForceFields.PushBack(AddressOf(forceField));
 
     // Add stat
     {
         ezStringBuilder sbStatName;
-        sbStatName.Format("%s/%s", m_sName.GetData(), pForceField->m_sName.GetData());
+        sbStatName.Format("%s/%s", m_sName.GetData(), gpNameOf(forceField).GetData());
         ezStats::SetStat(sbStatName.GetData(), "");
     }
 }
 
-ezResult gpWorld::RemoveEntity(gpEntityBase* pEntity)
+ezResult gpWorld::RemoveEntity(gpEntityBase& entity)
 {
-    if (pEntity->m_pWorld != this)
+    if (gpWorldPtrOf(entity) != this)
     {
-        EZ_ASSERT(pEntity->m_pWorld == nullptr,
+        EZ_ASSERT(gpWorldPtrOf(entity) == nullptr,
                   "The entity you tried to remove from this world exists in another world!");
         return EZ_FAILURE;
     }
 
-    switch(pEntity->GetType())
+    switch(gpTypeOf(entity))
     {
     case gpEntityType::ForceField:
-        DoRemoveForceField(static_cast<gpForceFieldEntity*>(pEntity));
+        DoRemoveForceField(static_cast<gpForceFieldEntity&>(entity));
         break;
     default:
-        DoRemoveSimulatedEntity(pEntity);
+        DoRemoveSimulatedEntity(entity);
         break;
     }
 
     return EZ_SUCCESS;
 }
 
-void gpWorld::DoRemoveSimulatedEntity(gpEntityBase* pEntity)
+void gpWorld::DoRemoveSimulatedEntity(gpEntityBase& entity)
 {
     // Remove stat
     {
         ezStringBuilder sbStatName;
-        sbStatName.Format("%s/%s", m_sName.GetData(), pEntity->m_sName.GetData());
+        sbStatName.Format("%s/%s", m_sName.GetData(), gpNameOf(entity).GetData());
         ezStats::RemoveStat(sbStatName.GetData());
     }
 
     // Remove draw data if it exists
     {
-        auto it = m_EntityDrawInfos.Find(pEntity);
+        auto it = m_EntityDrawInfos.Find(AddressOf(entity));
         if(it.IsValid())
             m_EntityDrawInfos.Erase(it);
     }
 
-    m_SimulatedEntities.RemoveSwap(pEntity);
+    m_SimulatedEntities.RemoveSwap(AddressOf(entity));
 
-    pEntity->m_pWorld = nullptr;
-    pEntity->ReleaseRef();
+    gpWorldPtrOf(entity) = nullptr;
+    gpReleaseReference(entity);
 }
 
-void gpWorld::DoRemoveForceField(gpForceFieldEntity* pForceField)
+void gpWorld::DoRemoveForceField(gpForceFieldEntity& forceField)
 {
     // Remove stat
     {
         ezStringBuilder sbStatName;
-        sbStatName.Format("%s/%s", m_sName.GetData(), pForceField->m_sName.GetData());
+        sbStatName.Format("%s/%s", m_sName.GetData(), gpNameOf(forceField).GetData());
         ezStats::RemoveStat(sbStatName.GetData());
     }
 
     // Remove draw data if it exists
     {
-        auto it = m_EntityDrawInfos.Find(pForceField);
+        auto it = m_EntityDrawInfos.Find(AddressOf(forceField));
         if(it.IsValid())
             m_EntityDrawInfos.Erase(it);
     }
 
-    m_ForceFields.RemoveSwap(pForceField);
+    m_ForceFields.RemoveSwap(AddressOf(forceField));
 
-    pForceField->m_pWorld = nullptr;
-    pForceField->ReleaseRef();
+    gpWorldPtrOf(forceField) = nullptr;
+    gpReleaseReference(forceField);
 }
 
 void gpWorld::ClearSimulatedEntities()
 {
     while(!m_SimulatedEntities.IsEmpty())
     {
-        DoRemoveSimulatedEntity(m_SimulatedEntities.PeekBack());
+        DoRemoveSimulatedEntity(Deref(m_SimulatedEntities.PeekBack()));
     }
 }
 
@@ -175,32 +175,32 @@ void gpWorld::ClearForceFields()
 {
     while(!m_ForceFields.IsEmpty())
     {
-        DoRemoveForceField(m_ForceFields.PeekBack());
+        DoRemoveForceField(Deref(m_ForceFields.PeekBack()));
     }
 }
 
-gpEntityDrawInfo& gpWorld::GetEntityDrawInfo(gpEntityBase* pEntity)
+gpEntityDrawInfo& gpWorld::GetEntityDrawInfo(gpEntityBase& entity)
 {
-    return m_EntityDrawInfos[pEntity];
+    return m_EntityDrawInfos[AddressOf(entity)];
 }
 
-static void AccumulateForces(gpVec3& out_Force, const gpPhysicalProperties* pProps , ezArrayPtr<const gpForceFieldEntity*> ForceFields)
+static void AccumulateForces(gpVec3& out_Force, const gpPhysicalProperties& props , ezArrayPtr<const gpForceFieldEntity*> ForceFields)
 {
-    GP_OnScopeExit { out_Force *= pProps->m_fGravityFactor; };
+    GP_OnScopeExit { out_Force *= gpGravityFactorOf(props); };
 
-    if (ezMath::IsEqual(pProps->m_fGravityFactor, 0.0f))
+    if (ezMath::IsEqual(gpGravityFactorOf(props), 0.0f))
         return;
 
     for (ezUInt32 i = 0; i < ForceFields.GetCount(); ++i)
     {
-        auto pForceField = ForceFields[i];
-        auto bIsAffected = pForceField->Contains(pProps->m_Position);
+        auto& forceField = Deref(ForceFields[i]);
+        auto bIsAffected = gpContains(forceField, gpPositionOf(props));
         if (!bIsAffected)
             continue;
-        auto Dir = pForceField->GetProperties()->m_Position - pProps->m_Position;
-        if (Dir.NormalizeIfNotZero().Succeeded())
+        auto vDir = gpPositionOf(forceField) - gpPositionOf(props);
+        if (vDir.NormalizeIfNotZero().Succeeded())
         {
-            out_Force += Dir * pForceField->GetForce();
+            out_Force += vDir * gpForceOf(forceField);
         }
     }
 }
@@ -212,14 +212,13 @@ void gpWorld::StepSimulation(ezTime dt)
     auto fDeltaSeconds = (float)dt.GetSeconds();
     for(ezUInt32 i = 0; i < m_SimulatedEntities.GetCount(); ++i)
     {
-        auto pEntity = m_SimulatedEntities[i];
-        auto pProps = pEntity->GetProperties();
+        auto& entity = Deref(m_SimulatedEntities[i]);
 
         gpVec3 F = m_Gravity;
-        AccumulateForces(F, pProps, gpGetConstView(m_ForceFields));
+        AccumulateForces(F, gpPhysicalPropertiesOf(entity), gpGetConstView(m_ForceFields));
 
-        pProps->m_LinearVelocity = pProps->m_LinearVelocity + F * fDeltaSeconds;
-        pProps->m_Position = pProps->m_Position + pProps->m_LinearVelocity * fDeltaSeconds;
+        gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + F * fDeltaSeconds;
+        gpPositionOf(entity) = gpPositionOf(entity) + gpLinearVelocityOf(entity) * fDeltaSeconds;
     }
 }
 

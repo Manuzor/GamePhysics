@@ -1,13 +1,14 @@
 #pragma once
 #include "gpCore/Shapes/ShapeType.h"
 
-class GP_CoreAPI gpShapeBase
+struct gpShapeBase
 {
 public:
     gpShapeBase(gpShapeType Type) : m_Type(Type) {}
 
-    gpShapeType GetType() const { return m_Type; }
-
-private:
+    // Data
+    //////////////////////////////////////////////////////////////////////////
     const gpShapeType m_Type;
 };
+
+EZ_FORCE_INLINE gpShapeType gpTypeOf(const gpShapeBase& shape) { return shape.m_Type; }

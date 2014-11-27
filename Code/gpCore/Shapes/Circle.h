@@ -2,20 +2,20 @@
 #include "gpCore/Shapes/ShapeBase.h"
 #include "gpCore/World/PhysicalProperties.h"
 
-class GP_CoreAPI gpCircleShape : public gpShapeBase
+struct gpCircleShape : public gpShapeBase
 {
-public:
     EZ_DECLARE_POD_TYPE();
 
     gpCircleShape() : gpShapeBase(gpShapeType::Circle) {}
 
-    EZ_FORCE_INLINE gpScalar GetRadius() const { return m_fRadius; }
-    EZ_FORCE_INLINE void SetRadius(gpScalar fRadius) { m_fRadius = fRadius; }
-
-private:
+    // Data
+    //////////////////////////////////////////////////////////////////////////
     gpScalar m_fRadius = 1.0f;
 };
 
-bool gpContains(const gpPhysicalProperties* pProps, const gpCircleShape& Circle, const gpVec3& Point);
+EZ_FORCE_INLINE       gpScalar& gpRadiusOf(      gpCircleShape& circle) { return circle.m_fRadius; }
+EZ_FORCE_INLINE const gpScalar& gpRadiusOf(const gpCircleShape& circle) { return circle.m_fRadius; }
+
+bool gpContains(const gpPhysicalProperties& props, const gpCircleShape& Circle, const gpVec3& Point);
 
 #include "gpCore/Shapes/Implementation/Circle.inl"

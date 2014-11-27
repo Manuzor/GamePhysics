@@ -29,4 +29,15 @@ namespace gpInternal
     };
 }
 
+template<typename Type> EZ_FORCE_INLINE void gpAddReference(Type& object)  { object.AddRef(); }
+template<typename Type> EZ_FORCE_INLINE void gpAddReference(Type* pObject) { pObject->AddRef(); }
+
+template<typename Type> EZ_FORCE_INLINE void gpReleaseReference(Type& object)  { object.ReleaseRef(); }
+template<typename Type> EZ_FORCE_INLINE void gpReleaseReference(Type* pObject) { pObject->ReleaseRef(); }
+
+/// \brief Dereferences the \a this pointer in a more human-friendly way.
+///
+/// Helps to keep the code clean of asterisks
+#define self (*this)
+
 #define GP_OnScopeExit gpInternal::ScopeExitHelper<std::function<void()>> EZ_CONCAT(ScopeExit_, EZ_SOURCE_LINE) = [&]

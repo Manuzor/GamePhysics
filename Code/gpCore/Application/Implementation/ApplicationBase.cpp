@@ -80,7 +80,7 @@ void gpApplicationBase::SetupWindow()
     m_pWindow = EZ_DEFAULT_NEW(gpWindow)(m_szTitle);
     auto result = m_pWindow->Initialize();
     EZ_ASSERT(result.Succeeded(), "Window initialization failed.");
-    m_pWindow->AddEventHandler(gpWindow::Event::Handler(AddressOf(gpApplicationBase::WindowEventHandler), this));
+    m_pWindow->AddEventHandler({ &gpApplicationBase::WindowEventHandler, this });
 }
 
 void gpApplicationBase::LogSystemInformation()
