@@ -64,7 +64,7 @@ EZ_FORCE_INLINE const gpPhysicalProperties& gpPhysicalPropertiesOf(const gpEntit
     return gpPhysicalPropertiesOf(const_cast<gpEntityBase&>(entity));
 }
 
-EZ_FORCE_INLINE       gpTransform& gpTransformOf(      gpEntityBase& entity)
+EZ_FORCE_INLINE gpTransform& gpTransformOf(      gpEntityBase& entity)
 {
     return gpTransformOf(gpPhysicalPropertiesOf(entity));
 }
@@ -73,7 +73,7 @@ EZ_FORCE_INLINE const gpTransform& gpTransformOf(const gpEntityBase& entity)
     return gpTransformOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE       gpVec3& gpPositionOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpVec3& gpPositionOf(gpEntityBase& entity)
 {
     return gpPositionOf(gpPhysicalPropertiesOf(entity));
 }
@@ -82,7 +82,7 @@ EZ_FORCE_INLINE const gpVec3& gpPositionOf(const gpEntityBase& entity)
     return gpPositionOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE       gpMat3& gpRotationOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpMat3& gpRotationOf(gpEntityBase& entity)
 {
     return gpRotationOf(gpPhysicalPropertiesOf(entity));
 }
@@ -91,7 +91,7 @@ EZ_FORCE_INLINE const gpMat3& gpRotationOf(const gpEntityBase& entity)
     return gpRotationOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE       gpVec3& gpLinearVelocityOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpVec3& gpLinearVelocityOf(gpEntityBase& entity)
 {
     return gpLinearVelocityOf(gpPhysicalPropertiesOf(entity));
 }
@@ -100,7 +100,7 @@ EZ_FORCE_INLINE const gpVec3& gpLinearVelocityOf(const gpEntityBase& entity)
     return gpLinearVelocityOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE       gpScalar& gpGravityFactorOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpScalar& gpGravityFactorOf(gpEntityBase& entity)
 {
     return gpGravityFactorOf(gpPhysicalPropertiesOf(entity));
 }
@@ -109,11 +109,20 @@ EZ_FORCE_INLINE const gpScalar& gpGravityFactorOf(const gpEntityBase& entity)
     return gpGravityFactorOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE       gpScalar& gpMassOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpScalarSyncer gpMassOf(gpEntityBase& entity)
 {
     return gpMassOf(gpPhysicalPropertiesOf(entity));
 }
-EZ_FORCE_INLINE const gpScalar& gpMassOf(const gpEntityBase& entity)
+EZ_FORCE_INLINE const gpScalarSyncer gpMassOf(const gpEntityBase& entity)
 {
     return gpMassOf(gpPhysicalPropertiesOf(entity));
+}
+
+EZ_FORCE_INLINE gpScalarSyncer gpInverseMassOf(gpEntityBase& entity)
+{
+    return gpInverseMassOf(gpPhysicalPropertiesOf(entity));
+}
+EZ_FORCE_INLINE const gpScalarSyncer gpInverseMassOf(const gpEntityBase& entity)
+{
+    return gpInverseMassOf(gpPhysicalPropertiesOf(entity));
 }

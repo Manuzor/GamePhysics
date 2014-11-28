@@ -46,27 +46,6 @@ gpWorld::~gpWorld()
     }
 }
 
-static void AccumulateForces(gpVec3& out_Force, const gpPhysicalProperties& props , ezArrayPtr<const gpForceFieldEntity*> ForceFields)
-{
-    GP_OnScopeExit { out_Force *= gpGravityFactorOf(props); };
-
-    if (ezMath::IsEqual(gpGravityFactorOf(props), 0.0f))
-        return;
-
-    for (ezUInt32 i = 0; i < ForceFields.GetCount(); ++i)
-    {
-        auto& forceField = Deref(ForceFields[i]);
-        auto bIsAffected = gpContains(forceField, gpPositionOf(props));
-        if (!bIsAffected)
-            continue;
-        auto vDir = gpPositionOf(forceField) - gpPositionOf(props);
-        if (vDir.NormalizeIfNotZero().Succeeded())
-        {
-            out_Force += vDir * gpForceOf(forceField);
-        }
-    }
-}
-
 ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity)
 {
     if(gpWorldPtrOf(entity) != nullptr)
@@ -178,6 +157,29 @@ void gpCollectGarbageOf(gpWorld& world)
     }
 }
 
+static void AccumulateForces(gpVec3& out_Force,
+                             const gpVec3& vEntityPos,
+                             ezArrayPtr<const gpForceFieldEntity*> ForceFields)
+{
+    for (ezUInt32 i = 0; i < ForceFields.GetCount(); ++i)
+    {
+        auto& forceField = Deref(ForceFields[i]);
+        auto bIsAffected = gpContains(forceField, vEntityPos);
+        if (!bIsAffected)
+            continue;
+        auto vDir = gpPositionOf(forceField) - vEntityPos;
+        if (vDir.NormalizeIfNotZero().Succeeded())
+        {
+            out_Force += vDir * gpForceOf(forceField);
+        }
+    }
+}
+
+static gpVec3 gpIntegrate(const gpVec3& vVector, ezTime dt)
+{
+    return vVector * (float)dt.GetSeconds();
+}
+
 void gpStepSimulationOf(gpWorld& world, ezTime dt)
 {
     EZ_PROFILE(world.m_ProfilingId_Simulation);
@@ -187,11 +189,21 @@ void gpStepSimulationOf(gpWorld& world, ezTime dt)
     {
         auto& entity = Deref(world.m_SimulatedEntities[i]);
 
-        gpVec3 F = gpGravityOf(world);
-        AccumulateForces(F, gpPhysicalPropertiesOf(entity), gpGetConstView(world.m_ForceFields));
+        gpVec3 F = gpGravityOf(world) * gpGravityFactorOf(entity);
+        if(!ezMath::IsZero(F.GetLengthSquared()))
+        {
+            AccumulateForces(F, gpPositionOf(entity), gpGetConstView(world.m_ForceFields));
 
-        gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + F * fDeltaSeconds;
-        gpPositionOf(entity) = gpPositionOf(entity) + gpLinearVelocityOf(entity) * fDeltaSeconds;
+            // Coming from: F = m * a
+            // => a = F / m
+            auto vLinearAcceleration = F / gpMassOf(entity);
+
+            // v += a * dt
+            gpLinearVelocityOf(entity) += gpIntegrate(vLinearAcceleration, dt);
+        }
+
+        // x += v * dt
+        gpPositionOf(entity) += gpIntegrate(gpLinearVelocityOf(entity), dt);
     }
 }
 
