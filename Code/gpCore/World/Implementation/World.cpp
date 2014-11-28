@@ -29,7 +29,7 @@ gpWorld::gpWorld(const char* szName) :
 
 gpWorld::~gpWorld()
 {
-    ClearWorld();
+    gpClear(Deref(this));
 
     ezProfilingSystem::DeleteId(m_ProfilingId_CreateEntity);
     ezProfilingSystem::DeleteId(m_ProfilingId_Simulation);
@@ -43,145 +43,6 @@ gpWorld::~gpWorld()
             ezFoundation::GetDefaultAllocator()->Deallocate(pEntity);
         }
     }
-}
-
-ezResult gpWorld::AddEntity(gpEntityBase& entity)
-{
-    if(gpWorldPtrOf(entity) != nullptr)
-    {
-        EZ_ASSERT(gpWorldPtrOf(entity) == this,
-                  "The entity you tried to add to this world already exists in another world.");
-        return EZ_FAILURE;
-    }
-
-    switch(gpTypeOf(entity))
-    {
-    case gpEntityType::ForceField:
-        DoAddForceField(static_cast<gpForceFieldEntity&>(entity));
-        break;
-    default:
-        DoAddSimulatedEntity(entity);
-        break;
-    }
-
-    return EZ_SUCCESS;
-}
-
-void gpWorld::DoAddSimulatedEntity(gpEntityBase& entity)
-{
-    gpAddReference(entity);
-    gpWorldPtrOf(entity) = this;
-
-    m_SimulatedEntities.PushBack(AddressOf(entity));
-
-    // Add stat
-    {
-        ezStringBuilder sbStatName;
-        sbStatName.Format("%s/%s", m_sName.GetData(), gpNameOf(entity).GetData());
-        ezStats::SetStat(sbStatName.GetData(), "");
-    }
-}
-
-void gpWorld::DoAddForceField(gpForceFieldEntity& forceField)
-{
-    gpAddReference(forceField);
-    gpWorldPtrOf(forceField) = this;
-
-    m_ForceFields.PushBack(AddressOf(forceField));
-
-    // Add stat
-    {
-        ezStringBuilder sbStatName;
-        sbStatName.Format("%s/%s", m_sName.GetData(), gpNameOf(forceField).GetData());
-        ezStats::SetStat(sbStatName.GetData(), "");
-    }
-}
-
-ezResult gpWorld::RemoveEntity(gpEntityBase& entity)
-{
-    if (gpWorldPtrOf(entity) != this)
-    {
-        EZ_ASSERT(gpWorldPtrOf(entity) == nullptr,
-                  "The entity you tried to remove from this world exists in another world!");
-        return EZ_FAILURE;
-    }
-
-    switch(gpTypeOf(entity))
-    {
-    case gpEntityType::ForceField:
-        DoRemoveForceField(static_cast<gpForceFieldEntity&>(entity));
-        break;
-    default:
-        DoRemoveSimulatedEntity(entity);
-        break;
-    }
-
-    return EZ_SUCCESS;
-}
-
-void gpWorld::DoRemoveSimulatedEntity(gpEntityBase& entity)
-{
-    // Remove stat
-    {
-        ezStringBuilder sbStatName;
-        sbStatName.Format("%s/%s", m_sName.GetData(), gpNameOf(entity).GetData());
-        ezStats::RemoveStat(sbStatName.GetData());
-    }
-
-    // Remove draw data if it exists
-    {
-        auto it = m_EntityDrawInfos.Find(AddressOf(entity));
-        if(it.IsValid())
-            m_EntityDrawInfos.Erase(it);
-    }
-
-    m_SimulatedEntities.RemoveSwap(AddressOf(entity));
-
-    gpWorldPtrOf(entity) = nullptr;
-    gpReleaseReference(entity);
-}
-
-void gpWorld::DoRemoveForceField(gpForceFieldEntity& forceField)
-{
-    // Remove stat
-    {
-        ezStringBuilder sbStatName;
-        sbStatName.Format("%s/%s", m_sName.GetData(), gpNameOf(forceField).GetData());
-        ezStats::RemoveStat(sbStatName.GetData());
-    }
-
-    // Remove draw data if it exists
-    {
-        auto it = m_EntityDrawInfos.Find(AddressOf(forceField));
-        if(it.IsValid())
-            m_EntityDrawInfos.Erase(it);
-    }
-
-    m_ForceFields.RemoveSwap(AddressOf(forceField));
-
-    gpWorldPtrOf(forceField) = nullptr;
-    gpReleaseReference(forceField);
-}
-
-void gpWorld::ClearSimulatedEntities()
-{
-    while(!m_SimulatedEntities.IsEmpty())
-    {
-        DoRemoveSimulatedEntity(Deref(m_SimulatedEntities.PeekBack()));
-    }
-}
-
-void gpWorld::ClearForceFields()
-{
-    while(!m_ForceFields.IsEmpty())
-    {
-        DoRemoveForceField(Deref(m_ForceFields.PeekBack()));
-    }
-}
-
-gpEntityDrawInfo& gpWorld::GetEntityDrawInfo(gpEntityBase& entity)
-{
-    return m_EntityDrawInfos[AddressOf(entity)];
 }
 
 static void AccumulateForces(gpVec3& out_Force, const gpPhysicalProperties& props , ezArrayPtr<const gpForceFieldEntity*> ForceFields)
@@ -203,6 +64,105 @@ static void AccumulateForces(gpVec3& out_Force, const gpPhysicalProperties& prop
             out_Force += vDir * gpForceOf(forceField);
         }
     }
+}
+
+ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity)
+{
+    if(gpWorldPtrOf(entity) != nullptr)
+    {
+        EZ_ASSERT(gpWorldPtrOf(entity) == &world,
+                  "The entity you tried to add to this world already exists in another world.");
+        return EZ_FAILURE;
+    }
+
+    gpAddReferenceTo(entity);
+    gpWorldPtrOf(entity) = &world;
+
+    switch(gpTypeOf(entity))
+    {
+    case gpEntityType::ForceField:
+    {
+        auto& forceField = static_cast<gpForceFieldEntity&>(entity);
+        world.m_ForceFields.PushBack(AddressOf(forceField));
+        break;
+    }
+    default:
+        world.m_SimulatedEntities.PushBack(AddressOf(entity));
+        break;
+    }
+
+
+    // Update stats
+    {
+        ezStringBuilder sbStatName;
+        sbStatName.Format("%s/%s", gpNameOf(world).GetData(), gpNameOf(entity).GetData());
+        ezStats::SetStat(sbStatName, "");
+    }
+
+    return EZ_SUCCESS;
+}
+
+ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity)
+{
+    if (gpWorldPtrOf(entity) != &world)
+    {
+        EZ_ASSERT(gpWorldPtrOf(entity) == nullptr,
+                  "The entity you tried to remove from this world exists in another world!");
+        return EZ_FAILURE;
+    }
+
+    switch(gpTypeOf(entity))
+    {
+    case gpEntityType::ForceField:
+    {
+        auto& forceField = static_cast<gpForceFieldEntity&>(entity);
+        world.m_ForceFields.RemoveSwap(AddressOf(forceField));
+        break;
+    }
+    default:
+        world.m_SimulatedEntities.RemoveSwap(AddressOf(entity));
+        break;
+    }
+
+    // Remove draw data if it exists
+    {
+        auto it = world.m_EntityDrawInfos.Find(AddressOf(entity));
+        if(it.IsValid())
+            world.m_EntityDrawInfos.Erase(it);
+    }
+
+    // Remove stat
+    {
+        ezStringBuilder sbStatName;
+        sbStatName.Format("%s/%s", gpNameOf(world).GetData(), gpNameOf(entity).GetData());
+        ezStats::RemoveStat(sbStatName);
+    }
+
+    gpWorldPtrOf(entity) = nullptr;
+    gpReleaseReferenceTo(entity);
+
+    return EZ_SUCCESS;
+}
+
+void gpClearSimulatedEntities(gpWorld& world)
+{
+    while(!world.m_SimulatedEntities.IsEmpty())
+    {
+        gpRemoveEntityFrom(world, Deref(world.m_SimulatedEntities.PeekBack()));
+    }
+}
+
+void gpClearForceFields(gpWorld& world)
+{
+    while(!world.m_ForceFields.IsEmpty())
+    {
+        gpRemoveEntityFrom(world, Deref(world.m_ForceFields.PeekBack()));
+    }
+}
+
+gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntityBase& entity)
+{
+    return world.m_EntityDrawInfos[AddressOf(entity)];
 }
 
 void gpWorld::StepSimulation(ezTime dt)

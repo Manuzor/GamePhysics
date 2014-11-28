@@ -21,15 +21,6 @@ public:
         return pEntity;
     }
 
-    ezResult AddEntity(gpEntityBase& entity);
-    ezResult RemoveEntity(gpEntityBase& entity);
-
-    void ClearSimulatedEntities();
-    void ClearForceFields();
-    void ClearWorld() { ClearSimulatedEntities(); ClearForceFields(); }
-
-    gpEntityDrawInfo& GetEntityDrawInfo(gpEntityBase& entity);
-
     gpVec3 GetGravity() const { return m_Gravity; }
     void SetGravity(const gpVec3& NewGravity) { m_Gravity = NewGravity; }
 
@@ -41,14 +32,6 @@ public:
 
     EZ_FORCE_INLINE void SetEntityDrawInfoDefault(gpEntityDrawInfo* pDrawInfo) { m_pEntityDrawInfoDefault = pDrawInfo; }
     EZ_FORCE_INLINE gpEntityDrawInfo* GetEntityDrawInfoDefault() { return m_pEntityDrawInfoDefault; }
-
-private:
-
-    void DoAddSimulatedEntity(gpEntityBase& entity);
-    void DoRemoveSimulatedEntity(gpEntityBase& entity);
-
-    void DoAddForceField(gpForceFieldEntity& forceField);
-    void DoRemoveForceField(gpForceFieldEntity& forceField);
 
 private:
     ezString m_sName;
@@ -66,4 +49,32 @@ private:
 
 private:
     void InsertCreatedEntity(gpEntityBase* pEntity);
+
+    friend const ezString& gpNameOf(const gpWorld& world);
+    friend gpVec3& gpGravityOf(gpWorld& world);
+    friend GP_CoreAPI ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity);
+    friend GP_CoreAPI ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity);
+    friend GP_CoreAPI void gpClearSimulatedEntities(gpWorld& world);
+    friend GP_CoreAPI void gpClearForceFields(gpWorld& world);
+    friend GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntityBase& entity);
 };
+
+EZ_FORCE_INLINE const ezString& gpNameOf(const gpWorld& world) { return world.m_sName; }
+EZ_FORCE_INLINE const ezString& gpNameOf(const gpWorld* pWorld)
+{
+    EZ_ASSERT(pWorld, "");
+    return gpNameOf(Deref(pWorld));
+}
+EZ_FORCE_INLINE       gpVec3& gpGravityOf(      gpWorld& world) { return world.m_Gravity; }
+EZ_FORCE_INLINE const gpVec3& gpGravityOf(const gpWorld& world) { return gpGravityOf(const_cast<gpWorld&>(world)); }
+
+GP_CoreAPI ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity);
+GP_CoreAPI ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity);
+GP_CoreAPI void gpClearSimulatedEntities(gpWorld& world);
+GP_CoreAPI void gpClearForceFields(gpWorld& world);
+EZ_FORCE_INLINE void gpClear(gpWorld& world)
+{
+    gpClearSimulatedEntities(world);
+    gpClearForceFields(world);
+}
+GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntityBase& entity);
