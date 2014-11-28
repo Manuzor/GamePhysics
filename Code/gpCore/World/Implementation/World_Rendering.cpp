@@ -103,7 +103,7 @@ void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor)
             continue;
 
         auto& entity = Deref(pEntity);
-        const auto* pEntityDrawInfo = gpDefaultDrawInfoOf(world);
+        const auto* pEntityDrawInfo = gpDefaultDrawInfoPtrOf(world);
         auto FindResult = world.m_EntityDrawInfos.Find(AddressOf(entity));
         if(FindResult.IsValid())
             pEntityDrawInfo = &FindResult.Value();

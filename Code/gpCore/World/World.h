@@ -40,7 +40,7 @@ private:
     friend GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntityBase& entity);
     friend GP_CoreAPI void gpCollectGarbageOf(gpWorld& world);
     friend GP_CoreAPI void gpStepSimulationOf(gpWorld& world, ezTime dt);
-    friend gpEntityDrawInfo*& gpDefaultDrawInfoOf(gpWorld& world);
+    friend gpEntityDrawInfo*& gpDefaultDrawInfoPtrOf(gpWorld& world);
     friend GP_CoreAPI void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor);
     template<typename Type>
     friend Type* gpCreateEntityIn(gpWorld& world);
@@ -77,9 +77,9 @@ EZ_FORCE_INLINE Type* gpCreateEntityIn(gpWorld& world)
     return pEntity;
 }
 
-EZ_FORCE_INLINE gpEntityDrawInfo*& gpDefaultDrawInfoOf(gpWorld& world) { return world.m_pEntityDrawInfoDefault; }
-EZ_FORCE_INLINE gpEntityDrawInfo*  gpDefaultDrawInfoOf(const gpWorld& world)
+EZ_FORCE_INLINE gpEntityDrawInfo*& gpDefaultDrawInfoPtrOf(gpWorld& world) { return world.m_pEntityDrawInfoDefault; }
+EZ_FORCE_INLINE gpEntityDrawInfo*  gpDefaultDrawInfoPtrOf(const gpWorld& world)
 {
-    return gpDefaultDrawInfoOf(const_cast<gpWorld&>(world));
+    return gpDefaultDrawInfoPtrOf(const_cast<gpWorld&>(world));
 }
 GP_CoreAPI void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor);
