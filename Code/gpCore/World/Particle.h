@@ -1,8 +1,9 @@
 #pragma once
 #include "gpCore/World/EntityBase.h"
 
-struct GP_CoreAPI gpParticleEntity : public gpEntityBase
+class GP_CoreAPI gpParticleEntity : public gpEntityBase
 {
+public:
     gpParticleEntity() : gpEntityBase(gpEntityType::Particle) {}
 };
 

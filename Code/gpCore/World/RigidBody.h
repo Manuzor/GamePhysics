@@ -1,19 +1,23 @@
 #pragma once
 #include "gpCore/World/EntityBase.h"
 
-struct gpShapeBase;
+class gpShapeBase;
 
-struct GP_CoreAPI gpRigidBody : public gpEntityBase
+class GP_CoreAPI gpRigidBody : public gpEntityBase
 {
-    gpRigidBody() : gpEntityBase(gpEntityType::RigidBody) {}
-
     // Data
     //////////////////////////////////////////////////////////////////////////
     gpShapeBase* m_pShape = nullptr;
+
+    // Friends
+    friend gpShapeBase*& gpShapePtrOf(      gpRigidBody& rigidBody);
+
+public:
+    gpRigidBody() : gpEntityBase(gpEntityType::RigidBody) {}
 };
 
 EZ_FORCE_INLINE       gpShapeBase*& gpShapePtrOf(      gpRigidBody& rigidBody) { return rigidBody.m_pShape; }
-EZ_FORCE_INLINE const gpShapeBase*  gpShapePtrOf(const gpRigidBody& rigidBody) { return rigidBody.m_pShape; }
+EZ_FORCE_INLINE const gpShapeBase*  gpShapePtrOf(const gpRigidBody& rigidBody) { return gpShapePtrOf(const_cast<gpRigidBody&>(rigidBody)); }
 
 /// Assumes that the rigid body has a valid shape.
 EZ_FORCE_INLINE       gpShapeBase& gpShapeOf(      gpRigidBody& rigidBody) { EZ_ASSERT(gpShapePtrOf(rigidBody), ""); return Deref(gpShapePtrOf(rigidBody)); }

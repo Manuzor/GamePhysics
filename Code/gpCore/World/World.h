@@ -2,7 +2,7 @@
 #include "gpCore/World/EntityBase.h"
 
 class gpRenderExtractor;
-struct gpForceFieldEntity;
+class gpForceFieldEntity;
 
 class GP_CoreAPI gpWorld
 {

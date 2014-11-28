@@ -3,7 +3,7 @@
 
 class gpWorld;
 class gpRenderExtractor;
-struct gpParticleEntity;
+class gpParticleEntity;
 
 class gpAndyParticlesApp : public gpApplicationBase
 {
