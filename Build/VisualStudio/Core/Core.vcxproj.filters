@@ -112,6 +112,9 @@
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\FileSystem.cpp">
       <Filter>Utilities\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.cpp">
+      <Filter>Shapes\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h">
@@ -203,6 +206,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\FileSystem.h">
       <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Polygon.h">
+      <Filter>Shapes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

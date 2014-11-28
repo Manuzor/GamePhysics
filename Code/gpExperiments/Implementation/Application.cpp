@@ -9,7 +9,7 @@
 
 #include "gpCore/World/World.h"
 #include "gpCore/World/RigidBody.h"
-#include "gpCore/Shapes/Circle.h"
+#include "gpCore/Shapes/Polygon.h"
 
 static gpWorld* g_pWorld = nullptr;
 #define world Deref(g_pWorld)
@@ -29,8 +29,8 @@ static void PopulateWorld()
 
     gpAddReferenceTo(entity);
     gpPositionOf(entity).Set(200, 300, 0);
-    auto pShape = EZ_DEFAULT_NEW(gpCircleShape);
-    gpRadiusOf(Deref(pShape)) = 50.0f;
+    auto pShape = EZ_DEFAULT_NEW(gpPolygonShape);
+    gpConvertToBox(Deref(pShape), gpVec3(50.0f, 50.0f, 0.0f));
     gpShapePtrOf(entity) = pShape;
 
     EZ_VERIFY(gpAddEntityTo(world, entity).Succeeded(), "Failed to add entity to world.");

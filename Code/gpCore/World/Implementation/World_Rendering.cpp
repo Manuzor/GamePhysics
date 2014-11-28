@@ -14,6 +14,7 @@
 
 #include "gpCore/Shapes/ShapeBase.h"
 #include "gpCore/Shapes/Circle.h"
+#include "gpCore/Shapes/Polygon.h"
 
 static void Extract(gpRenderExtractor* pExtractor,
                     const gpParticleEntity& particle,
@@ -77,6 +78,18 @@ static void Extract(gpRenderExtractor* pExtractor,
         pCircle->m_FillColor.a *= 0.5f;
     }
         break;
+    case gpShapeType::Polygon:
+    {
+        auto& polygon = static_cast<const gpPolygonShape&>(shape);
+        auto pPolyData = pExtractor->AllocateRenderData<gpDrawData::Polygon>();
+        pPolyData->m_Transform = gpTransformOf(props);
+        pPolyData->m_Vertices = gpVerticesOf(polygon);
+        pPolyData->m_OutlineColor = drawInfo.m_Color;
+        pPolyData->m_FillColor = drawInfo.m_Color;
+        pPolyData->m_FillColor.a *= 0.5f;
+
+        break;
+    }
     default:
         GP_NotImplemented;
         break;

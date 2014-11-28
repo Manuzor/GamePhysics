@@ -39,6 +39,7 @@
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\RenderExtractor.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\OpenGL\Implementation\OpenGL.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\FileSystem.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\RandomNumbers.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\TextFileLogWriter.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\RenderExtractor.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\Rendering.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Circle.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Polygon.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h" />

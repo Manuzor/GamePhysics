@@ -69,7 +69,7 @@ void gpDraw(const gpDrawData::Arrow& Data)
 static void gpDrawPolygonHelper(const gpDrawData::Polygon& Data, GLenum PolygonMode, const ezColor& Color)
 {
     glPolygonMode(GL_FRONT_AND_BACK, PolygonMode);
-    glColor4fv(&Color.r);
+    glColor4fv(Color.GetData());
 
     auto uiNumVertices = Data.m_Vertices.GetCount();
 
@@ -77,13 +77,19 @@ static void gpDrawPolygonHelper(const gpDrawData::Polygon& Data, GLenum PolygonM
 
     for (decltype(uiNumVertices) i = 0; i < uiNumVertices; ++i)
     {
-        glVertex3fv(&Data.m_Vertices[i].x);
+        glVertex3fv(Data.m_Vertices[i].GetData());
     }
 }
 
 void gpDraw(const gpDrawData::Polygon& Data)
 {
     EZ_ASSERT(Data.m_Vertices.GetCount() >= 3, "Need at least 3 vertices for a polygon!");
+
+    glMatrixMode(GL_MODELVIEW);
+
+    float mModelView[16];
+    Data.m_Transform.GetAsMat4().GetAsArray(mModelView, ezMatrixLayout::ColumnMajor);
+    glLoadMatrixf(mModelView);
 
     if (!IsZero(Data.m_FillColor.a))
     {
