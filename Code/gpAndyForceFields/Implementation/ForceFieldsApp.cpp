@@ -118,7 +118,7 @@ static void CreateTarget(gpWorld* pWorld)
         pCircle = &Circle;
     }
 
-    g_pPlayerTarget = pWorld->CreateEntity<gpRigidBody>();
+    g_pPlayerTarget = gpCreateEntityIn<gpRigidBody>(Deref(pWorld));
     EZ_ASSERT(g_pPlayerTarget, "Failed to create player target (rigid body)");
 
     gpAddReferenceTo(playerTarget);
@@ -235,8 +235,9 @@ void gpAndyForceFieldsApp::AfterEngineInit()
 
     m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PhysicsWorld");
     //m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
-    gpRenderExtractor::AddExtractionListener(
-        gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
+    gpRenderExtractor::AddExtractionListener([=](gpRenderExtractor* pExtractor){
+        gpExtractRenderDataOf(world, pExtractor);
+    });
     EnableSpawnDataExtraction(true);
     CreatePlayer();
     CreateForceFields();
@@ -304,7 +305,7 @@ ezApplication::ApplicationExecution gpAndyForceFieldsApp::Run()
             Update(tUpdateInterval);
         }
 
-        m_pWorld->StepSimulation(tUpdateInterval);
+        gpStepSimulationOf(world, tUpdateInterval);
 
         m_LastUpdate += tUpdateInterval;
     }
@@ -337,7 +338,7 @@ void gpAndyForceFieldsApp::CreateForceFields()
 
     for (ezUInt64 i = 0; i < uiNumForceFields; ++i)
     {
-        auto pForceField = m_pWorld->CreateEntity<gpForceFieldEntity>();
+        auto pForceField = gpCreateEntityIn<gpForceFieldEntity>(world);
         EZ_ASSERT(pForceField, "Failed to create force field.");
 
         auto& forceField = Deref(pForceField);
@@ -362,7 +363,7 @@ void gpAndyForceFieldsApp::CreateForceFields()
 
 void gpAndyForceFieldsApp::CreatePlayer()
 {
-    m_pPlayer = m_pWorld->CreateEntity<gpParticleEntity>();
+    m_pPlayer = gpCreateEntityIn<gpParticleEntity>(world);
     EZ_ASSERT(m_pPlayer, "Failed to create player (particle)");
 
     gpAddReferenceTo(player);
@@ -533,7 +534,7 @@ void gpAndyForceFieldsApp::ResetWorld()
     CreateForceFields();
     SpawnTarget(m_pWorld);
 
-    m_pWorld->CollectGarbage();
+    gpCollectGarbageOf(world);
     EnableSpawnDataExtraction(true);
 }
 

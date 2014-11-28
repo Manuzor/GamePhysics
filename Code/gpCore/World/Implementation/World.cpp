@@ -165,17 +165,29 @@ gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntityBase& entity)
     return world.m_EntityDrawInfos[AddressOf(entity)];
 }
 
-void gpWorld::StepSimulation(ezTime dt)
+void gpCollectGarbageOf(gpWorld& world)
 {
-    EZ_PROFILE(m_ProfilingId_Simulation);
+    for (ezUInt32 i = 0; i < world.m_CreatedEntities.GetCount(); ++i)
+    {
+        auto& pEntity = world.m_CreatedEntities[i];
+        if (pEntity && !pEntity->IsReferenced())
+        {
+            EZ_DEFAULT_DELETE(pEntity);
+        }
+    }
+}
+
+void gpStepSimulationOf(gpWorld& world, ezTime dt)
+{
+    EZ_PROFILE(world.m_ProfilingId_Simulation);
 
     auto fDeltaSeconds = (float)dt.GetSeconds();
-    for(ezUInt32 i = 0; i < m_SimulatedEntities.GetCount(); ++i)
+    for(ezUInt32 i = 0; i < world.m_SimulatedEntities.GetCount(); ++i)
     {
-        auto& entity = Deref(m_SimulatedEntities[i]);
+        auto& entity = Deref(world.m_SimulatedEntities[i]);
 
-        gpVec3 F = m_Gravity;
-        AccumulateForces(F, gpPhysicalPropertiesOf(entity), gpGetConstView(m_ForceFields));
+        gpVec3 F = gpGravityOf(world);
+        AccumulateForces(F, gpPhysicalPropertiesOf(entity), gpGetConstView(world.m_ForceFields));
 
         gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + F * fDeltaSeconds;
         gpPositionOf(entity) = gpPositionOf(entity) + gpLinearVelocityOf(entity) * fDeltaSeconds;
@@ -194,16 +206,4 @@ void gpWorld::InsertCreatedEntity(gpEntityBase* pEntity)
     }
 
     m_CreatedEntities.PushBack(pEntity);
-}
-
-void gpWorld::CollectGarbage()
-{
-    for (ezUInt32 i = 0; i < m_CreatedEntities.GetCount(); ++i)
-    {
-        auto& pEntity = m_CreatedEntities[i];
-        if (pEntity && !pEntity->IsReferenced())
-        {
-            EZ_DEFAULT_DELETE(pEntity);
-        }
-    }
 }

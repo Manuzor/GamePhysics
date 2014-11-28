@@ -40,9 +40,11 @@ void gpAndyParticlesApp::AfterEngineInit()
     }
 
     m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PrimaryWorld");
-    m_pWorld->SetGravity(gpVec3(0, 9.81f, 0));
-    gpRenderExtractor::AddExtractionListener(
-        gpRenderExtractionListener(&gpWorld::ExtractRenderingData, m_pWorld));
+    EZ_ASSERT(m_pWorld, "Failed to create world.");
+    gpGravityOf(Deref(m_pWorld)).Set(0, 9.81f, 0);
+    gpRenderExtractor::AddExtractionListener([=](gpRenderExtractor* pExtractor){
+        gpExtractRenderDataOf(Deref(m_pWorld), pExtractor);
+    });
     PopulateWorld();
 
     {
@@ -86,7 +88,7 @@ ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
 
         UpdateInput(tUpdateInterval);
         Update(tUpdateInterval);
-        m_pWorld->StepSimulation(tUpdateInterval);
+        gpStepSimulationOf(Deref(m_pWorld), tUpdateInterval);
 
         m_LastUpdate += tUpdateInterval;
     }
@@ -110,7 +112,7 @@ ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
 
 void gpAndyParticlesApp::PopulateWorld()
 {
-    auto pParticle = m_pWorld->CreateEntity<gpParticleEntity>();
+    auto pParticle = gpCreateEntityIn<gpParticleEntity>(Deref(m_pWorld));
     EZ_ASSERT(pParticle, "Failed to create particle");
     auto& particle = Deref(pParticle);
     gpNameOf(particle) = "TheParticle";
@@ -143,7 +145,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
                     gpPositionOf(currentParticle).x, gpPositionOf(currentParticle).y, gpPositionOf(currentParticle).z);
         gpReleaseReferenceTo(currentParticle);
         m_pCurrentParticle = nullptr;
-        m_pWorld->CollectGarbage();
+        gpCollectGarbageOf(Deref(m_pWorld));
     }
 
     if (ezInputManager::GetInputActionState("Game", "Spawn") != ezKeyState::Pressed)
@@ -212,7 +214,7 @@ void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
 {
     static ezUInt32 uiCount = 0;
-    m_pCurrentParticle = m_pWorld->CreateEntity<gpParticleEntity>();
+    m_pCurrentParticle = gpCreateEntityIn<gpParticleEntity>(Deref(m_pWorld));
     EZ_ASSERT(m_pCurrentParticle, "Failed to create new particle");
 
     auto& particle = Deref(m_pCurrentParticle);

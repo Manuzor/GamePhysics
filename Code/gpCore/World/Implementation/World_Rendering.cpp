@@ -90,26 +90,27 @@ static void Extract(gpRenderExtractor* pExtractor,
     Extract(pExtractor, gpPhysicalPropertiesOf(rigidBody), Deref(gpShapePtrOf(rigidBody)), drawInfo);
 }
 
-void gpWorld::ExtractRenderingData(gpRenderExtractor* pExtractor) const
+void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor)
 {
-    EZ_PROFILE(m_ProfilingId_Extraction);
+    EZ_PROFILE(world.m_ProfilingId_Extraction);
 
     ezStringBuilder sbStatName;
 
-    for (ezUInt32 i = 0; i < m_CreatedEntities.GetCount(); ++i)
+    for (ezUInt32 i = 0; i < world.m_CreatedEntities.GetCount(); ++i)
     {
-        if (m_CreatedEntities[i] == nullptr || gpWorldPtrOf(Deref(m_CreatedEntities[i])) != this)
+        auto pEntity = world.m_CreatedEntities[i];
+        if (pEntity == nullptr || gpWorldPtrOf(Deref(pEntity)) != AddressOf(world))
             continue;
 
-        auto& entity = Deref(m_CreatedEntities[i]);
-        const auto* pEntityDrawInfo = m_pEntityDrawInfoDefault;
-        auto FindResult = m_EntityDrawInfos.Find(AddressOf(entity));
+        auto& entity = Deref(pEntity);
+        const auto* pEntityDrawInfo = gpDefaultDrawInfoOf(world);
+        auto FindResult = world.m_EntityDrawInfos.Find(AddressOf(entity));
         if(FindResult.IsValid())
             pEntityDrawInfo = &FindResult.Value();
 
         auto EntityType = gpTypeOf(entity);
 
-        sbStatName.Format("%s/%s", m_sName.GetData(), gpNameOf(entity).GetData());
+        sbStatName.Format("%s/%s", gpNameOf(world).GetData(), gpNameOf(entity).GetData());
         ezStats::SetStat(sbStatName, EntityType.ToString(EntityType));
 
         EZ_ASSERT(pEntityDrawInfo, "");

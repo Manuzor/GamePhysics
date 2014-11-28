@@ -8,6 +8,7 @@ struct GP_CoreAPI gpEntityBase : public ezRefCounted
 {
     gpEntityBase(gpEntityType TheType) : m_Type(TheType) {}
     gpEntityBase(const gpEntityBase&) = delete;
+    void operator=(const gpEntityBase&) = delete;
 
     // Data
     //////////////////////////////////////////////////////////////////////////
