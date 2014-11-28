@@ -47,11 +47,6 @@ private:
 };
 
 EZ_FORCE_INLINE const ezString& gpNameOf(const gpWorld& world) { return world.m_sName; }
-EZ_FORCE_INLINE const ezString& gpNameOf(const gpWorld* pWorld)
-{
-    EZ_ASSERT(pWorld, "");
-    return gpNameOf(Deref(pWorld));
-}
 EZ_FORCE_INLINE       gpVec3& gpGravityOf(      gpWorld& world) { return world.m_Gravity; }
 EZ_FORCE_INLINE const gpVec3& gpGravityOf(const gpWorld& world) { return gpGravityOf(const_cast<gpWorld&>(world)); }
 
