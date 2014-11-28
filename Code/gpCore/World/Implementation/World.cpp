@@ -31,6 +31,7 @@ gpWorld::~gpWorld()
 {
     gpClear(Deref(this));
 
+    ezProfilingSystem::DeleteId(m_ProfilingId_Extraction);
     ezProfilingSystem::DeleteId(m_ProfilingId_CreateEntity);
     ezProfilingSystem::DeleteId(m_ProfilingId_Simulation);
 
