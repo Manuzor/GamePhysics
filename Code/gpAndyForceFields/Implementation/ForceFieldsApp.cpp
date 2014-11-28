@@ -264,8 +264,8 @@ void gpAndyForceFieldsApp::AfterEngineInit()
 
 void gpAndyForceFieldsApp::BeforeEngineShutdown()
 {
-    g_pPlayerTarget->ReleaseRef();
-    m_pPlayer->ReleaseRef();
+    gpReleaseReferenceTo(playerTarget);
+    gpReleaseReferenceTo(player);
     EZ_DEFAULT_DELETE(m_pWorld);
 
     ezStartup::ShutdownEngine();

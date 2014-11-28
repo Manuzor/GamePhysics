@@ -3,24 +3,52 @@
 #include <Core/Input/InputManager.h>
 
 #include "gpExperiments/Application.h"
+
 #include "gpCore/Rendering/Rendering.h"
 #include "gpCore/Rendering/RenderExtractor.h"
-#include "gpCore/World/World.h"
-#include "gpCore/World/Particle.h"
 
-static gpWorld g_World("World");
+#include "gpCore/World/World.h"
+#include "gpCore/World/RigidBody.h"
+#include "gpCore/Shapes/Circle.h"
+
+static gpWorld* g_pWorld = nullptr;
+#define world Deref(g_pWorld)
+
+static gpRigidBody* g_pEntity = nullptr;
+#define entity Deref(g_pEntity)
 
 static void PopulateWorld()
 {
-    //auto pParticle = g_World.CreateEntity<gpParticleEntity>();
-    //pParticle->SetName("TheParticle");
-    //pParticle->GetProperties()->m_Position.Set(100, 200, 0);
-    //EZ_VERIFY(g_World.AddEntity(pParticle).Succeeded(), "");
+    g_pWorld = EZ_DEFAULT_NEW(gpWorld)("World");
+    EZ_ASSERT(g_pWorld, "Unable to create world.");
+
+    gpGravityOf(world).Set(0, 9.81f, 0);
+
+    g_pEntity = gpCreateEntityIn<gpRigidBody>(world);
+    EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");
+
+    gpAddReferenceTo(entity);
+    gpPositionOf(entity).Set(200, 300, 0);
+    auto pShape = EZ_DEFAULT_NEW(gpCircleShape);
+    gpRadiusOf(Deref(pShape)) = 50.0f;
+    gpShapePtrOf(entity) = pShape;
+
+    EZ_VERIFY(gpAddEntityTo(world, entity).Succeeded(), "Failed to add entity to world.");
+}
+
+static void CleanupWorld()
+{
+    EZ_DEFAULT_DELETE(gpShapePtrOf(entity));
+    gpReleaseReferenceTo(entity);
+    EZ_VERIFY(gpRemoveEntityFrom(world, entity).Succeeded(), "Failed to remove entity from world.");
+
+    g_pEntity = nullptr;
+    EZ_DEFAULT_DELETE(g_pWorld);
 }
 
 static void Update(ezTime dt)
 {
-
+    gpStepSimulationOf(world, dt);
 }
 
 static void OnRenderExtraction(gpRenderExtractor* pExtractor)
@@ -93,18 +121,21 @@ void gpExperimentsApp::AfterEngineInit()
         SetupRendering();
     }
 
-    gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
+    //gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
     gpRenderExtractor::AddExtractionListener([](gpRenderExtractor* pExtractor){
-        gpExtractRenderDataOf(g_World, pExtractor);
+        gpExtractRenderDataOf(world, pExtractor);
     });
     PopulateWorld();
 }
 
 void gpExperimentsApp::BeforeEngineShutdown()
 {
+    CleanupWorld();
+
     ezStartup::ShutdownEngine();
     Cleanup();
 
+    ezPlugin::UnloadPlugin("ezInspectorPlugin");
     ezTelemetry::CloseConnection();
 }
 
