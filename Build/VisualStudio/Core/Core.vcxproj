@@ -52,6 +52,7 @@
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World_Rendering.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\Integrate.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Application\ApplicationBase.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Common.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Config.h" />

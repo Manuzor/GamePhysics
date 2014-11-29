@@ -4,6 +4,8 @@
 
 #include "gpCore/Utilities/EzMathExtensions.h"
 
+#include "gpCore/Algorithm/Integrate.h"
+
 #include "gpCore/World/World.h"
 #include "gpCore/World/EntityBase.h"
 #include "gpCore/World/Particle.h"
@@ -175,11 +177,6 @@ static void AccumulateForces(gpVec3& out_Force,
     }
 }
 
-static gpVec3 gpIntegrate(const gpVec3& vVector, ezTime dt)
-{
-    return vVector * (float)dt.GetSeconds();
-}
-
 void gpStepSimulationOf(gpWorld& world, ezTime dt)
 {
     EZ_PROFILE(world.m_ProfilingId_Simulation);
@@ -189,7 +186,9 @@ void gpStepSimulationOf(gpWorld& world, ezTime dt)
     {
         auto& entity = Deref(world.m_SimulatedEntities[i]);
 
-        gpVec3 F = gpGravityOf(world) * gpGravityFactorOf(entity);
+        // Linear movement
+        //////////////////////////////////////////////////////////////////////////
+        auto F = gpGravityOf(world) * gpMassOf(entity) * gpGravityFactorOf(entity);
         if(!ezMath::IsZero(F.GetLengthSquared()))
         {
             AccumulateForces(F, gpPositionOf(entity), gpGetConstView(world.m_ForceFields));
@@ -204,6 +203,10 @@ void gpStepSimulationOf(gpWorld& world, ezTime dt)
 
         // x += v * dt
         gpPositionOf(entity) += gpIntegrate(gpLinearVelocityOf(entity), dt);
+
+        // Angular Movement
+        //////////////////////////////////////////////////////////////////////////
+
     }
 }
 

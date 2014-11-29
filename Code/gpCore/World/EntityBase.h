@@ -1,6 +1,7 @@
 #pragma once
 #include "gpCore/World/EntityType.h"
 #include "gpCore/World/PhysicalProperties.h"
+#include "gpCore/Algorithm/Integrate.h"
 
 class gpWorld;
 
@@ -125,4 +126,21 @@ EZ_FORCE_INLINE gpScalarSyncer gpInverseMassOf(gpEntityBase& entity)
 EZ_FORCE_INLINE const gpScalarSyncer gpInverseMassOf(const gpEntityBase& entity)
 {
     return gpInverseMassOf(gpPhysicalPropertiesOf(entity));
+}
+
+EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity, const gpVec3& vForce, ezTime dt)
+{
+    auto vLinearAcceleration = vForce / gpMassOf(entity);
+    gpLinearVelocityOf(entity) += gpIntegrate(vLinearAcceleration, dt);
+}
+
+EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity, const gpVec3& vForce, ezTime dt, const gpVec3& vApplicationPosition)
+{
+    if (vApplicationPosition.IsEqual(gpPositionOf(entity), ezMath::BasicType<gpScalar>::DefaultEpsilon()))
+    {
+        gpApplyForceTo(entity, vForce, dt);
+        return;
+    }
+
+    GP_NotImplemented;
 }

@@ -49,6 +49,9 @@
     <Filter Include="Utilities\Implementation">
       <UniqueIdentifier>{7e59986b-7bbb-4738-b8dc-8f92d0b6fe04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Algorithm">
+      <UniqueIdentifier>{b57cfa4f-8205-4851-b980-b95762e6dba6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp">
@@ -212,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\World\ScalarSyncer.h">
       <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\Integrate.h">
+      <Filter>Algorithm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
