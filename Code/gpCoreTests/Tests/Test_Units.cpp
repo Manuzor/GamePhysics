@@ -79,6 +79,14 @@ EZ_CREATE_SIMPLE_TEST(Units, Algorithms)
                              Time(2));
         EZ_TEST_BOOL(IsEqual(v, test));
     }
+
+    EZ_TEST_BLOCK(ezTestBlock::Enabled, "p = v * t")
+    {
+        auto v = Velocity(gpVec3(1, 2, 3));
+        auto t = Time(2);
+        auto p = v * t;
+        EZ_TEST_VEC3(ValueOf(p), gpVec3(2, 4, 6), EPSILON);
+    }
 }
 
 #undef EPSILON

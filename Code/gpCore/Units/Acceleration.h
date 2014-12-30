@@ -25,5 +25,5 @@ class AccelerationUnit
     }
 
     EZ_FORCE_INLINE friend
-    gpVec3 ValueOf(const AccelerationUnit& a) { return a.m_Value; }
+    const gpVec3& ValueOf(const AccelerationUnit& a) { return a.m_Value; }
 };

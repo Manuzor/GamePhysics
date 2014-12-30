@@ -20,5 +20,5 @@ class ForceUnit
     ForceUnit Force(MassUnit m, const AccelerationUnit& a){ return Force(ValueOf(m) * ValueOf(a)); }
 
     EZ_FORCE_INLINE friend
-    gpVec3 ValueOf(const ForceUnit& f) { return f.m_Value; }
+    const gpVec3& ValueOf(const ForceUnit& f) { return f.m_Value; }
 };
