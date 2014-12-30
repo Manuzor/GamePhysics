@@ -6,22 +6,24 @@
 /// \example m/(s*s) (meter per second per second)
 class AccelerationUnit
 {
-    DisplacementUnit m_Displacement;
-    TimeUnit m_Time;
+    gpVec3 m_Value;
 
-    AccelerationUnit(const DisplacementUnit& d, TimeUnit t) : m_Displacement(d), m_Time(t) {}
+    AccelerationUnit(const gpVec3& Value) : m_Value{ Value } {}
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
 
-    /// Constructor a = d / (t * t)
+    /// Constructor
     EZ_FORCE_INLINE friend
-    AccelerationUnit Acceleration(const DisplacementUnit& d, TimeUnit t) { return { d, t }; }
+    AccelerationUnit Acceleration(const gpVec3& Value) { return AccelerationUnit{ Value }; }
+
+    /// Constructor
+    EZ_FORCE_INLINE friend
+    AccelerationUnit Acceleration(const DisplacementUnit& d, TimeUnit t)
+    {
+        return AccelerationUnit{ ValueOf(d) * (gpScalar)ezMath::Invert(ValueOf(t) * ValueOf(t)) };
+    }
 
     EZ_FORCE_INLINE friend
-    DisplacementUnit DisplacementOf(const AccelerationUnit& a) { return a.m_Displacement; }
-
-    /// \remarks Does not return the squared time!
-    EZ_FORCE_INLINE friend
-    TimeUnit TimeOf(const AccelerationUnit& a) { return a.m_Time; }
+    gpVec3 ValueOf(const AccelerationUnit& a) { return a.m_Value; }
 };

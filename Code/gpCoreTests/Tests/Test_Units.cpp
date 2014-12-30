@@ -27,25 +27,36 @@ EZ_CREATE_SIMPLE_TEST(Units, Basics)
 
     EZ_TEST_BLOCK(ezTestBlock::Enabled, "Velocity")
     {
-        auto v = Velocity(Displacement(gpVec3(1, 2, 3)), Time(4));
-        EZ_TEST_VEC3(ValueOf(DisplacementOf(v)), gpVec3(1, 2, 3), EPSILON);
-        EZ_TEST_FLOAT(ValueOf(TimeOf(v)), 4, EPSILON);
+        auto v = Velocity(gpVec3(1, 2, 3));
+        EZ_TEST_VEC3(ValueOf(v), gpVec3(1, 2, 3), EPSILON);
+        EZ_TEST_BOOL(IsEqual(v, Velocity(gpVec3(1, 2, 3))));
+
+        v = Velocity(Displacement(gpVec3(1, 2, 3)), Time(0.5));
+        EZ_TEST_VEC3(ValueOf(v), gpVec3(2, 4, 6), EPSILON);
     }
 
     EZ_TEST_BLOCK(ezTestBlock::Enabled, "Acceleration")
     {
-        auto a = Acceleration(Displacement(gpVec3(1, 2, 3)), Time(4));
-        EZ_TEST_VEC3(ValueOf(DisplacementOf(a)), gpVec3(1, 2, 3), EPSILON);
-        EZ_TEST_FLOAT(ValueOf(TimeOf(a)), 4, EPSILON);
+        auto a = Acceleration(gpVec3(1, 2, 3));
+        EZ_TEST_VEC3(ValueOf(a), gpVec3(1, 2, 3), EPSILON);
+        EZ_TEST_BOOL(IsEqual(a, Acceleration(gpVec3(1, 2, 3))));
+
+        a = Acceleration(Displacement(gpVec3(1, 2, 3)), Time(ezMath::Sqrt(0.5)));
+        EZ_TEST_VEC3(ValueOf(a), gpVec3(2, 4, 6), EPSILON);
+        EZ_TEST_BOOL(IsEqual(a, Acceleration(Displacement(gpVec3(1, 2, 3)), Time(ezMath::Sqrt(0.5)))));
     }
 
     EZ_TEST_BLOCK(ezTestBlock::Enabled, "Force")
     {
-        auto f = Force(Mass(42), Acceleration(Displacement(gpVec3(1, 2, 3)), Time(1337)));
+        auto f = Force(gpVec3(1, 2, 3));
 
-        EZ_TEST_FLOAT(ValueOf(MassOf(f)), 42, EPSILON);
-        EZ_TEST_VEC3(ValueOf(DisplacementOf(AccelerationOf(f))), gpVec3(1, 2, 3), EPSILON);
-        EZ_TEST_FLOAT(ValueOf(TimeOf(AccelerationOf(f))), 1337, EPSILON);
+        EZ_TEST_VEC3(ValueOf(f), gpVec3(1, 2, 3), EPSILON);
+        EZ_TEST_BOOL(IsEqual(f, Force(gpVec3(1, 2, 3))));
+
+        const auto m = Mass(42);
+        f = Force(m, Acceleration(gpVec3(1, 2, 3)));
+        EZ_TEST_VEC3(ValueOf(f), gpVec3(1 * ValueOf(m), 2 * ValueOf(m), 3 * ValueOf(m)), EPSILON);
+        EZ_TEST_BOOL(IsEqual(f, Force(m, Acceleration(gpVec3(1, 2, 3)))));
     }
 }
 
@@ -60,9 +71,13 @@ EZ_CREATE_SIMPLE_TEST(Units, Algorithms)
                                              Time(1))));                     // per second
     }
 
-    EZ_TEST_BLOCK(ezTestBlock::Enabled, "Integrate")
+    EZ_TEST_BLOCK(ezTestBlock::Enabled, "v = a * t")
     {
-
+        auto a = Acceleration(Displacement(gpVec3(1, 2, 3)), Time(ezMath::Sqrt(10.0)));
+        auto v = a * Time(5);
+        auto test = Velocity(Displacement(gpVec3(1, 2, 3)),
+                             Time(2));
+        EZ_TEST_BOOL(IsEqual(v, test));
     }
 }
 
