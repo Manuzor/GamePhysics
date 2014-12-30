@@ -52,6 +52,9 @@
     <Filter Include="Algorithm">
       <UniqueIdentifier>{b57cfa4f-8205-4851-b980-b95762e6dba6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Units">
+      <UniqueIdentifier>{06560e95-9e7c-405a-a8bf-c916780d294d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp">
@@ -218,6 +221,28 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Algorithm\Integrate.h">
       <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Units.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Acceleration.h">
+      <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms.h">
+      <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Displacement.h">
+      <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Force.h">
+      <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Velocity.h">
+      <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Time.h">
+      <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Mass.h">
+      <Filter>Units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

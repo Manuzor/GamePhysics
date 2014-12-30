@@ -147,6 +147,7 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCoreTests\Tests\Test_RandomNumbers.cpp" />
     <ClCompile Include="..\..\..\Code\gpCoreTests\Tests\Test_Tasks.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCoreTests\Tests\Test_Units.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

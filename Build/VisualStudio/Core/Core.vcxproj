@@ -75,6 +75,14 @@
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Acceleration.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Displacement.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Force.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Mass.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Time.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Velocity.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\FileSystem.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\RandomNumbers.h" />
