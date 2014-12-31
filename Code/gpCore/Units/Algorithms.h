@@ -53,37 +53,37 @@ inline gpAccelerationUnit operator /(const gpForceUnit& f, gpMassUnit m)
 //////////////////////////////////////////////////////////////////////////
 
 inline
-bool IsEqual(const gpMassUnit& lhs, const gpMassUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
+bool gpIsEqual(const gpMassUnit& lhs, const gpMassUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
 {
     return ezMath::IsEqual(gpValueOf(lhs), gpValueOf(rhs), fEpsilon);
 }
 
 inline
-bool IsEqual(const gpTimeUnit& lhs, const gpTimeUnit& rhs, double fEpsilon = ezMath::BasicType<double>::DefaultEpsilon())
+bool gpIsEqual(const gpTimeUnit& lhs, const gpTimeUnit& rhs, double fEpsilon = ezMath::BasicType<double>::DefaultEpsilon())
 {
     return ezMath::IsEqual(gpValueOf(lhs), gpValueOf(rhs), fEpsilon);
 }
 
 inline
-bool IsEqual(const gpDisplacementUnit& lhs, const gpDisplacementUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
+bool gpIsEqual(const gpDisplacementUnit& lhs, const gpDisplacementUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
 {
     return gpValueOf(lhs).IsEqual(gpValueOf(rhs), fEpsilon);
 }
 
 inline
-bool IsEqual(const gpVelocityUnit& lhs, const gpVelocityUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
+bool gpIsEqual(const gpVelocityUnit& lhs, const gpVelocityUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
 {
     return gpValueOf(lhs).IsEqual(gpValueOf(rhs), fEpsilon);
 }
 
 inline
-bool IsEqual(const gpAccelerationUnit& lhs, const gpAccelerationUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
+bool gpIsEqual(const gpAccelerationUnit& lhs, const gpAccelerationUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
 {
     return gpValueOf(lhs).IsEqual(gpValueOf(rhs), fEpsilon);
 }
 
 inline
-bool IsEqual(const gpForceUnit& lhs, const gpForceUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
+bool gpIsEqual(const gpForceUnit& lhs, const gpForceUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
 {
     return gpValueOf(lhs).IsEqual(gpValueOf(rhs), fEpsilon);
 }
