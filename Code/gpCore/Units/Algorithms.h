@@ -9,43 +9,43 @@
 // Scaling
 //////////////////////////////////////////////////////////////////////////
 
-inline MassUnit operator *(const MassUnit& m, gpScalar factor) { return Mass(ValueOf(m) * factor); }
-inline MassUnit operator *(gpScalar factor, const MassUnit& m) { return m * factor; }
-inline MassUnit operator /(const MassUnit& m, gpScalar factor) { return Mass(ValueOf(m) * ezMath::Invert(factor)); }
+inline gpMassUnit operator *(const gpMassUnit& m, gpScalar factor) { return gpMass(gpValueOf(m) * factor); }
+inline gpMassUnit operator *(gpScalar factor, const gpMassUnit& m) { return m * factor; }
+inline gpMassUnit operator /(const gpMassUnit& m, gpScalar factor) { return gpMass(gpValueOf(m) * ezMath::Invert(factor)); }
 
-inline DisplacementUnit operator *(const DisplacementUnit& d, gpScalar factor) { return Displacement(ValueOf(d) * factor); }
-inline DisplacementUnit operator *(gpScalar factor, const DisplacementUnit& d) { return d * factor; }
-inline DisplacementUnit operator /(const DisplacementUnit& d, gpScalar factor) { return d * ezMath::Invert(factor); }
+inline gpDisplacementUnit operator *(const gpDisplacementUnit& d, gpScalar factor) { return gpDisplacement(gpValueOf(d) * factor); }
+inline gpDisplacementUnit operator *(gpScalar factor, const gpDisplacementUnit& d) { return d * factor; }
+inline gpDisplacementUnit operator /(const gpDisplacementUnit& d, gpScalar factor) { return d * ezMath::Invert(factor); }
 
-inline AccelerationUnit operator *(const AccelerationUnit& a, gpScalar factor) { return Acceleration(ValueOf(a) * factor); }
-inline AccelerationUnit operator *(gpScalar factor, const AccelerationUnit& a) { return a * factor; }
-inline AccelerationUnit operator /(const AccelerationUnit& a, gpScalar factor) { return Acceleration(ValueOf(a) * ezMath::Invert(factor)); }
+inline gpAccelerationUnit operator *(const gpAccelerationUnit& a, gpScalar factor) { return gpAcceleration(gpValueOf(a) * factor); }
+inline gpAccelerationUnit operator *(gpScalar factor, const gpAccelerationUnit& a) { return a * factor; }
+inline gpAccelerationUnit operator /(const gpAccelerationUnit& a, gpScalar factor) { return gpAcceleration(gpValueOf(a) * ezMath::Invert(factor)); }
 
-inline ForceUnit operator *(const ForceUnit& f, gpScalar factor) { return Force(ValueOf(f) * factor); }
-inline ForceUnit operator *(gpScalar factor, const ForceUnit& f) { return f * factor; }
-inline ForceUnit operator /(const ForceUnit& f, gpScalar factor) { return Force(ValueOf(f) * ezMath::Invert(factor)); }
+inline gpForceUnit operator *(const gpForceUnit& f, gpScalar factor) { return gpForce(gpValueOf(f) * factor); }
+inline gpForceUnit operator *(gpScalar factor, const gpForceUnit& f) { return f * factor; }
+inline gpForceUnit operator /(const gpForceUnit& f, gpScalar factor) { return gpForce(gpValueOf(f) * ezMath::Invert(factor)); }
 
 //////////////////////////////////////////////////////////////////////////
 
 /// \brief Construct a DisplacementUnit from a VelocityUnit and a given delta-time
 /// \example d = v * (dt / t)
-inline DisplacementUnit operator *(const VelocityUnit& v, TimeUnit dt)
+inline gpDisplacementUnit operator *(const gpVelocityUnit& v, gpTimeUnit dt)
 {
-    return Displacement(ValueOf(v) * (gpScalar)ValueOf(dt));
+    return gpDisplacement(gpValueOf(v) * (gpScalar)gpValueOf(dt));
 }
-inline DisplacementUnit operator *(TimeUnit dt, const VelocityUnit& v) { return v * dt; }
+inline gpDisplacementUnit operator *(gpTimeUnit dt, const gpVelocityUnit& v) { return v * dt; }
 
-inline VelocityUnit operator *(const AccelerationUnit& a, TimeUnit dt)
+inline gpVelocityUnit operator *(const gpAccelerationUnit& a, gpTimeUnit dt)
 {
-    return Velocity(ValueOf(a) * (gpScalar)ValueOf(dt));
+    return gpVelocity(gpValueOf(a) * (gpScalar)gpValueOf(dt));
 }
-inline VelocityUnit operator *(TimeUnit dt, const AccelerationUnit& a) { return a * dt; }
+inline gpVelocityUnit operator *(gpTimeUnit dt, const gpAccelerationUnit& a) { return a * dt; }
 
-inline ForceUnit operator *(MassUnit m, const AccelerationUnit& a) { return Force(m, a); }
-inline ForceUnit operator *(const AccelerationUnit& a, MassUnit m) { return m * a; }
-inline AccelerationUnit operator /(const ForceUnit& f, MassUnit m)
+inline gpForceUnit operator *(gpMassUnit m, const gpAccelerationUnit& a) { return gpForce(m, a); }
+inline gpForceUnit operator *(const gpAccelerationUnit& a, gpMassUnit m) { return m * a; }
+inline gpAccelerationUnit operator /(const gpForceUnit& f, gpMassUnit m)
 {
-    return Acceleration(ValueOf(f) * ezMath::Invert(ValueOf(m)));
+    return gpAcceleration(gpValueOf(f) * ezMath::Invert(gpValueOf(m)));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,37 +53,37 @@ inline AccelerationUnit operator /(const ForceUnit& f, MassUnit m)
 //////////////////////////////////////////////////////////////////////////
 
 inline
-bool IsEqual(const MassUnit& lhs, const MassUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
+bool IsEqual(const gpMassUnit& lhs, const gpMassUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
 {
-    return ezMath::IsEqual(ValueOf(lhs), ValueOf(rhs), fEpsilon);
+    return ezMath::IsEqual(gpValueOf(lhs), gpValueOf(rhs), fEpsilon);
 }
 
 inline
-bool IsEqual(const TimeUnit& lhs, const TimeUnit& rhs, double fEpsilon = ezMath::BasicType<double>::DefaultEpsilon())
+bool IsEqual(const gpTimeUnit& lhs, const gpTimeUnit& rhs, double fEpsilon = ezMath::BasicType<double>::DefaultEpsilon())
 {
-    return ezMath::IsEqual(ValueOf(lhs), ValueOf(rhs), fEpsilon);
+    return ezMath::IsEqual(gpValueOf(lhs), gpValueOf(rhs), fEpsilon);
 }
 
 inline
-bool IsEqual(const DisplacementUnit& lhs, const DisplacementUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
+bool IsEqual(const gpDisplacementUnit& lhs, const gpDisplacementUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
 {
-    return ValueOf(lhs).IsEqual(ValueOf(rhs), fEpsilon);
+    return gpValueOf(lhs).IsEqual(gpValueOf(rhs), fEpsilon);
 }
 
 inline
-bool IsEqual(const VelocityUnit& lhs, const VelocityUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
+bool IsEqual(const gpVelocityUnit& lhs, const gpVelocityUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
 {
-    return ValueOf(lhs).IsEqual(ValueOf(rhs), fEpsilon);
+    return gpValueOf(lhs).IsEqual(gpValueOf(rhs), fEpsilon);
 }
 
 inline
-bool IsEqual(const AccelerationUnit& lhs, const AccelerationUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
+bool IsEqual(const gpAccelerationUnit& lhs, const gpAccelerationUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
 {
-    return ValueOf(lhs).IsEqual(ValueOf(rhs), fEpsilon);
+    return gpValueOf(lhs).IsEqual(gpValueOf(rhs), fEpsilon);
 }
 
 inline
-bool IsEqual(const ForceUnit& lhs, const ForceUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
+bool IsEqual(const gpForceUnit& lhs, const gpForceUnit& rhs, gpScalar fEpsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon())
 {
-    return ValueOf(lhs).IsEqual(ValueOf(rhs), fEpsilon);
+    return gpValueOf(lhs).IsEqual(gpValueOf(rhs), fEpsilon);
 }

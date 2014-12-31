@@ -1,10 +1,10 @@
 #pragma once
 
-using TimeUnit = ezTime;
+using gpTimeUnit = ezTime;
 
-inline TimeUnit Time(double Value) { return ezTime::Seconds(Value); }
+inline gpTimeUnit gpTime(double Value) { return gpTimeUnit::Seconds(Value); }
 
-inline double ValueOf(ezTime t) { return t.GetSeconds(); }
+inline double gpValueOf(gpTimeUnit t) { return t.GetSeconds(); }
 
-inline ezTime operator*(ezTime lhs, ezTime rhs) { return ezTime::Seconds(lhs.GetSeconds() * rhs.GetSeconds()); }
-inline ezTime operator/(ezTime lhs, ezTime rhs) { return ezTime::Seconds(lhs.GetSeconds() / rhs.GetSeconds()); }
+inline gpTimeUnit operator*(gpTimeUnit lhs, gpTimeUnit rhs) { return gpTimeUnit::Seconds(lhs.GetSeconds() * rhs.GetSeconds()); }
+inline gpTimeUnit operator/(gpTimeUnit lhs, gpTimeUnit rhs) { return gpTimeUnit::Seconds(lhs.GetSeconds() / rhs.GetSeconds()); }

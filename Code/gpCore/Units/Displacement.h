@@ -1,17 +1,17 @@
 #pragma once
 
-class DisplacementUnit
+class gpDisplacementUnit
 {
     gpVec3 m_Value;
 
-    explicit DisplacementUnit(const gpVec3& Value) : m_Value(Value) {}
+    explicit gpDisplacementUnit(const gpVec3& Value) : m_Value(Value) {}
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
 
     EZ_FORCE_INLINE friend
-    DisplacementUnit Displacement(const gpVec3& Value) { return DisplacementUnit{ Value }; }
+    gpDisplacementUnit gpDisplacement(const gpVec3& Value) { return gpDisplacementUnit{ Value }; }
 
     EZ_FORCE_INLINE friend
-    const gpVec3& ValueOf(const DisplacementUnit& d) { return d.m_Value; }
+    const gpVec3& gpValueOf(const gpDisplacementUnit& d) { return d.m_Value; }
 };

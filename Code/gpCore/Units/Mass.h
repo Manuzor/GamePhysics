@@ -1,10 +1,10 @@
 #pragma once
 
-class MassUnit
+class gpMassUnit
 {
     gpScalar m_fValue;
 
-    explicit MassUnit(gpScalar fValue) : m_fValue(fValue) {}
+    explicit gpMassUnit(gpScalar fValue) : m_fValue(fValue) {}
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
@@ -12,10 +12,10 @@ class MassUnit
     /// Constructor
     // NOTE: For some reason, I cannot define the body of this friend function in-line, it won't compile!
     inline friend
-    MassUnit Mass(gpScalar fValue);
+    gpMassUnit gpMass(gpScalar fValue);
 
     inline friend
-    gpScalar ValueOf(MassUnit m) { return m.m_fValue; }
+    gpScalar gpValueOf(gpMassUnit m) { return m.m_fValue; }
 };
 
-inline MassUnit Mass(gpScalar fValue) { return MassUnit(fValue); }
+inline gpMassUnit gpMass(gpScalar fValue) { return gpMassUnit(fValue); }

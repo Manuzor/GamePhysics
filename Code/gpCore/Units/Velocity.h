@@ -4,26 +4,26 @@
 
 /// \brief Represents d / t, d: displacement, t: time => Distance per Time unit
 /// \example m/s (meter per second)
-class VelocityUnit
+class gpVelocityUnit
 {
     gpVec3 m_Value;
 
-    VelocityUnit(const gpVec3& Value) : m_Value{ Value } {}
+    gpVelocityUnit(const gpVec3& Value) : m_Value{ Value } {}
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
 
     /// Constructor
     EZ_FORCE_INLINE friend
-    VelocityUnit Velocity(const gpVec3& Value) { return VelocityUnit{ Value }; }
+    gpVelocityUnit gpVelocity(const gpVec3& Value) { return gpVelocityUnit{ Value }; }
 
     /// Constructor
     EZ_FORCE_INLINE friend
-    VelocityUnit Velocity(const DisplacementUnit& d, TimeUnit t)
+    gpVelocityUnit gpVelocity(const gpDisplacementUnit& d, gpTimeUnit t)
     {
-        return Velocity(ValueOf(d) * (gpScalar)ezMath::Invert(ValueOf(t)));
+        return gpVelocity(gpValueOf(d) * (gpScalar)ezMath::Invert(gpValueOf(t)));
     }
 
     EZ_FORCE_INLINE friend
-    const gpVec3& ValueOf(const VelocityUnit& v) { return v.m_Value; }
+    const gpVec3& gpValueOf(const gpVelocityUnit& v) { return v.m_Value; }
 };

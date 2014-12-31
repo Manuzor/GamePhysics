@@ -4,26 +4,26 @@
 
 /// \brief Acceleration => Distance per Squared-Time
 /// \example m/(s*s) (meter per second per second)
-class AccelerationUnit
+class gpAccelerationUnit
 {
     gpVec3 m_Value;
 
-    AccelerationUnit(const gpVec3& Value) : m_Value{ Value } {}
+    gpAccelerationUnit(const gpVec3& Value) : m_Value{ Value } {}
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
 
     /// Constructor
     EZ_FORCE_INLINE friend
-    AccelerationUnit Acceleration(const gpVec3& Value) { return AccelerationUnit{ Value }; }
+    gpAccelerationUnit gpAcceleration(const gpVec3& Value) { return gpAccelerationUnit{ Value }; }
 
     /// Constructor
     EZ_FORCE_INLINE friend
-    AccelerationUnit Acceleration(const DisplacementUnit& d, TimeUnit t)
+    gpAccelerationUnit gpAcceleration(const gpDisplacementUnit& d, gpTimeUnit t)
     {
-        return AccelerationUnit{ ValueOf(d) * (gpScalar)ezMath::Invert(ValueOf(t) * ValueOf(t)) };
+        return gpAccelerationUnit{ gpValueOf(d) * (gpScalar)ezMath::Invert(gpValueOf(t) * gpValueOf(t)) };
     }
 
     EZ_FORCE_INLINE friend
-    const gpVec3& ValueOf(const AccelerationUnit& a) { return a.m_Value; }
+    const gpVec3& gpValueOf(const gpAccelerationUnit& a) { return a.m_Value; }
 };
