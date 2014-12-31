@@ -22,14 +22,14 @@ static void PopulateWorld()
     g_pWorld = EZ_DEFAULT_NEW(gpWorld)("World");
     EZ_ASSERT(g_pWorld, "Unable to create world.");
 
-    gpGravityOf(world).Set(0, 9.81f, 0);
+    gpGravityOf(world) = gpAcceleration(gpVec3(0, 9.81f, 0));
 
     g_pEntity = gpCreateEntityIn<gpRigidBody>(world);
     EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");
 
     gpAddReferenceTo(entity);
     gpNameOf(entity) = "Player";
-    gpMassOf(entity) = 5.0f;
+    gpMassOf(entity) = gpMass(5.0f);
     gpPositionOf(entity).Set(200, 300, 0);
     auto pShape = EZ_DEFAULT_NEW(gpPolygonShape);
     gpConvertToBox(Deref(pShape), gpVec3(50.0f, 50.0f, 0.0f));

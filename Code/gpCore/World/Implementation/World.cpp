@@ -14,7 +14,6 @@
 
 gpWorld::gpWorld(const char* szName) :
     m_sName(szName),
-    m_Gravity(0.0f, 0.0f, 0.0f),
     m_pEntityDrawInfoDefault(&m_EntityDrawInfo_HardDefault)
 {
     m_CreatedEntities.Reserve(64);
@@ -159,7 +158,7 @@ void gpCollectGarbageOf(gpWorld& world)
     }
 }
 
-static void AccumulateForces(gpVec3& out_Force,
+static void AccumulateForces(gpAccelerationUnit& out_Force,
                              const gpVec3& vEntityPos,
                              ezArrayPtr<const gpForceFieldEntity*> ForceFields)
 {
@@ -172,7 +171,7 @@ static void AccumulateForces(gpVec3& out_Force,
         auto vDir = gpPositionOf(forceField) - vEntityPos;
         if (vDir.NormalizeIfNotZero().Succeeded())
         {
-            out_Force += vDir * gpForceOf(forceField);
+            out_Force = out_Force + gpAcceleration(vDir * gpForceFactorOf(forceField));
         }
     }
 }
@@ -185,24 +184,26 @@ void gpStepSimulationOf(gpWorld& world, ezTime dt)
     for(ezUInt32 i = 0; i < world.m_SimulatedEntities.GetCount(); ++i)
     {
         auto& entity = Deref(world.m_SimulatedEntities[i]);
+        const gpMassUnit& mass = gpMassOf(entity);
 
         // Linear movement
         //////////////////////////////////////////////////////////////////////////
-        auto F = gpGravityOf(world) * gpMassOf(entity) * gpGravityFactorOf(entity);
-        if(!ezMath::IsZero(F.GetLengthSquared()))
+        auto F = (mass * gpGravityFactorOf(entity)) * gpGravityOf(world);
+        if(!ezMath::IsZero(gpValueOf(F).GetLengthSquared()))
         {
-            AccumulateForces(F, gpPositionOf(entity), gpGetConstView(world.m_ForceFields));
-
             // Coming from: F = m * a
             // => a = F / m
-            auto vLinearAcceleration = F / gpMassOf(entity);
+            auto vLinearAcceleration = F / mass;
+
+            AccumulateForces(vLinearAcceleration, gpPositionOf(entity), gpGetConstView(world.m_ForceFields));
 
             // v += a * dt
-            gpLinearVelocityOf(entity) += gpIntegrate(vLinearAcceleration, dt);
+            gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + (vLinearAcceleration * dt);
         }
 
         // x += v * dt
-        gpPositionOf(entity) += gpIntegrate(gpLinearVelocityOf(entity), dt);
+        auto newPosition = gpDisplacement(gpPositionOf(entity)) + (gpLinearVelocityOf(entity) * dt);
+        gpPositionOf(entity) = gpValueOf(newPosition);
 
         // Angular Movement
         //////////////////////////////////////////////////////////////////////////

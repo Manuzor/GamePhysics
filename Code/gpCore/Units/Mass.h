@@ -1,4 +1,5 @@
 #pragma once
+#include "gpCore/Utilities/ScalarSyncer.h"
 
 class gpMassUnit
 {
@@ -19,3 +20,5 @@ class gpMassUnit
 };
 
 inline gpMassUnit gpMass(gpScalar fValue) { return gpMassUnit(fValue); }
+
+using gpMassSyncer = gpScalarSyncerTemplate<gpMassUnit>;

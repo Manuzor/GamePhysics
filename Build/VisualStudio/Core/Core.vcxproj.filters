@@ -216,9 +216,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Polygon.h">
       <Filter>Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\ScalarSyncer.h">
-      <Filter>World</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Algorithm\Integrate.h">
       <Filter>Algorithm</Filter>
     </ClInclude>
@@ -243,6 +240,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Units\Mass.h">
       <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\ScalarSyncer.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

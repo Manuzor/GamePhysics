@@ -31,11 +31,11 @@ static void Extract(gpRenderExtractor* pExtractor,
 
     // If alpha > 0 and speed > 0
     if (!ezMath::IsZero(drawInfo.m_LinearVelocityColor.a)
-        && !gpLinearVelocityOf(particle).IsZero())
+        && !gpValueOf(gpLinearVelocityOf(particle)).IsZero())
     {
         auto pVel = pExtractor->AllocateRenderData<gpDrawData::Arrow>();
         pVel->m_Start = gpPositionOf(particle);
-        pVel->m_End = gpPositionOf(particle) + gpLinearVelocityOf(particle);
+        pVel->m_End = gpPositionOf(particle) + gpValueOf(gpLinearVelocityOf(particle));
         pVel->m_Color = drawInfo.m_LinearVelocityColor;
         pVel->m_WingAngle = drawInfo.m_LinearVelocityArrowWingAngle;
         pVel->m_fWingLength = drawInfo.m_fLinearVelocityArrowWingLength;

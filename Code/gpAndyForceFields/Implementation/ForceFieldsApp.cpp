@@ -351,7 +351,7 @@ void gpAndyForceFieldsApp::CreateForceFields()
         }
 
         gpRadiusOf(forceField) = g_Rand.GenerateFloat(g_fForceFieldMinRadius.GetValue(), g_fForceFieldMaxRadius.GetValue());
-        gpForceOf(forceField) = g_Rand.GenerateFloat(g_fForceFieldMinForce.GetValue(), g_fForceFieldMaxForce.GetValue());
+        gpForceFactorOf(forceField) = g_Rand.GenerateFloat(g_fForceFieldMinForce.GetValue(), g_fForceFieldMaxForce.GetValue());
 
         gpRandomize(g_Rand, gpPositionOf(forceField), MinPosition, MaxPosition);
 
@@ -394,7 +394,7 @@ void gpAndyForceFieldsApp::SpawnAndFreezePlayer()
         return; // Player is already spawned.
 
     gpPositionOf(player) = gpPositionOf(MouseCursor);
-    gpLinearVelocityOf(player).SetZero();
+    gpLinearVelocityOf(player) = gpVelocity(gpVec3::ZeroVector());
     gpGravityFactorOf(player) = 0.0f;
 
     auto result = gpAddEntityTo(world, player);
@@ -410,17 +410,19 @@ void gpAndyForceFieldsApp::UnfreezePlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
-    if(!ezMath::IsZero(gpLinearVelocityOf(player).GetLengthSquared(), 0.01f))
+    if(!ezMath::IsZero(gpValueOf(gpLinearVelocityOf(player)).GetLengthSquared(), 0.01f))
         return; // Player is already moving
 
     gpGravityFactorOf(player) = 1.0f;
-    gpLinearVelocityOf(player) = gpPositionOf(MouseCursor) - gpPositionOf(player);
+    gpLinearVelocityOf(player) = gpVelocity(gpPositionOf(MouseCursor) - gpPositionOf(player));
 
     auto fMaxSpeed = s_fPlayerMaxSpeed.GetValue();
 
-    if (gpLinearVelocityOf(player).GetLengthSquared() > fMaxSpeed * fMaxSpeed)
+    if (gpValueOf(gpLinearVelocityOf(player)).GetLengthSquared() > fMaxSpeed * fMaxSpeed)
     {
-        gpLinearVelocityOf(player).SetLength(fMaxSpeed);
+        auto v = gpValueOf(gpLinearVelocityOf(player));
+        v.SetLength(fMaxSpeed);
+        gpLinearVelocityOf(player) = gpVelocity(v);
     }
 
     ezLog::Success("Player is moving.");

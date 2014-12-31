@@ -29,7 +29,7 @@ EZ_CREATE_SIMPLE_TEST(Units, Basics)
     {
         auto v = gpVelocity(gpVec3(1, 2, 3));
         EZ_TEST_VEC3(gpValueOf(v), gpVec3(1, 2, 3), EPSILON);
-        EZ_TEST_BOOL(gpIsEqual(v, gpVelocity(gpVec3(1, 2, 3))));
+        EZ_TEST_BOOL(gpAreEqual(v, gpVelocity(gpVec3(1, 2, 3))));
 
         v = gpVelocity(gpDisplacement(gpVec3(1, 2, 3)), gpTime(0.5));
         EZ_TEST_VEC3(gpValueOf(v), gpVec3(2, 4, 6), EPSILON);
@@ -39,11 +39,11 @@ EZ_CREATE_SIMPLE_TEST(Units, Basics)
     {
         auto a = gpAcceleration(gpVec3(1, 2, 3));
         EZ_TEST_VEC3(gpValueOf(a), gpVec3(1, 2, 3), EPSILON);
-        EZ_TEST_BOOL(gpIsEqual(a, gpAcceleration(gpVec3(1, 2, 3))));
+        EZ_TEST_BOOL(gpAreEqual(a, gpAcceleration(gpVec3(1, 2, 3))));
 
         a = gpAcceleration(gpDisplacement(gpVec3(1, 2, 3)), gpTime(ezMath::Sqrt(0.5)));
         EZ_TEST_VEC3(gpValueOf(a), gpVec3(2, 4, 6), EPSILON);
-        EZ_TEST_BOOL(gpIsEqual(a, gpAcceleration(gpDisplacement(gpVec3(1, 2, 3)), gpTime(ezMath::Sqrt(0.5)))));
+        EZ_TEST_BOOL(gpAreEqual(a, gpAcceleration(gpDisplacement(gpVec3(1, 2, 3)), gpTime(ezMath::Sqrt(0.5)))));
     }
 
     EZ_TEST_BLOCK(ezTestBlock::Enabled, "Force")
@@ -51,12 +51,12 @@ EZ_CREATE_SIMPLE_TEST(Units, Basics)
         auto f = gpForce(gpVec3(1, 2, 3));
 
         EZ_TEST_VEC3(gpValueOf(f), gpVec3(1, 2, 3), EPSILON);
-        EZ_TEST_BOOL(gpIsEqual(f, gpForce(gpVec3(1, 2, 3))));
+        EZ_TEST_BOOL(gpAreEqual(f, gpForce(gpVec3(1, 2, 3))));
 
         const auto m = gpMass(42);
         f = gpForce(m, gpAcceleration(gpVec3(1, 2, 3)));
         EZ_TEST_VEC3(gpValueOf(f), gpVec3(1 * gpValueOf(m), 2 * gpValueOf(m), 3 * gpValueOf(m)), EPSILON);
-        EZ_TEST_BOOL(gpIsEqual(f, gpForce(m, gpAcceleration(gpVec3(1, 2, 3)))));
+        EZ_TEST_BOOL(gpAreEqual(f, gpForce(m, gpAcceleration(gpVec3(1, 2, 3)))));
     }
 }
 
@@ -67,7 +67,7 @@ EZ_CREATE_SIMPLE_TEST(Units, Algorithms)
         auto f = gpForce(gpMass(10), gpAcceleration(gpDisplacement(gpVec3(10, 0, 0)), // 10 meters in x direction
                                                     gpTime(1)));                      // per second
         auto a = f / gpMass(5);
-        EZ_TEST_BOOL(gpIsEqual(a, gpAcceleration(gpVec3(20, 0, 0)))); // 20 meters in x direction per second
+        EZ_TEST_BOOL(gpAreEqual(a, gpAcceleration(gpVec3(20, 0, 0)))); // 20 meters in x direction per second
     }
 
     EZ_TEST_BLOCK(ezTestBlock::Enabled, "v = a * t")
@@ -75,7 +75,7 @@ EZ_CREATE_SIMPLE_TEST(Units, Algorithms)
         auto a = gpAcceleration(gpDisplacement(gpVec3(1, 2, 3)), gpTime(ezMath::Sqrt(10.0)));
         auto v = a * gpTime(5);
         auto test = gpVelocity(gpDisplacement(gpVec3(1, 2, 3)), gpTime(2));
-        EZ_TEST_BOOL(gpIsEqual(v, test));
+        EZ_TEST_BOOL(gpAreEqual(v, test));
     }
 
     EZ_TEST_BLOCK(ezTestBlock::Enabled, "p = v * t")

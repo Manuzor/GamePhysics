@@ -92,11 +92,11 @@ EZ_FORCE_INLINE const gpMat3& gpRotationOf(const gpEntityBase& entity)
     return gpRotationOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE gpVec3& gpLinearVelocityOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpVelocityUnit& gpLinearVelocityOf(gpEntityBase& entity)
 {
     return gpLinearVelocityOf(gpPhysicalPropertiesOf(entity));
 }
-EZ_FORCE_INLINE const gpVec3& gpLinearVelocityOf(const gpEntityBase& entity)
+EZ_FORCE_INLINE const gpVelocityUnit& gpLinearVelocityOf(const gpEntityBase& entity)
 {
     return gpLinearVelocityOf(gpPhysicalPropertiesOf(entity));
 }
@@ -110,35 +110,37 @@ EZ_FORCE_INLINE const gpScalar& gpGravityFactorOf(const gpEntityBase& entity)
     return gpGravityFactorOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE gpScalarSyncer gpMassOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpMassSyncer gpMassOf(gpEntityBase& entity)
 {
     return gpMassOf(gpPhysicalPropertiesOf(entity));
 }
-EZ_FORCE_INLINE const gpScalarSyncer gpMassOf(const gpEntityBase& entity)
+EZ_FORCE_INLINE const gpMassUnit gpMassOf(const gpEntityBase& entity)
 {
     return gpMassOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE gpScalarSyncer gpInverseMassOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpMassSyncer gpInverseMassOf(gpEntityBase& entity)
 {
     return gpInverseMassOf(gpPhysicalPropertiesOf(entity));
 }
-EZ_FORCE_INLINE const gpScalarSyncer gpInverseMassOf(const gpEntityBase& entity)
+EZ_FORCE_INLINE const gpMassUnit gpInverseMassOf(const gpEntityBase& entity)
 {
     return gpInverseMassOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity, const gpVec3& vForce, ezTime dt)
+EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity, const gpForceUnit& Force, gpTimeUnit dt)
 {
-    auto vLinearAcceleration = vForce / gpMassOf(entity);
-    gpLinearVelocityOf(entity) += gpIntegrate(vLinearAcceleration, dt);
+    gpMassUnit Mass = gpMassOf(entity);
+    auto vLinearAcceleration = Force / Mass;
+    auto v = vLinearAcceleration * dt;
+    gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + v;
 }
 
-EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity, const gpVec3& vForce, ezTime dt, const gpVec3& vApplicationPosition)
+EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity, const gpForceUnit& Force, ezTime dt, const gpVec3& vApplicationPosition)
 {
-    if (vApplicationPosition.IsEqual(gpPositionOf(entity), ezMath::BasicType<gpScalar>::DefaultEpsilon()))
+    if (gpAreEqual(gpPositionOf(entity), vApplicationPosition, ezMath::BasicType<gpScalar>::DefaultEpsilon()))
     {
-        gpApplyForceTo(entity, vForce, dt);
+        gpApplyForceTo(entity, Force, dt);
         return;
     }
 

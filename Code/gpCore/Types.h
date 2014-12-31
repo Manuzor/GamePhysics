@@ -26,14 +26,33 @@ using gpByte = unsigned char;
 
 using gpScalar = float;
 
-using gpVec2 = ezVec2Template<gpScalar>;
-using gpVec3 = ezVec3Template<gpScalar>;
-using gpRectI = ezRectTemplate<ezUInt32>;
-using gpRectF = ezRectTemplate<gpScalar>;
+using gpVec2       = ezVec2Template<gpScalar>;
+using gpVec3       = ezVec3Template<gpScalar>;
+using gpRectI      = ezRectTemplate<ezUInt32>;
+using gpRectF      = ezRectTemplate<gpScalar>;
 using gpQuaternion = ezQuatTemplate<gpScalar>;
-using gpMat3 = ezMat3Template<gpScalar>;
-using gpMat4 = ezMat4Template<gpScalar>;
-using gpTransform = ezTransformTemplate<gpScalar>;
+using gpMat3       = ezMat3Template<gpScalar>;
+using gpMat4       = ezMat4Template<gpScalar>;
+using gpTransform  = ezTransformTemplate<gpScalar>;
+
+#define GP_DefineGlobalEzMathTypeEqualityFunction(TheTypeName)                                                      \
+EZ_FORCE_INLINE bool gpAreEqual(const TheTypeName& lhs, const TheTypeName& rhs, TheTypeName::ComponentType epsilon) \
+{                                                                                                                   \
+    return lhs.IsEqual(rhs, epsilon);                                                                               \
+}
+
+GP_DefineGlobalEzMathTypeEqualityFunction(gpVec2)
+GP_DefineGlobalEzMathTypeEqualityFunction(gpVec3)
+GP_DefineGlobalEzMathTypeEqualityFunction(gpMat3)
+GP_DefineGlobalEzMathTypeEqualityFunction(gpMat4)
+
+#undef GP_DefineGlobalEzMathTypeEqualityFunction
+
+template<typename Type> EZ_FORCE_INLINE
+bool gpAreEqual(Type lhs, Type rhs, Type epsilon) { return ezMath::IsEqual(lhs, rhs, epsilon); }
+
+template<typename Type> EZ_FORCE_INLINE
+Type gpInvert(Type Value) { return ezMath::Invert(Value); }
 
 enum class gpObjectInitialization { Yes, No };
 

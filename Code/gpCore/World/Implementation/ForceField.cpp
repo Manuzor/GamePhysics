@@ -17,7 +17,7 @@ void gpUpdateStats(const ezStringView sStatName, const gpForceFieldEntity& Force
 
         // Force
         sbStatName.Format("%s/Force", sStatName.GetData());
-        sbStatValue.Format("%f", gpForceOf(ForceField));
+        sbStatValue.Format("%f", gpForceFactorOf(ForceField));
         ezStats::SetStat(sbStatName, sbStatValue);
     }
     gpUpdateStats(sStatName, gpPhysicalPropertiesOf(ForceField));

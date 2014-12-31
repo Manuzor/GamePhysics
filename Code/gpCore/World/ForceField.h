@@ -6,22 +6,22 @@ class GP_CoreAPI gpForceFieldEntity : public gpEntityBase
 {
     // Data
     //////////////////////////////////////////////////////////////////////////
-    gpScalar m_fForce = 0.0f;
+    gpScalar m_fForceFactor = 0.0f;
     gpCircleShape m_Area;
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
-    friend gpScalar& gpForceOf(gpForceFieldEntity& forceField);
+    friend gpScalar& gpForceFactorOf(gpForceFieldEntity& forceField);
     friend gpScalar& gpRadiusOf(gpForceFieldEntity& forceField);
     friend bool gpContains(const gpForceFieldEntity& forceField, const gpVec3& vPoint);
 public:
     gpForceFieldEntity() : gpEntityBase(gpEntityType::ForceField) {}
 };
 
-EZ_FORCE_INLINE       gpScalar& gpForceOf(      gpForceFieldEntity& forceField) { return forceField.m_fForce; }
-EZ_FORCE_INLINE const gpScalar& gpForceOf(const gpForceFieldEntity& forceField)
+EZ_FORCE_INLINE       gpScalar& gpForceFactorOf(      gpForceFieldEntity& forceField) { return forceField.m_fForceFactor; }
+EZ_FORCE_INLINE const gpScalar& gpForceFactorOf(const gpForceFieldEntity& forceField)
 {
-    return gpForceOf(const_cast<gpForceFieldEntity&>(forceField));
+    return gpForceFactorOf(const_cast<gpForceFieldEntity&>(forceField));
 }
 
 EZ_FORCE_INLINE gpScalar& gpRadiusOf(gpForceFieldEntity& forceField)
