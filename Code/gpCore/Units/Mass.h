@@ -12,13 +12,16 @@ class gpMassUnit
 
     /// Constructor
     // NOTE: For some reason, I cannot define the body of this friend function in-line, it won't compile!
-    inline friend
+    EZ_FORCE_INLINE friend
     gpMassUnit gpMass(gpScalar fValue);
 
-    inline friend
-    gpScalar gpValueOf(gpMassUnit m) { return m.m_fValue; }
+    EZ_FORCE_INLINE friend       gpScalar& gpValueOf(      gpMassUnit& m) { return m.m_fValue; }
+    EZ_FORCE_INLINE friend const gpScalar& gpValueOf(const gpMassUnit& m) { return m.m_fValue; }
+
+public:
+    gpMassUnit() {}
 };
 
-inline gpMassUnit gpMass(gpScalar fValue) { return gpMassUnit(fValue); }
+EZ_FORCE_INLINE gpMassUnit gpMass(gpScalar fValue) { return gpMassUnit(fValue); }
 
 using gpMassSyncer = gpScalarSyncerTemplate<gpMassUnit>;

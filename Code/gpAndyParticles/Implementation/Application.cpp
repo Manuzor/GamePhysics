@@ -116,7 +116,7 @@ void gpAndyParticlesApp::PopulateWorld()
     EZ_ASSERT(pParticle, "Failed to create particle");
     auto& particle = Deref(pParticle);
     gpNameOf(particle) = "TheParticle";
-    gpPositionOf(particle).Set(100, 200, 0);
+    gpSet(gpPositionOf(particle), 100, 200, 0);
     //gpLinearVelocityOf(particle).Set(10, 10, 0);
     auto result = gpAddEntityTo(Deref(m_pWorld), particle);
     EZ_ASSERT(result.Succeeded(), "");
@@ -140,9 +140,10 @@ void gpAndyParticlesApp::Update(ezTime dt)
         ResetSpawning();
         auto& currentParticle = Deref(m_pCurrentParticle);
         EZ_VERIFY(gpRemoveEntityFrom(Deref(m_pWorld), currentParticle).Succeeded(), "Failed to remove the current particle!");
+        const auto& pos = gpValueOf(gpPositionOf(currentParticle));
         ezLog::Info("Removed particle   '%s' @ {%.3f, %.3f, %.3f}",
                     gpNameOf(currentParticle).GetData(),
-                    gpPositionOf(currentParticle).x, gpPositionOf(currentParticle).y, gpPositionOf(currentParticle).z);
+                    pos.x, pos.y, pos.z);
         gpReleaseReferenceTo(currentParticle);
         m_pCurrentParticle = nullptr;
         gpCollectGarbageOf(Deref(m_pWorld));
@@ -163,7 +164,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
 
         gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(&gpAndyParticlesApp::ExtractVelocityData, this));
 
-        AddNewParticle(gpVec3(fX, fY, 0.0f));
+        AddNewParticle(gpDisplacement(fX, fY, 0.0f));
         bAddedParticle = true;
 
         // Stat
@@ -186,7 +187,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
         // Set the new linear velocity of the particle.
         gpVec3 MousePos(fX, fY, 0.0f);
         auto& currentParticle = Deref(m_pCurrentParticle);
-        gpLinearVelocityOf(currentParticle) = gpVelocity(MousePos - gpPositionOf(currentParticle));
+        gpLinearVelocityOf(currentParticle) = gpVelocity(MousePos - gpValueOf(gpPositionOf(currentParticle)));
         gpGravityFactorOf(currentParticle) = 1.0f;
 
         ResetSpawning();
@@ -201,7 +202,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
 void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 {
     auto pLine = pExtractor->AllocateRenderData<gpDrawData::Line>();
-    pLine->m_Start = gpPositionOf(Deref(m_pCurrentParticle));
+    pLine->m_Start = gpValueOf(gpPositionOf(Deref(m_pCurrentParticle)));
     pLine->m_End.SetZero();
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &pLine->m_End.x);
     pLine->m_End.x *= gpWindow::GetWidthCVar()->GetValue();
@@ -211,7 +212,7 @@ void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 
 }
 
-void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
+void gpAndyParticlesApp::AddNewParticle(const gpDisplacementUnit& Position)
 {
     static ezUInt32 uiCount = 0;
     m_pCurrentParticle = gpCreateEntityIn<gpParticleEntity>(Deref(m_pWorld));
@@ -228,5 +229,5 @@ void gpAndyParticlesApp::AddNewParticle(gpVec3 Position)
     EZ_VERIFY(gpAddEntityTo(Deref(m_pWorld), particle).Succeeded(), "Failed to add new particle?!");
     ezLog::Success("Added new particle '%s' @ {%.3f, %.3f, %.3f}",
                    gpNameOf(particle).GetData(),
-                   Position.x, Position.y, Position.z);
+                   gpX(Position), gpY(Position), gpZ(Position));
 }

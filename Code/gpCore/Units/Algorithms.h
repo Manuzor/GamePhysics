@@ -9,6 +9,7 @@
 // Scaling
 //////////////////////////////////////////////////////////////////////////
 
+// temp
 #define GP_DefineUnitScalingOperators(TypeScalarTypeName, TheTypeName, TheConstructorName)                                                   \
 EZ_FORCE_INLINE TheTypeName operator +(const TheTypeName& d1, const TheTypeName& d2)    { return TheConstructorName(gpValueOf(d1) + gpValueOf(d2)); } \
 EZ_FORCE_INLINE TheTypeName operator -(const TheTypeName& d1, const TheTypeName& d2)    { return TheConstructorName(gpValueOf(d1) - gpValueOf(d2)); } \
@@ -33,6 +34,7 @@ EZ_FORCE_INLINE gpTimeUnit operator /(const gpTimeUnit& d, gpScalar factor) { re
 // Equality
 //////////////////////////////////////////////////////////////////////////
 
+// temp
 #define GP_DefineUnitEqualityOperator(TheTypeName, TheScalarType)                                           \
 EZ_FORCE_INLINE bool gpAreEqual(const TheTypeName& lhs,                                                     \
                                 const TheTypeName& rhs,                                                     \
@@ -75,3 +77,28 @@ inline gpAccelerationUnit operator /(const gpForceUnit& f, gpMassUnit m)
 }
 
 EZ_FORCE_INLINE gpMassUnit gpInvert(gpMassUnit m) { return gpMass(gpInvert(gpValueOf(m))); }
+
+// Convenience operations
+//////////////////////////////////////////////////////////////////////////
+
+// temp
+#define GP_DefineVec3WrapperFunctions(TheScalarType, TheTypeName, TheConstructorName, TheZeroConstructorName)                                              \
+EZ_FORCE_INLINE TheTypeName TheConstructorName(TheScalarType x, TheScalarType y, TheScalarType z) { return TheConstructorName(gpVec3(x, y, z)); }          \
+EZ_FORCE_INLINE TheTypeName TheConstructorName(TheScalarType xyz) { return TheConstructorName(gpVec3(xyz)); }                                              \
+EZ_FORCE_INLINE TheTypeName TheZeroConstructorName(TheScalarType x, TheScalarType y, TheScalarType z) { return TheConstructorName(gpVec3::ZeroVector()); } \
+EZ_FORCE_INLINE void gpSet(TheTypeName& d, TheScalarType x, TheScalarType y, TheScalarType z) { gpValueOf(d).Set(x, y, z); }                               \
+EZ_FORCE_INLINE void gpSet(TheTypeName& d, TheScalarType xyz) { gpValueOf(d).Set(xyz); }                                                                   \
+EZ_FORCE_INLINE void gpSetZero(TheTypeName& d) { gpValueOf(d).SetZero(); }                                                                                 \
+EZ_FORCE_INLINE TheScalarType& gpX(      TheTypeName& d) { return gpValueOf(d).x; }                                                                        \
+EZ_FORCE_INLINE TheScalarType  gpX(const TheTypeName& d) { return gpValueOf(d).x; }                                                                        \
+EZ_FORCE_INLINE TheScalarType& gpY(      TheTypeName& d) { return gpValueOf(d).y; }                                                                        \
+EZ_FORCE_INLINE TheScalarType  gpY(const TheTypeName& d) { return gpValueOf(d).y; }                                                                        \
+EZ_FORCE_INLINE TheScalarType  gpZ(const TheTypeName& d) { return gpValueOf(d).z; }                                                                        \
+EZ_FORCE_INLINE TheScalarType& gpZ(      TheTypeName& d) { return gpValueOf(d).z; }
+
+GP_DefineVec3WrapperFunctions(gpScalar, gpDisplacementUnit, gpDisplacement, gpZeroDisplacement)
+GP_DefineVec3WrapperFunctions(gpScalar, gpVelocityUnit, gpVelocity, gpZeroVelocity)
+GP_DefineVec3WrapperFunctions(gpScalar, gpAccelerationUnit, gpAcceleration, gpZeroAcceleration)
+GP_DefineVec3WrapperFunctions(gpScalar, gpForceUnit, gpForce, gpZeroForce)
+
+#undef GP_DefineVec3WrapperFunctions

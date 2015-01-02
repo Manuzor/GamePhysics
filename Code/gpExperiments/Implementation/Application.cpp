@@ -30,7 +30,7 @@ static void PopulateWorld()
     gpAddReferenceTo(entity);
     gpNameOf(entity) = "Player";
     gpMassOf(entity) = gpMass(5.0f);
-    gpPositionOf(entity).Set(200, 300, 0);
+    gpPositionOf(entity) = gpDisplacement(200, 300, 0);
     auto pShape = EZ_DEFAULT_NEW(gpPolygonShape);
     gpConvertToBox(Deref(pShape), gpVec3(50.0f, 50.0f, 0.0f));
     gpShapePtrOf(entity) = pShape;

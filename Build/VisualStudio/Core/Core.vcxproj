@@ -74,6 +74,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Transform.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units\Acceleration.h" />

@@ -12,6 +12,9 @@ class gpDisplacementUnit
     EZ_FORCE_INLINE friend
     gpDisplacementUnit gpDisplacement(const gpVec3& Value) { return gpDisplacementUnit{ Value }; }
 
-    EZ_FORCE_INLINE friend
-    const gpVec3& gpValueOf(const gpDisplacementUnit& d) { return d.m_Value; }
+    EZ_FORCE_INLINE friend       gpVec3& gpValueOf(      gpDisplacementUnit& d) { return d.m_Value; }
+    EZ_FORCE_INLINE friend const gpVec3& gpValueOf(const gpDisplacementUnit& d) { return d.m_Value; }
+
+public:
+    gpDisplacementUnit() {}
 };

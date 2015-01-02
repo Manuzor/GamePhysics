@@ -74,11 +74,11 @@ EZ_FORCE_INLINE const gpTransform& gpTransformOf(const gpEntityBase& entity)
     return gpTransformOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE gpVec3& gpPositionOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpDisplacementUnit& gpPositionOf(gpEntityBase& entity)
 {
     return gpPositionOf(gpPhysicalPropertiesOf(entity));
 }
-EZ_FORCE_INLINE const gpVec3& gpPositionOf(const gpEntityBase& entity)
+EZ_FORCE_INLINE const gpDisplacementUnit& gpPositionOf(const gpEntityBase& entity)
 {
     return gpPositionOf(gpPhysicalPropertiesOf(entity));
 }
@@ -136,11 +136,14 @@ EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity, const gpForceUnit& For
     gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + v;
 }
 
-EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity, const gpForceUnit& Force, ezTime dt, const gpVec3& vApplicationPosition)
+EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity,
+                                    const gpForceUnit& force,
+                                    ezTime dt,
+                                    const gpDisplacementUnit& applicationPosition)
 {
-    if (gpAreEqual(gpPositionOf(entity), vApplicationPosition, ezMath::BasicType<gpScalar>::DefaultEpsilon()))
+    if (gpAreEqual(gpPositionOf(entity), applicationPosition, ezMath::BasicType<gpScalar>::DefaultEpsilon()))
     {
-        gpApplyForceTo(entity, Force, dt);
+        gpApplyForceTo(entity, force, dt);
         return;
     }
 

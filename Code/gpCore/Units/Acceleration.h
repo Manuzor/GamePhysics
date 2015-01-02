@@ -24,6 +24,9 @@ class gpAccelerationUnit
         return gpAccelerationUnit{ gpValueOf(d) * (gpScalar)ezMath::Invert(gpValueOf(t) * gpValueOf(t)) };
     }
 
-    EZ_FORCE_INLINE friend
-    const gpVec3& gpValueOf(const gpAccelerationUnit& a) { return a.m_Value; }
+    EZ_FORCE_INLINE friend       gpVec3& gpValueOf(      gpAccelerationUnit& a) { return a.m_Value; }
+    EZ_FORCE_INLINE friend const gpVec3& gpValueOf(const gpAccelerationUnit& a) { return a.m_Value; }
+
+public:
+    gpAccelerationUnit() {}
 };

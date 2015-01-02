@@ -2,11 +2,7 @@
 
 struct gpPhysicalProperties
 {
-#if __INTELLISENSE__
-    gpTransform m_Transform;
-#else
-    gpTransform m_Transform = { gpVec3::ZeroVector(), gpQuaternion::IdentityQuaternion() };
-#endif
+    gpTransform    m_Transform       = gpIdentityTransform();
     gpVelocityUnit m_LinearVelocity  = gpVelocity(gpVec3{ 0, 0, 0 });
     gpVelocityUnit m_AngularVelocity = gpVelocity(gpVec3{ 0, 0, 0 });
     gpScalar       m_fGravityFactor  = 1.0f;
@@ -17,11 +13,11 @@ struct gpPhysicalProperties
 EZ_FORCE_INLINE       gpTransform& gpTransformOf(      gpPhysicalProperties& props) { return props.m_Transform; }
 EZ_FORCE_INLINE const gpTransform& gpTransformOf(const gpPhysicalProperties& props) { return props.m_Transform; }
 
-EZ_FORCE_INLINE       gpVec3& gpPositionOf(      gpPhysicalProperties& props) { return gpTransformOf(props).m_vPosition; }
-EZ_FORCE_INLINE const gpVec3& gpPositionOf(const gpPhysicalProperties& props) { return gpTransformOf(props).m_vPosition; }
+EZ_FORCE_INLINE       gpDisplacementUnit& gpPositionOf(      gpPhysicalProperties& props) { return gpPositionOf(gpTransformOf(props)); }
+EZ_FORCE_INLINE const gpDisplacementUnit& gpPositionOf(const gpPhysicalProperties& props) { return gpPositionOf(gpTransformOf(props)); }
 
-EZ_FORCE_INLINE       gpMat3& gpRotationOf(      gpPhysicalProperties& props) { return gpTransformOf(props).m_Rotation; }
-EZ_FORCE_INLINE const gpMat3& gpRotationOf(const gpPhysicalProperties& props) { return gpTransformOf(props).m_Rotation; }
+EZ_FORCE_INLINE       gpMat3& gpRotationOf(      gpPhysicalProperties& props) { return gpRotationOf(gpTransformOf(props)); }
+EZ_FORCE_INLINE const gpMat3& gpRotationOf(const gpPhysicalProperties& props) { return gpRotationOf(gpTransformOf(props)); }
 
 EZ_FORCE_INLINE       gpVelocityUnit& gpLinearVelocityOf(      gpPhysicalProperties& props) { return props.m_LinearVelocity; }
 EZ_FORCE_INLINE const gpVelocityUnit& gpLinearVelocityOf(const gpPhysicalProperties& props) { return props.m_LinearVelocity; }

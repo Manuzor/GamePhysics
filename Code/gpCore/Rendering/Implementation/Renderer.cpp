@@ -60,13 +60,12 @@ void gpRenderer::Render()
     GP_OpenGLScope_EnableDisable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    auto pData = gpRenderer::GetRenderData();
-    auto pCurrentData = (gpDrawData::Base*)pData->GetBegin();
-    auto pEnd = (gpDrawData::Base*)pData->GetCurrent();
-    while(pCurrentData < pEnd)
+    auto pData = (gpDrawData::Base*)gpRenderer::GetRenderData()->GetBegin();
+    auto pEnd = (gpDrawData::Base*)gpRenderer::GetRenderData()->GetCurrent();
+    while(pData < pEnd)
     {
-        DrawHelper(pCurrentData);
-        pCurrentData = pCurrentData->GetNext();
+        DrawHelper(pData);
+        pData = gpDrawData::gpNext(pData);
     }
 }
 

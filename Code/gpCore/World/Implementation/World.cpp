@@ -159,16 +159,16 @@ void gpCollectGarbageOf(gpWorld& world)
 }
 
 static void AccumulateForces(gpAccelerationUnit& out_Force,
-                             const gpVec3& vEntityPos,
+                             const gpDisplacementUnit& entityPos,
                              ezArrayPtr<const gpForceFieldEntity*> ForceFields)
 {
     for (ezUInt32 i = 0; i < ForceFields.GetCount(); ++i)
     {
         auto& forceField = Deref(ForceFields[i]);
-        auto bIsAffected = gpContains(forceField, vEntityPos);
+        auto bIsAffected = gpContains(forceField, entityPos);
         if (!bIsAffected)
             continue;
-        auto vDir = gpPositionOf(forceField) - vEntityPos;
+        auto vDir = gpValueOf(gpPositionOf(forceField) - entityPos);
         if (vDir.NormalizeIfNotZero().Succeeded())
         {
             out_Force = out_Force + gpAcceleration(vDir * gpForceFactorOf(forceField));
@@ -202,8 +202,7 @@ void gpStepSimulationOf(gpWorld& world, ezTime dt)
         }
 
         // x += v * dt
-        auto newPosition = gpDisplacement(gpPositionOf(entity)) + (gpLinearVelocityOf(entity) * dt);
-        gpPositionOf(entity) = gpValueOf(newPosition);
+        gpPositionOf(entity) = gpPositionOf(entity) + (gpLinearVelocityOf(entity) * dt);
 
         // Angular Movement
         //////////////////////////////////////////////////////////////////////////

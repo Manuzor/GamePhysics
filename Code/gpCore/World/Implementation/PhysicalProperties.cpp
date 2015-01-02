@@ -11,7 +11,7 @@ void gpUpdateStats(const ezStringView sStatName, const gpPhysicalProperties& Pro
 
     // Position
     sbStatName.Format("%s/Position", sStatName.GetData());
-    const auto& position = gpPositionOf(Props);
+    const auto& position = gpValueOf(gpPositionOf(Props));
     sbStatValue.Format("{%f, %f, %f}", position.x,
                                        position.y,
                                        position.z);

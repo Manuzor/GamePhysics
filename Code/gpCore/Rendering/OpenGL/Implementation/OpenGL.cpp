@@ -88,7 +88,7 @@ void gpDraw(const gpDrawData::Polygon& Data)
     glMatrixMode(GL_MODELVIEW);
 
     float mModelView[16];
-    Data.m_Transform.GetAsMat4().GetAsArray(mModelView, ezMatrixLayout::ColumnMajor);
+    gpAsArray(Data.m_Transform, mModelView, ezMatrixLayout::ColumnMajor);
     glLoadMatrixf(mModelView);
 
     if (!IsZero(Data.m_FillColor.a))
@@ -115,8 +115,8 @@ static void gpDrawCircleHelper(const gpDrawData::Circle& Data, GLenum PolygonMod
     for (decltype(Data.m_uiNumLineSegments) i = 0; i < Data.m_uiNumLineSegments; ++i)
     {
         CurrentSegment.Set(Cos(Angle * float(i)) * Data.m_fRadius,
-                            Sin(Angle * float(i)) * Data.m_fRadius,
-                            0.0f);
+                           Sin(Angle * float(i)) * Data.m_fRadius,
+                           0.0f);
         auto Result = Data.m_Position + CurrentSegment;
         glVertex3fv(&Result.x);
     }

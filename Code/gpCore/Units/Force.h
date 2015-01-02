@@ -19,6 +19,9 @@ class gpForceUnit
     EZ_FORCE_INLINE friend
     gpForceUnit gpForce(gpMassUnit m, const gpAccelerationUnit& a){ return gpForce(gpValueOf(m) * gpValueOf(a)); }
 
-    EZ_FORCE_INLINE friend
-    const gpVec3& gpValueOf(const gpForceUnit& f) { return f.m_Value; }
+    EZ_FORCE_INLINE friend       gpVec3& gpValueOf(      gpForceUnit& f) { return f.m_Value; }
+    EZ_FORCE_INLINE friend const gpVec3& gpValueOf(const gpForceUnit& f) { return f.m_Value; }
+
+public:
+    gpForceUnit() {}
 };

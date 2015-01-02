@@ -244,6 +244,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\ScalarSyncer.h">
       <Filter>Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl">

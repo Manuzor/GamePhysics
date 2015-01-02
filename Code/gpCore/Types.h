@@ -28,12 +28,11 @@ using gpScalar = float;
 
 using gpVec2       = ezVec2Template<gpScalar>;
 using gpVec3       = ezVec3Template<gpScalar>;
-using gpRectI      = ezRectTemplate<ezUInt32>;
+using gpRectI      = ezRectTemplate<ezInt32>;
 using gpRectF      = ezRectTemplate<gpScalar>;
 using gpQuaternion = ezQuatTemplate<gpScalar>;
 using gpMat3       = ezMat3Template<gpScalar>;
 using gpMat4       = ezMat4Template<gpScalar>;
-using gpTransform  = ezTransformTemplate<gpScalar>;
 
 #define GP_DefineGlobalEzMathTypeEqualityFunction(TheTypeName)                                                      \
 EZ_FORCE_INLINE bool gpAreEqual(const TheTypeName& lhs, const TheTypeName& rhs, TheTypeName::ComponentType epsilon) \

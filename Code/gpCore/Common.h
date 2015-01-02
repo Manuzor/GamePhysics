@@ -57,3 +57,4 @@ using ValueTypeOf = typename gpInternal::ValueTypeOf<Type>::Type;
 }
 
 #include "gpCore/Units.h"
+#include "gpCore/Transform.h"
