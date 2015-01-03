@@ -51,13 +51,6 @@ public:
     GP_DefineVec3UnitConstructors(gpForce);
 };
 
-//GP_DefineVec3Unit(gpDisplacement, gpDisplacement)
-//GP_DefineVec3Unit(gpVelocity,     gpVelocity)
-//GP_DefineVec3Unit(gpAcceleration, gpAcceleration)
-//GP_DefineVec3Unit(gpForce,        gpForce)
-
-//#include "gpCore/Units/Time.h"
-
 // Algorithms
 //////////////////////////////////////////////////////////////////////////
 #include "gpCore/Units/Algorithms.h"
