@@ -158,8 +158,8 @@ void gpCollectGarbageOf(gpWorld& world)
     }
 }
 
-static void AccumulateForces(gpAccelerationUnit& out_Force,
-                             const gpDisplacementUnit& entityPos,
+static void AccumulateForces(gpAcceleration& out_Force,
+                             const gpDisplacement& entityPos,
                              ezArrayPtr<const gpForceFieldEntity*> ForceFields)
 {
     for (ezUInt32 i = 0; i < ForceFields.GetCount(); ++i)
@@ -176,15 +176,15 @@ static void AccumulateForces(gpAccelerationUnit& out_Force,
     }
 }
 
-void gpStepSimulationOf(gpWorld& world, ezTime dt)
+void gpStepSimulationOf(gpWorld& world, gpTime dt)
 {
     EZ_PROFILE(world.m_ProfilingId_Simulation);
 
-    auto fDeltaSeconds = (float)dt.GetSeconds();
+    auto fDeltaSeconds = (float)gpValueOf(dt);
     for(ezUInt32 i = 0; i < world.m_SimulatedEntities.GetCount(); ++i)
     {
         auto& entity = Deref(world.m_SimulatedEntities[i]);
-        const gpMassUnit& mass = gpMassOf(entity);
+        const gpMass& mass = gpMassOf(entity);
 
         // Linear movement
         //////////////////////////////////////////////////////////////////////////

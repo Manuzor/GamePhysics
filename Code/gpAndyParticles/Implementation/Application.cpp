@@ -212,7 +212,7 @@ void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 
 }
 
-void gpAndyParticlesApp::AddNewParticle(const gpDisplacementUnit& Position)
+void gpAndyParticlesApp::AddNewParticle(const gpDisplacement& Position)
 {
     static ezUInt32 uiCount = 0;
     m_pCurrentParticle = gpCreateEntityIn<gpParticleEntity>(Deref(m_pWorld));

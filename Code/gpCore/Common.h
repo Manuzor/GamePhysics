@@ -56,5 +56,9 @@ using ValueTypeOf = typename gpInternal::ValueTypeOf<Type>::Type;
     template<> struct ValueTypeOf<TheContainingType> { using Type = TheValueType; };      \
 }
 
+enum gpNoInitialization { gpNoInit };
+enum gpZeroInitialization { gpZero };
+enum gpIdentityInitialization { gpIdentity };
+
 #include "gpCore/Units.h"
 #include "gpCore/Transform.h"

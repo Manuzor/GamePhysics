@@ -18,7 +18,7 @@ private:
     ezProfilingId m_ProfilingId_CreateEntity;
     ezProfilingId m_ProfilingId_Extraction;
 
-    gpAccelerationUnit m_Gravity = gpAcceleration(gpVec3::ZeroVector());
+    gpAcceleration m_Gravity = gpAcceleration(gpVec3::ZeroVector());
     ezDynamicArray<gpForceFieldEntity*> m_ForceFields;
     ezDynamicArray<gpEntityBase*> m_CreatedEntities;
     ezDynamicArray<gpEntityBase*> m_SimulatedEntities;
@@ -32,14 +32,14 @@ private:
     // Friends
     //////////////////////////////////////////////////////////////////////////
     friend const ezString& gpNameOf(const gpWorld& world);
-    friend gpAccelerationUnit& gpGravityOf(gpWorld& world);
+    friend gpAcceleration& gpGravityOf(gpWorld& world);
     friend GP_CoreAPI ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity);
     friend GP_CoreAPI ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity);
     friend GP_CoreAPI void gpClearSimulatedEntities(gpWorld& world);
     friend GP_CoreAPI void gpClearForceFields(gpWorld& world);
     friend GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntityBase& entity);
     friend GP_CoreAPI void gpCollectGarbageOf(gpWorld& world);
-    friend GP_CoreAPI void gpStepSimulationOf(gpWorld& world, ezTime dt);
+    friend GP_CoreAPI void gpStepSimulationOf(gpWorld& world, gpTime dt);
     friend gpEntityDrawInfo*& gpDefaultDrawInfoPtrOf(gpWorld& world);
     friend GP_CoreAPI void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor);
     template<typename Type>
@@ -47,8 +47,8 @@ private:
 };
 
 EZ_FORCE_INLINE const ezString& gpNameOf(const gpWorld& world) { return world.m_sName; }
-EZ_FORCE_INLINE       gpAccelerationUnit& gpGravityOf(      gpWorld& world) { return world.m_Gravity; }
-EZ_FORCE_INLINE const gpAccelerationUnit& gpGravityOf(const gpWorld& world) { return gpGravityOf(const_cast<gpWorld&>(world)); }
+EZ_FORCE_INLINE       gpAcceleration& gpGravityOf(      gpWorld& world) { return world.m_Gravity; }
+EZ_FORCE_INLINE const gpAcceleration& gpGravityOf(const gpWorld& world) { return gpGravityOf(const_cast<gpWorld&>(world)); }
 
 GP_CoreAPI ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity);
 GP_CoreAPI ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity);
@@ -61,7 +61,7 @@ EZ_FORCE_INLINE void gpClear(gpWorld& world)
 }
 GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntityBase& entity);
 GP_CoreAPI void gpCollectGarbageOf(gpWorld& world);
-GP_CoreAPI void gpStepSimulationOf(gpWorld& world, ezTime dt);
+GP_CoreAPI void gpStepSimulationOf(gpWorld& world, gpTime dt);
 
 template<typename Type>
 EZ_FORCE_INLINE Type* gpCreateEntityIn(gpWorld& world)

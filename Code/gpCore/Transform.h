@@ -3,7 +3,7 @@
 class gpTransform
 {
     gpMat3 m_Rotation;
-    gpDisplacementUnit m_Position;
+    gpDisplacement m_Position;
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
@@ -11,13 +11,13 @@ class gpTransform
     EZ_FORCE_INLINE friend       gpMat3& gpRotationOf(      gpTransform& t) { return t.m_Rotation; }
     EZ_FORCE_INLINE friend const gpMat3& gpRotationOf(const gpTransform& t) { return t.m_Rotation; }
 
-    EZ_FORCE_INLINE friend       gpDisplacementUnit& gpPositionOf(      gpTransform& t) { return t.m_Position; }
-    EZ_FORCE_INLINE friend const gpDisplacementUnit& gpPositionOf(const gpTransform& t) { return t.m_Position; }
+    EZ_FORCE_INLINE friend       gpDisplacement& gpPositionOf(      gpTransform& t) { return t.m_Position; }
+    EZ_FORCE_INLINE friend const gpDisplacement& gpPositionOf(const gpTransform& t) { return t.m_Position; }
 
 public:
     gpTransform() {}
 
-    gpTransform(const gpMat3& Rotation, const gpDisplacementUnit& Position) :
+    gpTransform(const gpMat3& Rotation, const gpDisplacement& Position) :
         m_Rotation(Rotation),
         m_Position(Position)
     {

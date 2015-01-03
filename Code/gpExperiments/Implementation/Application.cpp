@@ -48,7 +48,7 @@ static void CleanupWorld()
     EZ_DEFAULT_DELETE(g_pWorld);
 }
 
-static void Update(ezTime dt)
+static void Update(gpTime dt)
 {
     gpStepSimulationOf(world, dt);
 }

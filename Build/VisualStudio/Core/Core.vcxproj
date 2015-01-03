@@ -83,6 +83,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Units\Force.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units\Mass.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units\Time.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\UnitBase.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units\Velocity.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\FileSystem.h" />

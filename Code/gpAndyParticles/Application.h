@@ -25,6 +25,6 @@ private:
 
 private:
     void PopulateWorld();
-    void AddNewParticle(const gpDisplacementUnit& Position);
+    void AddNewParticle(const gpDisplacement& Position);
     void ExtractVelocityData(gpRenderExtractor* pExtractor);
 };

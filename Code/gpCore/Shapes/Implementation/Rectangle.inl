@@ -1,5 +1,5 @@
 
-EZ_FORCE_INLINE bool gpContains(const gpRectF& Rectangle, const gpDisplacementUnit& Point)
+EZ_FORCE_INLINE bool gpContains(const gpRectF& Rectangle, const gpDisplacement& Point)
 {
     const auto& Pos = gpValueOf(Point);
 

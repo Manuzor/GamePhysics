@@ -188,7 +188,7 @@ static void EnableForceFieldSpawnAreaExtraction(bool bEnabled)
 enum gpPositionOfOverloadHelper { MouseCursor };
 
 // Call like this: gpPositionOf(MouseCursor)
-static gpDisplacementUnit gpPositionOf(gpPositionOfOverloadHelper)
+static gpDisplacement gpPositionOf(gpPositionOfOverloadHelper)
 {
     float fX;
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &fX);
