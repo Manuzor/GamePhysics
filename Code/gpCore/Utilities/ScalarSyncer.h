@@ -17,7 +17,7 @@ public:
     {
     }
 
-    void operator =(ScalarType fData) { m_fData = fData; m_fInverseData = gpInvert(fData); }
+    void operator =(ScalarType fData) { m_fData = fData; m_fInverseData = gpInverseOf(fData); }
     operator ScalarType() const { return m_fData; }
 };
 

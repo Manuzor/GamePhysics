@@ -184,25 +184,22 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
     for(ezUInt32 i = 0; i < world.m_SimulatedEntities.GetCount(); ++i)
     {
         auto& entity = Deref(world.m_SimulatedEntities[i]);
-        const gpMass& mass = gpMassOf(entity);
+        const gpMass& mass = gpMassOf(entity); /// \todo Use mass in calculations?
 
         // Linear movement
         //////////////////////////////////////////////////////////////////////////
-        auto F = (mass * gpGravityFactorOf(entity)) * gpGravityOf(world);
-        if(!ezMath::IsZero(gpValueOf(F).GetLengthSquared()))
+        gpAcceleration linAcceleration(gpZero);
+        AccumulateForces(linAcceleration, gpPositionOf(entity), gpGetConstView(world.m_ForceFields));
+        linAcceleration = linAcceleration + gpGravityOf(world) * gpGravityFactorOf(entity);
+
+        if(!gpIsZero(linAcceleration))
         {
-            // Coming from: F = m * a
-            // => a = F / m
-            auto vLinearAcceleration = F / mass;
-
-            AccumulateForces(vLinearAcceleration, gpPositionOf(entity), gpGetConstView(world.m_ForceFields));
-
             // v += a * dt
-            gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + (vLinearAcceleration * dt);
+            gpLinearVelocityOf(entity) += linAcceleration * dt;
         }
 
         // x += v * dt
-        gpPositionOf(entity) = gpPositionOf(entity) + (gpLinearVelocityOf(entity) * dt);
+        gpPositionOf(entity) += gpLinearVelocityOf(entity) * dt;
 
         // Angular Movement
         //////////////////////////////////////////////////////////////////////////
