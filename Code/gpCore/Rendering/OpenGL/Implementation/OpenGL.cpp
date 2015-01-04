@@ -88,7 +88,7 @@ void gpDraw(const gpDrawData::Polygon& Data)
     glMatrixMode(GL_MODELVIEW);
 
     float mModelView[16];
-    gpAsArray(Data.m_Transform, mModelView, ezMatrixLayout::ColumnMajor);
+    gpAsArray(gpAsMat4(Data.m_Transform), mModelView, ezMatrixLayout::ColumnMajor);
     glLoadMatrixf(mModelView);
 
     if (!IsZero(Data.m_FillColor.a))
@@ -147,7 +147,6 @@ void gpDraw(const gpDrawData::Box& Data)
     Vertices[3] = gpVec3(static_cast<gpScalar>(Data.m_Box.x + Data.m_Box.width), static_cast<gpScalar>(Data.m_Box.y),                     0.0f);
 
     gpDrawData::Polygon Polygon;
-    Polygon.m_Transform = gpIdentityTransform();
     Polygon.m_Vertices = Vertices;
     Polygon.m_FillColor = Data.m_FillColor;
     Polygon.m_OutlineColor = Data.m_OutlineColor;

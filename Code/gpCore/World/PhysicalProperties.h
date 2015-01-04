@@ -2,12 +2,12 @@
 
 struct gpPhysicalProperties
 {
-    gpTransform    m_Transform       = gpIdentityTransform();
-    gpVelocity m_LinearVelocity  = gpVelocity(gpVec3{ 0, 0, 0 });
-    gpVelocity m_AngularVelocity = gpVelocity(gpVec3{ 0, 0, 0 });
-    gpScalar       m_fGravityFactor  = 1.0f;
-    gpMass         m_Mass            = gpMass(1.0f);
-    gpMass         m_InverseMass     = gpMass(1.0f);
+    gpTransform m_Transform       = gpTransform(gpIdentity);
+    gpVelocity  m_LinearVelocity  = gpVelocity(0, 0, 0);
+    gpVelocity  m_AngularVelocity = gpVelocity(0, 0, 0);
+    gpScalar    m_fGravityFactor  = 1.0f;
+    gpMass      m_Mass            = gpMass(1.0f);
+    gpMass      m_InverseMass     = gpMass(1.0f);
 };
 
 EZ_FORCE_INLINE       gpTransform& gpTransformOf(      gpPhysicalProperties& props) { return props.m_Transform; }

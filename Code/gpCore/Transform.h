@@ -17,6 +17,20 @@ class gpTransform
 public:
     gpTransform() {}
 
+    explicit gpTransform(gpNoInitialization){}
+
+    explicit gpTransform(gpZeroInitialization) :
+        m_Rotation(gpMat3::ZeroMatrix()),
+        m_Position(gpZero)
+    {
+    }
+
+    explicit gpTransform(gpIdentityInitialization) :
+        m_Rotation(gpMat3::IdentityMatrix()),
+        m_Position(gpIdentity)
+    {
+    }
+
     gpTransform(const gpMat3& Rotation, const gpDisplacement& Position) :
         m_Rotation(Rotation),
         m_Position(Position)
@@ -30,7 +44,8 @@ EZ_FORCE_INLINE void gpAssertNotNAN(const gpTransform& t)
     EZ_NAN_ASSERT(&gpValueOf(gpPositionOf(t)));
 }
 
-EZ_FORCE_INLINE gpTransform gpIdentityTransform() { return gpTransform(gpMat3::IdentityMatrix(), gpDisplacement(gpVec3::ZeroVector())); }
+EZ_FORCE_INLINE
+gpMat4 gpAsMat4(const gpTransform& t) { return gpMat4(gpRotationOf(t), gpValueOf(gpPositionOf(t))); }
 
 /// \brief Copies the rotation and position data from \a Transform into \a out_pData
 EZ_FORCE_INLINE

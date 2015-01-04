@@ -12,33 +12,28 @@
 #include "gpCore/Shapes/Polygon.h"
 
 static gpWorld* g_pWorld = nullptr;
-#define world Deref(g_pWorld)
 
 static gpRigidBody* g_pEntity = nullptr;
-#define entity Deref(g_pEntity)
 
-static void PopulateWorld()
+static void Populate(gpWorld& world)
 {
-    g_pWorld = EZ_DEFAULT_NEW(gpWorld)("World");
-    EZ_ASSERT(g_pWorld, "Unable to create world.");
-
     gpGravityOf(world) = gpAcceleration(gpVec3(0, 9.81f, 0));
 
     g_pEntity = gpCreateEntityIn<gpRigidBody>(world);
     EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");
 
-    gpAddReferenceTo(entity);
-    gpNameOf(entity) = "Player";
-    gpMassOf(entity) = gpMass(5.0f);
-    gpPositionOf(entity) = gpDisplacement(200, 300, 0);
+    gpAddReferenceTo(Deref(g_pEntity));
+    gpNameOf(Deref(g_pEntity)) = "Player";
+    gpMassOf(Deref(g_pEntity)) = gpMass(5.0f);
+    gpPositionOf(Deref(g_pEntity)) = gpDisplacement(200, 300, 0);
     auto pShape = EZ_DEFAULT_NEW(gpPolygonShape);
     gpConvertToBox(Deref(pShape), gpVec3(50.0f, 50.0f, 0.0f));
-    gpShapePtrOf(entity) = pShape;
+    gpShapePtrOf(Deref(g_pEntity)) = pShape;
 
-    EZ_VERIFY(gpAddEntityTo(world, entity).Succeeded(), "Failed to add entity to world.");
+    EZ_VERIFY(gpAddEntityTo(world, Deref(g_pEntity)).Succeeded(), "Failed to add entity to world.");
 }
 
-static void CleanupWorld()
+static void Cleanup(gpWorld& world, gpRigidBody& entity)
 {
     EZ_DEFAULT_DELETE(gpShapePtrOf(entity));
     gpReleaseReferenceTo(entity);
@@ -46,11 +41,6 @@ static void CleanupWorld()
 
     g_pEntity = nullptr;
     EZ_DEFAULT_DELETE(g_pWorld);
-}
-
-static void Update(gpTime dt)
-{
-    gpStepSimulationOf(world, dt);
 }
 
 static void OnRenderExtraction(gpRenderExtractor* pExtractor)
@@ -123,16 +113,19 @@ void gpExperimentsApp::AfterEngineInit()
         SetupRendering();
     }
 
-    //gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
+    gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
     gpRenderExtractor::AddExtractionListener([](gpRenderExtractor* pExtractor){
-        gpExtractRenderDataOf(world, pExtractor);
+        gpExtractRenderDataOf(Deref(g_pWorld), pExtractor);
     });
-    PopulateWorld();
+
+    g_pWorld = EZ_DEFAULT_NEW(gpWorld)("World");
+    EZ_ASSERT(g_pWorld, "Unable to create world.");
+    Populate(Deref(g_pWorld));
 }
 
 void gpExperimentsApp::BeforeEngineShutdown()
 {
-    CleanupWorld();
+    ::Cleanup(Deref(g_pWorld), Deref(g_pEntity));
 
     ezStartup::ShutdownEngine();
     Cleanup();
@@ -160,7 +153,7 @@ ezApplication::ApplicationExecution gpExperimentsApp::Run()
         bInputUpdated = true;
 
         UpdateInput(tUpdateInterval);
-        Update(tUpdateInterval);
+        gpStepSimulationOf(Deref(g_pWorld), tUpdateInterval);
 
         m_LastUpdate += tUpdateInterval;
     }

@@ -8,13 +8,14 @@ using gpStringData = const CharacterType*;
 template<typename CharacterType = char>
 using gpStringBuffer = CharacterType*;
 
-#if EZ_ENABLED(EZ_OFF)
+#define GP_CheckDerefForNull EZ_OFF
+#if EZ_ENABLED(GP_CheckDerefForNull)
 // Inline functions to keep the syntax clean.
 template<typename T> EZ_FORCE_INLINE       T* AddressOf(      T& x) { return &x; }
 template<typename T> EZ_FORCE_INLINE const T* AddressOf(const T& x) { return &x; }
 
-template<typename T> EZ_FORCE_INLINE       T& Deref(      T* x) { EZ_ASSERT(x, ""); return *x; }
-template<typename T> EZ_FORCE_INLINE const T& Deref(const T* x) { EZ_ASSERT(x, ""); return *x; }
+template<typename T> EZ_FORCE_INLINE       T& Deref(      T* x) { EZ_ASSERT(x, "Dereferencing nullptr!"); return *x; }
+template<typename T> EZ_FORCE_INLINE const T& Deref(const T* x) { EZ_ASSERT(x, "Dereferencing nullptr!"); return *x; }
 #else
 
 #define AddressOf(x) (&x)
@@ -77,6 +78,9 @@ bool gpIsZero(Type value, Type epsilon = ezMath::BasicType<Type>::SmallEpsilon()
 
 EZ_FORCE_INLINE bool gpIsIdentity(const gpMat3& m, gpScalar epsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon()) { return m.IsIdentity(epsilon); }
 EZ_FORCE_INLINE bool gpIsIdentity(const gpMat4& m, gpScalar epsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon()) { return m.IsIdentity(epsilon); }
+
+EZ_FORCE_INLINE void gpAsArray(const gpMat3& m, gpScalar* out_pData, ezMatrixLayout::Enum layout) { m.GetAsArray(out_pData, layout); }
+EZ_FORCE_INLINE void gpAsArray(const gpMat4& m, gpScalar* out_pData, ezMatrixLayout::Enum layout) { m.GetAsArray(out_pData, layout); }
 
 enum class gpObjectInitialization { Yes, No };
 

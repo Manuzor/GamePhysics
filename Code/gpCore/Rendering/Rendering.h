@@ -73,7 +73,7 @@ namespace gpDrawData
 
     struct Polygon : public ExtendBaseHelper<Polygon, Type::Polygon>
     {
-        gpTransform m_Transform;
+        gpTransform m_Transform = gpTransform(gpIdentity);
         ezHybridArray<gpVec3, 8> m_Vertices;
 
         ezColor m_FillColor =    { 1.0f, 1.0f, 1.0f, 1.0f };
