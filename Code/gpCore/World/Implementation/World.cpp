@@ -180,7 +180,6 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
 {
     EZ_PROFILE(world.m_ProfilingId_Simulation);
 
-    auto fDeltaSeconds = (float)gpValueOf(dt);
     for(ezUInt32 i = 0; i < world.m_SimulatedEntities.GetCount(); ++i)
     {
         auto& entity = Deref(world.m_SimulatedEntities[i]);
@@ -190,7 +189,7 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
         //////////////////////////////////////////////////////////////////////////
         gpAcceleration linAcceleration(gpZero);
         AccumulateForces(linAcceleration, gpPositionOf(entity), gpGetConstView(world.m_ForceFields));
-        linAcceleration = linAcceleration + gpGravityOf(world) * gpGravityFactorOf(entity);
+        linAcceleration = (linAcceleration + gpGravityOf(world)) * gpGravityFactorOf(entity);
 
         if(!gpIsZero(linAcceleration))
         {
@@ -203,7 +202,7 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
 
         // Angular Movement
         //////////////////////////////////////////////////////////////////////////
-
+        /// \todo Implement this.
     }
 }
 
