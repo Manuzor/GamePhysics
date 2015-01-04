@@ -41,3 +41,24 @@ template<typename Type> EZ_FORCE_INLINE void gpReleaseReferenceTo(Type* pObject)
 #define self (*this)
 
 #define GP_OnScopeExit gpInternal::ScopeExitHelper<std::function<void()>> EZ_CONCAT(ScopeExit_, EZ_SOURCE_LINE) = [&]
+
+namespace gpInternal
+{
+    template<typename T> struct ValueTypeOf { using Type = T; };
+}
+
+/// \brief Type function to get the value type of a given type \a Type.
+template<typename Type>
+using ValueTypeOf = typename gpInternal::ValueTypeOf<Type>::Type;
+
+#define GP_DeclareValueTypeFunction(TheContainingType, TheValueType) namespace gpInternal \
+{                                                                                         \
+    template<> struct ValueTypeOf<TheContainingType> { using Type = TheValueType; };      \
+}
+
+enum gpNoInitialization { gpNoInit };
+enum gpZeroInitialization { gpZero };
+enum gpIdentityInitialization { gpIdentity };
+
+#include "gpCore/Units.h"
+#include "gpCore/Transform.h"

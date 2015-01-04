@@ -18,15 +18,14 @@ namespace gpDrawData
 
         const Type m_Type;
         const size_t m_uiOffsetToNext;
-
-        /// \brief Convenient access to the next instance in memory.
-        ///
-        /// cast (this) to byte* -> add offset -> cast back to Base*
-        EZ_FORCE_INLINE Base* GetNext()
-        {
-            return reinterpret_cast<Base*>(reinterpret_cast<gpByte*>(this) + m_uiOffsetToNext);
-        }
     };
+
+    /// \brief Convenient access to the next instance in memory.
+    EZ_FORCE_INLINE Base* gpNext(Base* pBase)
+    {
+        // cast \a pBase to byte-ptr -> add offset -> cast back to Base-ptr
+        return reinterpret_cast<Base*>(reinterpret_cast<gpByte*>(pBase) + pBase->m_uiOffsetToNext);
+    }
 
     /// \brief Helper struct to declare draw data types more conveniently
     template<typename Derived, Type DerivedType>
@@ -74,7 +73,7 @@ namespace gpDrawData
 
     struct Polygon : public ExtendBaseHelper<Polygon, Type::Polygon>
     {
-        gpTransform m_Transform;
+        gpTransform m_Transform = gpTransform(gpIdentity);
         ezHybridArray<gpVec3, 8> m_Vertices;
 
         ezColor m_FillColor =    { 1.0f, 1.0f, 1.0f, 1.0f };

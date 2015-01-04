@@ -26,16 +26,16 @@ static void Extract(gpRenderExtractor* pExtractor,
     auto pData = pExtractor->AllocateRenderData<gpDrawData::Point>();
     pData->m_Color = drawInfo.m_Color;
 
-    pData->m_Position = gpPositionOf(particle);
+    pData->m_Position = gpValueOf(gpPositionOf(particle));
     pData->m_fPointSize = drawInfo.m_fScale;
 
     // If alpha > 0 and speed > 0
     if (!ezMath::IsZero(drawInfo.m_LinearVelocityColor.a)
-        && !gpLinearVelocityOf(particle).IsZero())
+        && !gpValueOf(gpLinearVelocityOf(particle)).IsZero())
     {
         auto pVel = pExtractor->AllocateRenderData<gpDrawData::Arrow>();
-        pVel->m_Start = gpPositionOf(particle);
-        pVel->m_End = gpPositionOf(particle) + gpLinearVelocityOf(particle);
+        pVel->m_Start = gpValueOf(gpPositionOf(particle));
+        pVel->m_End = pVel->m_Start + gpValueOf(gpLinearVelocityOf(particle));
         pVel->m_Color = drawInfo.m_LinearVelocityColor;
         pVel->m_WingAngle = drawInfo.m_LinearVelocityArrowWingAngle;
         pVel->m_fWingLength = drawInfo.m_fLinearVelocityArrowWingLength;
@@ -55,7 +55,7 @@ static void Extract(gpRenderExtractor* pExtractor,
     pData->m_FillColor.a *= 0.1f;
     pData->m_uiNumLineSegments = 20;
 
-    pData->m_Position = gpPositionOf(forceField);
+    pData->m_Position = gpValueOf(gpPositionOf(forceField));
     pData->m_fRadius = gpRadiusOf(forceField);
 }
 
@@ -69,7 +69,7 @@ static void Extract(gpRenderExtractor* pExtractor,
     case gpShapeType::Circle:
     {
         auto pCircle = pExtractor->AllocateRenderData<gpDrawData::Circle>();
-        pCircle->m_Position = gpPositionOf(props);
+        pCircle->m_Position = gpValueOf(gpPositionOf(props));
         pCircle->m_fRadius = gpRadiusOf(static_cast<const gpCircleShape&>(shape));
 
         pCircle->m_uiNumLineSegments = 20;

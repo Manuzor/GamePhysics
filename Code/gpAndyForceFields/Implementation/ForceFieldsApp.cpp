@@ -89,7 +89,7 @@ static void SpawnTarget(gpWorld* pWorld)
         return;
 
     // \todo Random position for target.
-    gpPositionOf(playerTarget).Set(450, 50, 0);
+    gpSet(gpPositionOf(playerTarget), 450, 50, 0);
 
     gpAddEntityTo(Deref(pWorld), playerTarget);
     gpDrawInfoOf(Deref(pWorld), playerTarget).m_Color = ezColor::GetYellow();
@@ -188,7 +188,7 @@ static void EnableForceFieldSpawnAreaExtraction(bool bEnabled)
 enum gpPositionOfOverloadHelper { MouseCursor };
 
 // Call like this: gpPositionOf(MouseCursor)
-static gpVec3 gpPositionOf(gpPositionOfOverloadHelper)
+static gpDisplacement gpPositionOf(gpPositionOfOverloadHelper)
 {
     float fX;
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &fX);
@@ -198,7 +198,7 @@ static gpVec3 gpPositionOf(gpPositionOfOverloadHelper)
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionY, &fY);
     fY *= gpWindow::GetHeightCVar()->GetValue();
 
-    return gpVec3(fX, fY, 0.0f);
+    return gpDisplacement(fX, fY, 0.0f);
 }
 
 static bool g_bSkipUpdate = false;
@@ -351,9 +351,9 @@ void gpAndyForceFieldsApp::CreateForceFields()
         }
 
         gpRadiusOf(forceField) = g_Rand.GenerateFloat(g_fForceFieldMinRadius.GetValue(), g_fForceFieldMaxRadius.GetValue());
-        gpForceOf(forceField) = g_Rand.GenerateFloat(g_fForceFieldMinForce.GetValue(), g_fForceFieldMaxForce.GetValue());
+        gpForceFactorOf(forceField) = g_Rand.GenerateFloat(g_fForceFieldMinForce.GetValue(), g_fForceFieldMaxForce.GetValue());
 
-        gpRandomize(g_Rand, gpPositionOf(forceField), MinPosition, MaxPosition);
+        gpRandomize(g_Rand, gpValueOf(gpPositionOf(forceField)), MinPosition, MaxPosition);
 
         gpAddEntityTo(world, forceField);
     }
@@ -368,9 +368,9 @@ void gpAndyForceFieldsApp::CreatePlayer()
 
     gpAddReferenceTo(player);
     gpNameOf(player) = "Player";
-    gpPositionOf(player).Set(100, 200, 0);
+    gpSet(gpPositionOf(player), 100, 200, 0);
     gpGravityFactorOf(player) = 0.0f;
-    //gpLinearVelocityOf(player).Set(10, 10, 0);
+    //gpSet(gpLinearVelocityOf(player), /* => */ 10, 10, 0);
 }
 
 bool gpAndyForceFieldsApp::CanSpawnPlayer()
@@ -394,7 +394,7 @@ void gpAndyForceFieldsApp::SpawnAndFreezePlayer()
         return; // Player is already spawned.
 
     gpPositionOf(player) = gpPositionOf(MouseCursor);
-    gpLinearVelocityOf(player).SetZero();
+    gpLinearVelocityOf(player) = gpVelocity(gpVec3::ZeroVector());
     gpGravityFactorOf(player) = 0.0f;
 
     auto result = gpAddEntityTo(world, player);
@@ -410,17 +410,19 @@ void gpAndyForceFieldsApp::UnfreezePlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
-    if(!ezMath::IsZero(gpLinearVelocityOf(player).GetLengthSquared(), 0.01f))
+    if(!ezMath::IsZero(gpValueOf(gpLinearVelocityOf(player)).GetLengthSquared(), 0.01f))
         return; // Player is already moving
 
     gpGravityFactorOf(player) = 1.0f;
-    gpLinearVelocityOf(player) = gpPositionOf(MouseCursor) - gpPositionOf(player);
+    gpLinearVelocityOf(player) = gpVelocity(gpValueOf(gpPositionOf(MouseCursor) - gpPositionOf(player)));
 
     auto fMaxSpeed = s_fPlayerMaxSpeed.GetValue();
 
-    if (gpLinearVelocityOf(player).GetLengthSquared() > fMaxSpeed * fMaxSpeed)
+    if (gpValueOf(gpLinearVelocityOf(player)).GetLengthSquared() > fMaxSpeed * fMaxSpeed)
     {
-        gpLinearVelocityOf(player).SetLength(fMaxSpeed);
+        auto v = gpValueOf(gpLinearVelocityOf(player));
+        v.SetLength(fMaxSpeed);
+        gpLinearVelocityOf(player) = gpVelocity(v);
     }
 
     ezLog::Success("Player is moving.");
@@ -482,7 +484,7 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
     }
     else if (PlayerState != PlayerSpawnState::NotInWorld)
     {
-        auto& Pos = gpPositionOf(player);
+        const auto& Pos = gpValueOf(gpPositionOf(player));
         if (Pos.x < 0.0f || Pos.x > gpWindow::GetWidthCVar()->GetValue()
          || Pos.y < 0.0f || Pos.y > gpWindow::GetHeightCVar()->GetValue())
         {
@@ -541,7 +543,7 @@ void gpAndyForceFieldsApp::ResetWorld()
 void gpAndyForceFieldsApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 {
     auto pVelVector = pExtractor->AllocateRenderData<gpDrawData::Arrow>();
-    pVelVector->m_Start = gpPositionOf(player);
+    pVelVector->m_Start = gpValueOf(gpPositionOf(player));
     pVelVector->m_End.SetZero();
     ezInputManager::GetInputSlotState(ezInputSlot_MousePositionX, &pVelVector->m_End.x);
     pVelVector->m_End.x *= gpWindow::GetWidthCVar()->GetValue();

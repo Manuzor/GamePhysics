@@ -52,6 +52,9 @@
     <Filter Include="Algorithm">
       <UniqueIdentifier>{b57cfa4f-8205-4851-b980-b95762e6dba6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Units">
+      <UniqueIdentifier>{06560e95-9e7c-405a-a8bf-c916780d294d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp">
@@ -213,11 +216,19 @@
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Polygon.h">
       <Filter>Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\ScalarSyncer.h">
-      <Filter>World</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Algorithm\Integrate.h">
       <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Units.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms.h">
+      <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\ScalarSyncer.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Transform.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\UnitBase.h">
+      <Filter>Units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

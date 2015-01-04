@@ -14,6 +14,9 @@
     <ClCompile Include="..\..\..\Code\gpCoreTests\Tests\Test_RandomNumbers.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCoreTests\Tests\Test_Units.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCoreTests\PCH.h" />

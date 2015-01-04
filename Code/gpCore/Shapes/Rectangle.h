@@ -1,5 +1,5 @@
 #pragma once
 
-bool gpContains(const gpRectF& Rectangle, const gpVec3& Point);
+bool gpContains(const gpRectF& Rectangle, const gpDisplacement& Point);
 
 #include "gpCore/Shapes/Implementation/Rectangle.inl"
