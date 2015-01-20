@@ -89,7 +89,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\View.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\Entity.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\World\EntityType.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\ForceField.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\PhysicalProperties.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\World.h" />

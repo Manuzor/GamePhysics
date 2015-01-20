@@ -171,9 +171,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\World\World.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\EntityType.h">
-      <Filter>World</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Common.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Config.h" />
