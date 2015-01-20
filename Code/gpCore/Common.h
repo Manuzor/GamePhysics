@@ -14,6 +14,8 @@
     throw gpNotImplementedException();     \
 } while(false)
 
+#include "gpCore/Allocation.h"
+
 namespace gpInternal
 {
     template<typename CallableType>

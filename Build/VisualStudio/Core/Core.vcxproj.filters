@@ -245,6 +245,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Dynamics\CollisionDetection.h">
       <Filter>Dynamics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Allocation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl">
