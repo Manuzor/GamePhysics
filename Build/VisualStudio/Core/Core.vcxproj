@@ -22,6 +22,7 @@
     <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Input.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Rendering.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Dynamics\Implementation\CollisionDetection.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Implementation\Window.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\PCH.cpp">
@@ -59,6 +60,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Dependencies\EzEngine.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Dependencies\OpenGL.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Dependencies\Stl.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Dynamics\CollisionDetection.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Memory\FixedStackAllocator.h" />
     <ClInclude Include="..\..\..\Code\gpCore\PCH.h" />

@@ -55,6 +55,12 @@
     <Filter Include="Units">
       <UniqueIdentifier>{06560e95-9e7c-405a-a8bf-c916780d294d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dynamics">
+      <UniqueIdentifier>{fae5c353-af9e-4e71-9645-a1560f3faa0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dynamics\Implementation">
+      <UniqueIdentifier>{ce5df00d-56bd-41b1-91d8-a13d9fc6f69c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp">
@@ -120,6 +126,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.cpp">
       <Filter>Shapes\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Dynamics\Implementation\CollisionDetection.cpp">
+      <Filter>Dynamics\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Units\Units.h">
       <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Dynamics\CollisionDetection.h">
+      <Filter>Dynamics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -81,6 +81,9 @@ bool gpIsZero(Type value, Type epsilon = ezMath::BasicType<Type>::SmallEpsilon()
     return ezMath::IsZero(value, epsilon);
 }
 
+template<typename Type> EZ_FORCE_INLINE
+Type gpSquare(Type value) { return ezMath::Square(value); }
+
 EZ_FORCE_INLINE bool gpIsIdentity(const gpMat3& m, gpScalar epsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon()) { return m.IsIdentity(epsilon); }
 EZ_FORCE_INLINE bool gpIsIdentity(const gpMat4& m, gpScalar epsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon()) { return m.IsIdentity(epsilon); }
 
