@@ -42,6 +42,7 @@ void gpApplicationBase::SetupFileSystem()
         EZ_VERIFY(result.Succeeded(), "Failed to mount Logs directory");
     }
 
+#if EZ_ENABLED(EZ_OFF) // Settings are not supported yet
     // Settings dir
     {
         ezStringBuilder sDir = gpGetWorkingDirectory();
@@ -49,6 +50,7 @@ void gpApplicationBase::SetupFileSystem()
         auto result = ezFileSystem::AddDataDirectory(sDir, ezFileSystem::AllowWrites, "Settings", "Settings");
         EZ_VERIFY(result.Succeeded(), "Failed to mount Settings directory");
     }
+#endif
 }
 
 void gpApplicationBase::SetupLogging()
@@ -60,7 +62,7 @@ void gpApplicationBase::SetupLogging()
         ezStringBuilder sbAbsFileName = GetArgument(0);
         ezStringBuilder sbLogFileName = "<Logs>";
         sbLogFileName.Append(sbAbsFileName.GetFileNameAndExtension().GetData(), ".log");
-        m_TextFileLogger.BeginLog(sbLogFileName);
+        m_TextFileLogger.BeginLog(sbLogFileName); // => "<Logs>C:\whatever\theProgram.exe.log"
     }
 
     // Setup the logging system
