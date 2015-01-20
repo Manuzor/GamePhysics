@@ -43,7 +43,7 @@ private:
     friend gpEntityDrawInfo*& gpDefaultDrawInfoPtrOf(gpWorld& world);
     friend GP_CoreAPI void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor);
     template<typename Type>
-    friend Type* gpCreateEntityIn(gpWorld& world);
+    friend Type* gpCreateEntity(gpWorld& world);
 };
 
 EZ_FORCE_INLINE const ezString& gpNameOf(const gpWorld& world) { return world.m_sName; }
@@ -64,7 +64,7 @@ GP_CoreAPI void gpCollectGarbageOf(gpWorld& world);
 GP_CoreAPI void gpStepSimulationOf(gpWorld& world, gpTime dt);
 
 template<typename Type>
-EZ_FORCE_INLINE Type* gpCreateEntityIn(gpWorld& world)
+EZ_FORCE_INLINE Type* gpCreateEntity(gpWorld& world)
 {
     EZ_PROFILE(world.m_ProfilingId_CreateEntity);
     auto pEntity = EZ_DEFAULT_NEW(Type);

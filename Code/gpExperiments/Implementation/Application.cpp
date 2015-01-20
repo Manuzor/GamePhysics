@@ -19,7 +19,7 @@ static void Populate(gpWorld& world)
 {
     gpGravityOf(world) = gpAcceleration(gpVec3(0, 9.81f, 0));
 
-    g_pEntity = gpCreateEntityIn<gpRigidBody>(world);
+    g_pEntity = gpCreateEntity<gpRigidBody>(world);
     EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");
 
     gpAddReferenceTo(Deref(g_pEntity));
@@ -113,7 +113,7 @@ void gpExperimentsApp::AfterEngineInit()
         SetupRendering();
     }
 
-    gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
+    //gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(OnRenderExtraction));
     gpRenderExtractor::AddExtractionListener([](gpRenderExtractor* pExtractor){
         gpExtractRenderDataOf(Deref(g_pWorld), pExtractor);
     });

@@ -118,7 +118,7 @@ static void CreateTarget(gpWorld* pWorld)
         pCircle = &Circle;
     }
 
-    g_pPlayerTarget = gpCreateEntityIn<gpRigidBody>(Deref(pWorld));
+    g_pPlayerTarget = gpCreateEntity<gpRigidBody>(Deref(pWorld));
     EZ_ASSERT(g_pPlayerTarget, "Failed to create player target (rigid body)");
 
     gpAddReferenceTo(playerTarget);
@@ -338,7 +338,7 @@ void gpAndyForceFieldsApp::CreateForceFields()
 
     for (ezUInt64 i = 0; i < uiNumForceFields; ++i)
     {
-        auto pForceField = gpCreateEntityIn<gpForceFieldEntity>(world);
+        auto pForceField = gpCreateEntity<gpForceFieldEntity>(world);
         EZ_ASSERT(pForceField, "Failed to create force field.");
 
         auto& forceField = Deref(pForceField);
@@ -363,7 +363,7 @@ void gpAndyForceFieldsApp::CreateForceFields()
 
 void gpAndyForceFieldsApp::CreatePlayer()
 {
-    m_pPlayer = gpCreateEntityIn<gpParticleEntity>(world);
+    m_pPlayer = gpCreateEntity<gpParticleEntity>(world);
     EZ_ASSERT(m_pPlayer, "Failed to create player (particle)");
 
     gpAddReferenceTo(player);

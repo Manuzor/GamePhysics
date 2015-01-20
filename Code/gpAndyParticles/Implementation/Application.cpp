@@ -112,7 +112,7 @@ ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
 
 void gpAndyParticlesApp::PopulateWorld()
 {
-    auto pParticle = gpCreateEntityIn<gpParticleEntity>(Deref(m_pWorld));
+    auto pParticle = gpCreateEntity<gpParticleEntity>(Deref(m_pWorld));
     EZ_ASSERT(pParticle, "Failed to create particle");
     auto& particle = Deref(pParticle);
     gpNameOf(particle) = "TheParticle";
@@ -215,7 +215,7 @@ void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 void gpAndyParticlesApp::AddNewParticle(const gpDisplacement& Position)
 {
     static ezUInt32 uiCount = 0;
-    m_pCurrentParticle = gpCreateEntityIn<gpParticleEntity>(Deref(m_pWorld));
+    m_pCurrentParticle = gpCreateEntity<gpParticleEntity>(Deref(m_pWorld));
     EZ_ASSERT(m_pCurrentParticle, "Failed to create new particle");
 
     auto& particle = Deref(m_pCurrentParticle);
