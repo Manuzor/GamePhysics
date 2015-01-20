@@ -203,7 +203,7 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
         // Angular Movement
         //////////////////////////////////////////////////////////////////////////
 
-        auto& A          = gpRotationOf(entity);
+        auto& A          = gpValueOf(gpRotationOf(entity));
         auto& invI       = gpInverseInertiaOf(entity);
         auto transposedA = gpTransposeOf(A);
         auto wInvI       = gpInverseInertia((gpValueOf(A) * gpValueOf(invI)) * gpValueOf(transposedA));
@@ -219,9 +219,9 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
                         w3, 0.0f,  -w1,
                        -w2,   w1, 0.0f);
 
-        auto newA = gpValueOf(A) + ((boxedW * (gpScalar)gpValueOf(dt)) * gpValueOf(A));
+        auto newA = A + ((boxedW * (gpScalar)gpValueOf(dt)) * A);
         gpOrthogonalize(newA);
-        A = gpOrientation(newA);
+        gpRotationOf(entity) = gpOrientation(newA);
     }
 }
 

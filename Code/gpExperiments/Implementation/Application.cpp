@@ -38,7 +38,7 @@ static void Populate(gpWorld& world)
 
     EZ_VERIFY(gpAddEntityTo(world, Deref(g_pEntity)).Succeeded(), "Failed to add entity to world.");
 
-    gpApplyForceTo(Deref(g_pEntity), gpForce(1000, 0, 0), gpTime(100), gpDisplacement(0, 1, 0));
+    gpApplyForceTo(Deref(g_pEntity), gpForce(20000, 0, 0), gpTime(1), gpDisplacement(0, 1, 0));
 }
 
 static void Cleanup(gpWorld& world, gpRigidBody& entity)
