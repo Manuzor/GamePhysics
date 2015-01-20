@@ -46,25 +46,31 @@ inline gpLinearAcceleration operator /(const gpLinearVelocity& v, gpTime t)
 //////////////////////////////////////////////////////////////////////////
 
 /// A = w * dt
-gpOrientation operator *(const gpAngularVelocity& w, gpTime dt)
+inline gpOrientation operator *(const gpAngularVelocity& w, gpTime dt)
 {
-    return gpOrientation::Radians(gpValueOf(w) * (gpScalar)gpValueOf(dt));
+    return gpOrientation(gpValueOf(w) * (gpScalar)gpValueOf(dt));
 }
 
 /// w = a * dt
-gpAngularVelocity operator *(const gpAngularAcceleration& a, gpTime dt)
+inline gpAngularVelocity operator *(const gpAngularAcceleration& a, gpTime dt)
 {
     return gpAngularVelocity(gpValueOf(a) * (gpScalar)gpValueOf(dt));
 }
 
 /// w = L * inverse(I)
-gpAngularVelocity operator *(const gpAngularMomentum& L, const gpInverseInertia& invI)
+inline gpAngularVelocity operator *(const gpInverseInertia& invI, const gpAngularMomentum& L)
 {
-    return gpAngularVelocity(gpValueOf(L) * gpValueOf(invI));
+    return gpAngularVelocity(gpValueOf(invI) * gpValueOf(L));
 }
 
 /// a = t * inverse(I)
-gpAngularAcceleration operator *(const gpTorque& t, const gpInverseInertia& invI)
+inline gpAngularAcceleration operator *(const gpInverseInertia& invI, const gpTorque& t)
 {
-    return gpAngularAcceleration(gpValueOf(t) * gpValueOf(invI));
+    return gpAngularAcceleration(gpValueOf(invI) * gpValueOf(t));
+}
+
+/// L = t * dt
+inline gpAngularMomentum operator *(const gpTorque& t, gpTime dt)
+{
+    return gpAngularMomentum(gpValueOf(t) * (gpScalar)gpValueOf(dt));
 }

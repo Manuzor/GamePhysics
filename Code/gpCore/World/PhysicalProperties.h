@@ -17,8 +17,8 @@ EZ_FORCE_INLINE const gpTransform& gpTransformOf(const gpPhysicalProperties& pro
 EZ_FORCE_INLINE       gpDisplacement& gpPositionOf(      gpPhysicalProperties& props) { return gpPositionOf(gpTransformOf(props)); }
 EZ_FORCE_INLINE const gpDisplacement& gpPositionOf(const gpPhysicalProperties& props) { return gpPositionOf(gpTransformOf(props)); }
 
-EZ_FORCE_INLINE       gpMat3& gpRotationOf(      gpPhysicalProperties& props) { return gpRotationOf(gpTransformOf(props)); }
-EZ_FORCE_INLINE const gpMat3& gpRotationOf(const gpPhysicalProperties& props) { return gpRotationOf(gpTransformOf(props)); }
+EZ_FORCE_INLINE       gpOrientation& gpRotationOf(      gpPhysicalProperties& props) { return gpRotationOf(gpTransformOf(props)); }
+EZ_FORCE_INLINE const gpOrientation& gpRotationOf(const gpPhysicalProperties& props) { return gpRotationOf(gpTransformOf(props)); }
 
 EZ_FORCE_INLINE       gpLinearVelocity& gpLinearVelocityOf(      gpPhysicalProperties& props) { return props.m_LinearVelocity; }
 EZ_FORCE_INLINE const gpLinearVelocity& gpLinearVelocityOf(const gpPhysicalProperties& props) { return props.m_LinearVelocity; }

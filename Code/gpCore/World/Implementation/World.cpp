@@ -202,6 +202,15 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
 
         // Angular Movement
         //////////////////////////////////////////////////////////////////////////
+        continue;
+
+        auto& A          = gpRotationOf(entity);
+        auto& invI       = gpInverseInertiaOf(entity);
+        auto transposedA = gpTransposeOf(A);
+        auto wInvI       = gpInverseInertia((gpValueOf(A) * gpValueOf(invI)) * gpValueOf(transposedA));
+
+        // Angular velocity
+        auto w = wInvI * gpAngularMomentumOf(entity);
         /// \todo Implement this.
     }
 }

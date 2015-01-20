@@ -77,9 +77,9 @@
     <ClInclude Include="..\..\..\Code\gpCore\Transform.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms2D.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units\UnitBase.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Units\Units2D.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Units.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\FileSystem.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\RandomNumbers.h" />

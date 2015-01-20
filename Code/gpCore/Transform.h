@@ -2,14 +2,15 @@
 
 class gpTransform
 {
-    gpMat3 m_Rotation;
+    /// \note The order of these members is important for \a gpAsArray(...).
+    gpOrientation  m_Rotation;
     gpDisplacement m_Position;
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
 
-    EZ_FORCE_INLINE friend       gpMat3& gpRotationOf(      gpTransform& t) { return t.m_Rotation; }
-    EZ_FORCE_INLINE friend const gpMat3& gpRotationOf(const gpTransform& t) { return t.m_Rotation; }
+    EZ_FORCE_INLINE friend       gpOrientation& gpRotationOf(      gpTransform& t) { return t.m_Rotation; }
+    EZ_FORCE_INLINE friend const gpOrientation& gpRotationOf(const gpTransform& t) { return t.m_Rotation; }
 
     EZ_FORCE_INLINE friend       gpDisplacement& gpPositionOf(      gpTransform& t) { return t.m_Position; }
     EZ_FORCE_INLINE friend const gpDisplacement& gpPositionOf(const gpTransform& t) { return t.m_Position; }
@@ -20,13 +21,13 @@ public:
     explicit gpTransform(gpNoInitialization){}
 
     explicit gpTransform(gpZeroInitialization) :
-        m_Rotation(gpMat3::ZeroMatrix()),
+        m_Rotation(gpZero),
         m_Position(gpZero)
     {
     }
 
     explicit gpTransform(gpIdentityInitialization) :
-        m_Rotation(gpMat3::IdentityMatrix()),
+        m_Rotation(gpIdentity),
         m_Position(gpIdentity)
     {
     }
@@ -40,12 +41,12 @@ public:
 
 EZ_FORCE_INLINE void gpAssertNotNAN(const gpTransform& t)
 {
-    EZ_NAN_ASSERT(&gpRotationOf(t));
-    EZ_NAN_ASSERT(&gpValueOf(gpPositionOf(t)));
+    gpAssertNotNAN(gpRotationOf(t));
+    gpAssertNotNAN(gpPositionOf(t));
 }
 
 EZ_FORCE_INLINE
-gpMat4 gpAsMat4(const gpTransform& t) { return gpMat4(gpRotationOf(t), gpValueOf(gpPositionOf(t))); }
+gpMat4 gpAsMat4(const gpTransform& t) { return gpMat4(gpValueOf(gpRotationOf(t)), gpValueOf(gpPositionOf(t))); }
 
 /// \brief Copies the rotation and position data from \a Transform into \a out_pData
 EZ_FORCE_INLINE
@@ -54,11 +55,14 @@ void gpAsArray(const gpTransform& Transform, gpScalar* out_pData, ezMatrixLayout
     gpAssertNotNAN(Transform);
     if (Layout == ezMatrixLayout::ColumnMajor)
     {
-        ezMemoryUtils::Copy(out_pData, &gpRotationOf(Transform).m_fElementsCM[0], 12);
+        EZ_CHECK_AT_COMPILETIME(sizeof(gpTransform) == sizeof(gpOrientation) + sizeof(gpDisplacement));
+        EZ_CHECK_AT_COMPILETIME(sizeof(gpTransform) == sizeof(gpScalar) * 12);
+        /// \note We assume the layout of gpTransform consists of gpOrientation and then gpDisplacement!
+        ezMemoryUtils::Copy(out_pData, gpValueOf(gpRotationOf(Transform)).m_fElementsCM, 12);
     }
     else
     {
-        const auto& Rotation = gpRotationOf(Transform);
+        const auto& Rotation = gpValueOf(gpRotationOf(Transform));
         const auto& Position = gpValueOf(gpPositionOf(Transform));
 
         out_pData[0] = Rotation.Element(0, 0);

@@ -83,11 +83,11 @@ EZ_FORCE_INLINE const gpDisplacement& gpPositionOf(const gpEntityBase& entity)
     return gpPositionOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE gpMat3& gpRotationOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpOrientation& gpRotationOf(gpEntityBase& entity)
 {
     return gpRotationOf(gpPhysicalPropertiesOf(entity));
 }
-EZ_FORCE_INLINE const gpMat3& gpRotationOf(const gpEntityBase& entity)
+EZ_FORCE_INLINE const gpOrientation& gpRotationOf(const gpEntityBase& entity)
 {
     return gpRotationOf(gpPhysicalPropertiesOf(entity));
 }
@@ -146,12 +146,20 @@ EZ_FORCE_INLINE const gpMass gpInverseMassOf(const gpEntityBase& entity)
     return gpInverseMassOf(gpPhysicalPropertiesOf(entity));
 }
 
+// Algorithms
+//////////////////////////////////////////////////////////////////////////
+
+EZ_FORCE_INLINE void gpApplyLinearImpulseTo(gpEntityBase& entity, const gpLinearVelocity& v)
+{
+    gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + v;
+}
+
 EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity, const gpForce& Force, gpTime dt)
 {
     gpMass Mass = gpMassOf(entity);
     auto vLinearAcceleration = Force / Mass;
     auto v = vLinearAcceleration * dt;
-    gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + v;
+    gpApplyLinearImpulseTo(entity, v);
 }
 
 EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity,
@@ -165,5 +173,18 @@ EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity,
         return;
     }
 
-    GP_NotImplemented;
+    auto& rotation = gpValueOf(gpRotationOf(entity));
+
+    // Application point in world coordinates as pseudo-vector.
+    auto P = rotation * gpValueOf(applicationPosition);
+    // Force pseudo-vector in world coordinates.
+    auto F = rotation * gpValueOf(force);
+
+    // Torque as pseudo-vector
+    auto result = P.Cross(F);
+
+    if (gpIsZero(result))
+        return;
+
+    gpAngularMomentumOf(entity) += gpTorque(result) * dt;
 }

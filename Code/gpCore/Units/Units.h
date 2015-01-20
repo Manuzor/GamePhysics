@@ -20,54 +20,58 @@ public:
     gpTime(ezTime t) : BaseType(t.GetSeconds()) {}
 };
 
-// Angular kinematics, Scalar units
+// Angular kinematics, Mat3 units
 //////////////////////////////////////////////////////////////////////////
 
-class gpOrientation : public gpScalarUnitBase<gpOrientation, gpScalar>
+class gpOrientation : public gpMat3UnitBase<gpOrientation>
 {
 public:
-    using BaseType = gpScalarUnitBase<gpOrientation, gpScalar>;
-    GP_DefineScalarUnitConstructors(gpOrientation);
-    gpOrientation(ezAngle a) : BaseType(a.GetRadian()) {}
-
-    EZ_FORCE_INLINE static gpOrientation Radians(gpScalar amount) { return gpOrientation(amount); }
-    EZ_FORCE_INLINE static gpOrientation Degrees(gpScalar amount) { return gpOrientation(ezAngle::DegToRad(amount)); }
-};
-using gpOrientationSyncer = gpScalarSyncerTemplate<gpOrientation>;
-
-class gpAngularVelocity : public gpScalarUnitBase<gpAngularVelocity, gpScalar>
-{
-public:
-    using BaseType = gpScalarUnitBase<gpAngularVelocity, gpScalar>;
-    GP_DefineScalarUnitConstructors(gpAngularVelocity);
+    using BaseType = gpMat3UnitBase<gpOrientation>;
+    GP_DefineMat3UnitConstructors(gpOrientation);
+    gpOrientation(const gpVec3& v) : BaseType(gpZero)
+    {
+        gpValueOf(Deref(this)).Element(0, 0) = v.x;
+        gpValueOf(Deref(this)).Element(1, 1) = v.y;
+        gpValueOf(Deref(this)).Element(2, 2) = v.z;
+    }
 };
 
-class gpAngularAcceleration : public gpScalarUnitBase<gpAngularAcceleration, gpScalar>
+class gpInverseInertia : public gpMat3UnitBase<gpInverseInertia>
 {
 public:
-    using BaseType = gpScalarUnitBase<gpAngularAcceleration, gpScalar>;
-    GP_DefineScalarUnitConstructors(gpAngularAcceleration);
+    using BaseType = gpMat3UnitBase<gpInverseInertia>;
+    GP_DefineMat3UnitConstructors(gpInverseInertia);
 };
 
-class gpInverseInertia : public gpScalarUnitBase<gpInverseInertia, gpScalar>
+// Angular kinematics, Vec3 units
+//////////////////////////////////////////////////////////////////////////
+
+class gpAngularVelocity : public gpVec3UnitBase<gpAngularVelocity>
 {
 public:
-    using BaseType = gpScalarUnitBase<gpInverseInertia, gpScalar>;
-    GP_DefineScalarUnitConstructors(gpInverseInertia);
+    using BaseType = gpVec3UnitBase<gpAngularVelocity>;
+    GP_DefineVec3UnitConstructors(gpAngularVelocity);
 };
 
-class gpTorque : public gpScalarUnitBase<gpTorque, gpScalar>
+class gpAngularAcceleration : public gpVec3UnitBase<gpAngularAcceleration>
 {
 public:
-    using BaseType = gpScalarUnitBase<gpTorque, gpScalar>;
-    GP_DefineScalarUnitConstructors(gpTorque);
+    using BaseType = gpVec3UnitBase<gpAngularAcceleration>;
+    GP_DefineVec3UnitConstructors(gpAngularAcceleration);
 };
 
-class gpAngularMomentum : public gpScalarUnitBase<gpAngularMomentum, gpScalar>
+class gpAngularMomentum : public gpVec3UnitBase<gpAngularMomentum>
 {
 public:
-    using BaseType = gpScalarUnitBase<gpAngularMomentum, gpScalar>;
-    GP_DefineScalarUnitConstructors(gpAngularMomentum);
+    using BaseType = gpVec3UnitBase<gpAngularMomentum>;
+    GP_DefineVec3UnitConstructors(gpAngularMomentum);
+};
+
+class gpTorque : public gpVec3UnitBase<gpTorque>
+{
+public:
+    using BaseType = gpVec3UnitBase<gpTorque>;
+    GP_DefineVec3UnitConstructors(gpTorque);
 };
 
 // Linear kinematics, Vec3 units

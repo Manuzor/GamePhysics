@@ -65,6 +65,9 @@ EZ_FORCE_INLINE const gpMat4 gpInverseOf(const gpMat4& m, gpScalar epsilon = ezM
 template<typename Type> EZ_FORCE_INLINE
 Type gpInverseOf(Type Value) { return ezMath::Invert(gpValueOf(Value)); }
 
+EZ_FORCE_INLINE void gpTranspose(gpMat3& m) { m.Transpose(); }
+EZ_FORCE_INLINE gpMat3 gpTransposeOf(const gpMat3& m) { return m.GetTranspose(); }
+
 EZ_FORCE_INLINE bool gpIsZero(const gpVec2& v, gpScalar epsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon()) { return v.IsZero(epsilon); }
 EZ_FORCE_INLINE bool gpIsZero(const gpVec3& v, gpScalar epsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon()) { return v.IsZero(epsilon); }
 EZ_FORCE_INLINE bool gpIsZero(const gpMat3& m, gpScalar epsilon = ezMath::BasicType<gpScalar>::DefaultEpsilon()) { return m.IsZero(epsilon); }
