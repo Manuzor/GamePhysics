@@ -13,6 +13,7 @@
 static gpWorld* g_pWorld = nullptr;
 
 static gpEntity* g_pEntity = nullptr;
+#define entity Deref(g_pEntity)
 
 static void Populate(gpWorld& world)
 {
@@ -20,34 +21,32 @@ static void Populate(gpWorld& world)
 
     g_pEntity = gpNew<gpEntity>(world);
     EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");
+    gpAddReferenceTo(entity);
 
-    gpMass m(5.0f);
+    gpNameOf(entity)     = "Player";
+    gpPositionOf(entity) = gpDisplacement(200, 300, 0);
+    gpMassOf(entity)     = gpMass(5.0f);
 
     gpVec3 halfExtends(50.0f, 50.0f, 0.0f);
-    auto invI = gpInverseInertia::SolidCuboid(m, 2.0f * halfExtends);
+    gpInverseInertiaOf(entity) = gpInverseInertia::SolidCuboid(gpMassOf(entity), 2.0f * halfExtends);
 
-    gpAddReferenceTo(Deref(g_pEntity));
-    gpNameOf(Deref(g_pEntity)) = "Player";
-    gpMassOf(Deref(g_pEntity)) = m;
-    gpPositionOf(Deref(g_pEntity)) = gpDisplacement(200, 300, 0);
-    auto pShape = EZ_DEFAULT_NEW(gpPolygonShape);
-    gpConvertToBox(Deref(pShape), halfExtends);
-    gpShapePtrOf(Deref(g_pEntity)) = pShape;
-    gpInverseInertiaOf(Deref(g_pEntity)) = invI;
+    auto pPolygon = gpNew<gpPolygonShape>();
+    gpConvertToBox(Deref(pPolygon), halfExtends);
+    gpShapePtrOf(entity) = pPolygon;
 
-    EZ_VERIFY(gpAddTo(world, Deref(g_pEntity)).Succeeded(), "Failed to add entity to world.");
+    EZ_VERIFY(gpAddTo(world, entity).Succeeded(), "Failed to add entity to world.");
 
-    gpApplyForceTo(Deref(g_pEntity), gpForce(20000, 0, 0), gpTime(1), gpDisplacement(0, 1, 0));
+    gpApplyForceTo(entity, gpForce(20000, 0, 0), gpTime(1), gpDisplacement(0, 1, 0));
 }
 
-static void Cleanup(gpWorld& world, gpEntity& entity)
+static void Cleanup(gpWorld& world, gpEntity& e)
 {
-    EZ_DEFAULT_DELETE(gpShapePtrOf(entity));
-    gpReleaseReferenceTo(entity);
-    EZ_VERIFY(gpRemoveFrom(world, entity).Succeeded(), "Failed to remove entity from world.");
+    gpDelete(gpShapePtrOf(e));
+    gpReleaseReferenceTo(e);
+    EZ_VERIFY(gpRemoveFrom(world, e).Succeeded(), "Failed to remove entity from world.");
 
     g_pEntity = nullptr;
-    EZ_DEFAULT_DELETE(g_pWorld);
+    gpDelete(g_pWorld);
 }
 
 static void OnRenderExtraction(gpRenderExtractor* pExtractor)
@@ -125,7 +124,7 @@ void gpExperimentsApp::AfterEngineInit()
         gpExtractRenderDataOf(Deref(g_pWorld), pExtractor);
     });
 
-    g_pWorld = EZ_DEFAULT_NEW(gpWorld)("World");
+    g_pWorld = gpNew<gpWorld>("World");
     EZ_ASSERT(g_pWorld, "Unable to create world.");
     Populate(Deref(g_pWorld));
 }

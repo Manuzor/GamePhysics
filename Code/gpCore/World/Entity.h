@@ -25,6 +25,20 @@ class GP_CoreAPI gpEntity : public ezRefCounted
     EZ_FORCE_INLINE friend       gpShapeBase*& gpShapePtrOf(      gpEntity& entity) { return entity.m_pShape; }
     EZ_FORCE_INLINE friend const gpShapeBase*  gpShapePtrOf(const gpEntity& entity) { return entity.m_pShape; }
 
+    /// \remark Assumes a valid shape ptr is set
+    EZ_FORCE_INLINE friend gpShapeBase& gpShapeOf(gpEntity& entity)
+    {
+        EZ_ASSERT(entity.m_pShape, "");
+        return Deref(entity.m_pShape);
+    }
+
+    /// \remark Assumes a valid shape ptr is set
+    EZ_FORCE_INLINE friend const gpShapeBase& gpShapeOf(const gpEntity& entity)
+    {
+        EZ_ASSERT(entity.m_pShape, "");
+        return Deref(entity.m_pShape);
+    }
+
 public:
     gpEntity() {}
     gpEntity(const gpEntity&)   = delete;
