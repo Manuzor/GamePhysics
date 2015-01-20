@@ -12,6 +12,16 @@ public:
     void operator=(const gpWorld&) = delete;
     ~gpWorld();
 
+    /// \remark Don't call this directly, use gpNew<gpEntity>(...) instead!
+    template<typename... Args>
+    gpEntityBase* _NewEntity(Args&&... args)
+    {
+        /// \todo Use better memory management for entities.
+        auto pEntity = EZ_DEFAULT_NEW(gpEntityBase)(args...);
+        InsertCreatedEntity(pEntity);
+        return pEntity;
+    }
+
 private:
     ezString m_sName;
     ezProfilingId m_ProfilingId_Simulation;
@@ -78,3 +88,18 @@ EZ_FORCE_INLINE gpEntityDrawInfo*  gpDefaultDrawInfoPtrOf(const gpWorld& world)
     return gpDefaultDrawInfoPtrOf(const_cast<gpWorld&>(world));
 }
 GP_CoreAPI void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor);
+
+namespace gpInternal
+{
+    template<>
+    struct gpTypeAllocator<gpEntityBase>
+    {
+        template<typename... Args>
+        gpEntityBase* New(gpWorld& world, Args&&... args)
+        {
+            return world._NewEntity(args...);
+        }
+    };
+
+    /// \note Delete & friends are not implemented on purpose.
+}

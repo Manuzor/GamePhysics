@@ -5,6 +5,7 @@ namespace gpInternal
     template<typename T>
     struct gpDefaultTypeAllocator
     {
+        // Default ones
         template<typename... Args>
         EZ_FORCE_INLINE static T* New(Args&&... args) { return EZ_DEFAULT_NEW(T)(args...); }
         EZ_FORCE_INLINE static void Delete(T*& pInstance) { EZ_DEFAULT_DELETE(pInstance); }
