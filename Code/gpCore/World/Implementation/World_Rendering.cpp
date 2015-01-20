@@ -82,6 +82,7 @@ static void Extract(gpRenderExtractor* pExtractor,
     {
         auto& polygon = static_cast<const gpPolygonShape&>(shape);
         auto pPolyData = pExtractor->AllocateRenderData<gpDrawData::Polygon>();
+
         pPolyData->m_Transform = gpTransformOf(props);
         pPolyData->m_Vertices = gpVerticesOf(polygon);
         pPolyData->m_OutlineColor = drawInfo.m_Color;

@@ -94,7 +94,8 @@ namespace gpDrawData
 
     struct Box : public ExtendBaseHelper<Box, Type::Box>
     {
-        gpRectI m_Box = { 0, 0, 0, 0 }; ///< Relative to m_Position.
+        gpTransform m_Transform = gpTransform(gpIdentity);
+        gpRectI m_Box = { 0, 0, 0, 0 }; ///< Relative to m_Transform.
 
         ezColor m_FillColor = { 1.0f, 1.0f, 1.0f, 1.0f };
         float m_fOutlineWidth = 1.0f;

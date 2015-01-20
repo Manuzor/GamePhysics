@@ -208,6 +208,14 @@ public:
     {
         gpTranspose(gpValueOf(d));
     }
+    EZ_FORCE_INLINE friend DerivedType gpInverseOf(const DerivedType& d)
+    {
+        return DerivedType(gpInverseOf(gpValueOf(d)));
+    }
+    EZ_FORCE_INLINE friend void gpInvert(DerivedType& d)
+    {
+        gpInvert(gpValueOf(d));
+    }
 
     EZ_FORCE_INLINE friend DerivedType operator +(const DerivedType& d1, const DerivedType& d2) { return DerivedType(gpValueOf(d1) + gpValueOf(d2)); }
     EZ_FORCE_INLINE friend DerivedType operator -(const DerivedType& d1, const DerivedType& d2) { return DerivedType(gpValueOf(d1) - gpValueOf(d2)); }

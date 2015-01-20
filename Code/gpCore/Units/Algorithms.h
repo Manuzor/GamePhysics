@@ -74,3 +74,31 @@ inline gpAngularMomentum operator *(const gpTorque& t, gpTime dt)
 {
     return gpAngularMomentum(gpValueOf(t) * (gpScalar)gpValueOf(dt));
 }
+
+// General Mat3
+//////////////////////////////////////////////////////////////////////////
+
+inline void gpOrthogonalize(gpMat3& m)
+{
+    // Use first column as reference.
+    auto first = m.GetColumn(0);
+
+    // Use second column to calculate third column.
+    auto second = m.GetColumn(1);
+
+    // Normalize the two reference vectors, otherwise it will explode!
+    first.Normalize();
+    second.Normalize();
+
+    // Define third column by crossing the first with the second column.
+    // \note Crossing normalized vectors yields another normalized vector.
+    auto third = first.Cross(second);
+
+    // Re-calculate the second column using the new third column and the first
+    second = third.Cross(first);
+
+    // Update the matrix.
+    m.SetColumn(0, first);
+    m.SetColumn(1, second);
+    m.SetColumn(2, third);
+}

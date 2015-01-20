@@ -17,20 +17,28 @@ static gpRigidBody* g_pEntity = nullptr;
 
 static void Populate(gpWorld& world)
 {
-    gpGravityOf(world) = gpLinearAcceleration(gpVec3(0, 9.81f, 0));
+    gpGravityOf(world) = gpLinearAcceleration(gpVec3(0, 0.0f, 0));
 
     g_pEntity = gpCreateEntity<gpRigidBody>(world);
     EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");
 
+    gpMass m(5.0f);
+
+    gpVec3 halfExtends(50.0f, 50.0f, 0.0f);
+    auto invI = gpInverseInertia::SolidCuboid(m, 2.0f * halfExtends);
+
     gpAddReferenceTo(Deref(g_pEntity));
     gpNameOf(Deref(g_pEntity)) = "Player";
-    gpMassOf(Deref(g_pEntity)) = gpMass(5.0f);
+    gpMassOf(Deref(g_pEntity)) = m;
     gpPositionOf(Deref(g_pEntity)) = gpDisplacement(200, 300, 0);
     auto pShape = EZ_DEFAULT_NEW(gpPolygonShape);
-    gpConvertToBox(Deref(pShape), gpVec3(50.0f, 50.0f, 0.0f));
+    gpConvertToBox(Deref(pShape), halfExtends);
     gpShapePtrOf(Deref(g_pEntity)) = pShape;
+    gpInverseInertiaOf(Deref(g_pEntity)) = invI;
 
     EZ_VERIFY(gpAddEntityTo(world, Deref(g_pEntity)).Succeeded(), "Failed to add entity to world.");
+
+    gpApplyForceTo(Deref(g_pEntity), gpForce(1000, 0, 0), gpTime(100), gpDisplacement(0, 1, 0));
 }
 
 static void Cleanup(gpWorld& world, gpRigidBody& entity)

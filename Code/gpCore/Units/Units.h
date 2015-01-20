@@ -41,6 +41,39 @@ class gpInverseInertia : public gpMat3UnitBase<gpInverseInertia>
 public:
     using BaseType = gpMat3UnitBase<gpInverseInertia>;
     GP_DefineMat3UnitConstructors(gpInverseInertia);
+
+    // === Pre-defined inertia tensors ===
+    // from http://en.wikipedia.org/wiki/List_of_moments_of_inertia
+public:
+    static gpInverseInertia SolidSphere(gpMass m, gpScalar r)
+    {
+        auto diagonal = (2 / 5) * gpValueOf(m) * ezMath::Square(r);
+        gpInverseInertia I(gpZero);
+        gpElementOf(I, 0, 0) = diagonal;
+        gpElementOf(I, 1, 1) = diagonal;
+        gpElementOf(I, 2, 2) = diagonal;
+        return gpInverseOf(I);
+    }
+
+    static gpInverseInertia HollowSphere(gpMass m, gpScalar r)
+    {
+        auto diagonal = (2 / 3) * gpValueOf(m) * ezMath::Square(r);
+        gpInverseInertia I(gpZero);
+        gpElementOf(I, 0, 0) = diagonal;
+        gpElementOf(I, 1, 1) = diagonal;
+        gpElementOf(I, 2, 2) = diagonal;
+        return gpInverseOf(I);
+    }
+
+    // \remark \a dim are not half-extends but the full dimensions.
+    static gpInverseInertia SolidCuboid(gpMass m, gpVec3 dim)
+    {
+        gpInverseInertia I(gpZero);
+        gpElementOf(I, 0, 0) = (gpValueOf(m)/12) * (ezMath::Square(dim.y) + ezMath::Square(dim.z));
+        gpElementOf(I, 1, 1) = (gpValueOf(m)/12) * (ezMath::Square(dim.x) + ezMath::Square(dim.z));
+        gpElementOf(I, 2, 2) = (gpValueOf(m)/12) * (ezMath::Square(dim.x) + ezMath::Square(dim.y));
+        return gpInverseOf(I);
+    }
 };
 
 // Angular kinematics, Vec3 units

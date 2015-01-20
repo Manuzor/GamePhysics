@@ -154,11 +154,18 @@ EZ_FORCE_INLINE void gpApplyLinearImpulseTo(gpEntityBase& entity, const gpLinear
     gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + v;
 }
 
+EZ_FORCE_INLINE void gpApplyLinearImpulseTo(gpEntityBase& entity,
+                                            const gpLinearVelocity& v,
+                                            const gpDisplacement& applicationPosition)
+{
+    gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + v;
+}
+
 EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity, const gpForce& Force, gpTime dt)
 {
-    gpMass Mass = gpMassOf(entity);
-    auto vLinearAcceleration = Force / Mass;
-    auto v = vLinearAcceleration * dt;
+    gpMass m = gpMassOf(entity);
+    auto a = Force / m;
+    auto v = a * dt;
     gpApplyLinearImpulseTo(entity, v);
 }
 
@@ -167,12 +174,6 @@ EZ_FORCE_INLINE void gpApplyForceTo(gpEntityBase& entity,
                                     gpTime dt,
                                     const gpDisplacement& applicationPosition)
 {
-    if (gpAreEqual(gpPositionOf(entity), applicationPosition, ezMath::BasicType<gpScalar>::DefaultEpsilon()))
-    {
-        gpApplyForceTo(entity, force, dt);
-        return;
-    }
-
     auto& rotation = gpValueOf(gpRotationOf(entity));
 
     // Application point in world coordinates as pseudo-vector.

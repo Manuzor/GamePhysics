@@ -202,7 +202,6 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
 
         // Angular Movement
         //////////////////////////////////////////////////////////////////////////
-        continue;
 
         auto& A          = gpRotationOf(entity);
         auto& invI       = gpInverseInertiaOf(entity);
@@ -211,7 +210,18 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
 
         // Angular velocity
         auto w = wInvI * gpAngularMomentumOf(entity);
-        /// \todo Implement this.
+
+        auto w1 = gpX(w);
+        auto w2 = gpY(w);
+        auto w3 = gpZ(w);
+        // This matrix is used to apply a column-wise cross product to another matrix.
+        gpMat3 boxedW(0.0f,  -w3,   w2,
+                        w3, 0.0f,  -w1,
+                       -w2,   w1, 0.0f);
+
+        auto newA = gpValueOf(A) + ((boxedW * (gpScalar)gpValueOf(dt)) * gpValueOf(A));
+        gpOrthogonalize(newA);
+        A = gpOrientation(newA);
     }
 }
 

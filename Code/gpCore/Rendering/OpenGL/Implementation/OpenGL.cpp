@@ -147,6 +147,7 @@ void gpDraw(const gpDrawData::Box& Data)
     Vertices[3] = gpVec3(static_cast<gpScalar>(Data.m_Box.x + Data.m_Box.width), static_cast<gpScalar>(Data.m_Box.y),                     0.0f);
 
     gpDrawData::Polygon Polygon;
+    Polygon.m_Transform = Data.m_Transform;
     Polygon.m_Vertices = Vertices;
     Polygon.m_FillColor = Data.m_FillColor;
     Polygon.m_OutlineColor = Data.m_OutlineColor;
