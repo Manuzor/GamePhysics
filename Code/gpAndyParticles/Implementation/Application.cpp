@@ -41,7 +41,7 @@ void gpAndyParticlesApp::AfterEngineInit()
 
     m_pWorld = EZ_DEFAULT_NEW(gpWorld)("PrimaryWorld");
     EZ_ASSERT(m_pWorld, "Failed to create world.");
-    gpGravityOf(Deref(m_pWorld)) = gpAcceleration(gpVec3(0, 9.81f, 0));
+    gpGravityOf(Deref(m_pWorld)) = gpLinearAcceleration(gpVec3(0, 9.81f, 0));
     gpRenderExtractor::AddExtractionListener([=](gpRenderExtractor* pExtractor){
         gpExtractRenderDataOf(Deref(m_pWorld), pExtractor);
     });
@@ -187,7 +187,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
         // Set the new linear velocity of the particle.
         gpVec3 MousePos(fX, fY, 0.0f);
         auto& currentParticle = Deref(m_pCurrentParticle);
-        gpLinearVelocityOf(currentParticle) = gpVelocity(MousePos - gpValueOf(gpPositionOf(currentParticle)));
+        gpLinearVelocityOf(currentParticle) = gpLinearVelocity(MousePos - gpValueOf(gpPositionOf(currentParticle)));
         gpGravityFactorOf(currentParticle) = 1.0f;
 
         ResetSpawning();

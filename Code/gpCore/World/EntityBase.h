@@ -92,13 +92,31 @@ EZ_FORCE_INLINE const gpMat3& gpRotationOf(const gpEntityBase& entity)
     return gpRotationOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE gpVelocity& gpLinearVelocityOf(gpEntityBase& entity)
+EZ_FORCE_INLINE gpLinearVelocity& gpLinearVelocityOf(gpEntityBase& entity)
 {
     return gpLinearVelocityOf(gpPhysicalPropertiesOf(entity));
 }
-EZ_FORCE_INLINE const gpVelocity& gpLinearVelocityOf(const gpEntityBase& entity)
+EZ_FORCE_INLINE const gpLinearVelocity& gpLinearVelocityOf(const gpEntityBase& entity)
 {
     return gpLinearVelocityOf(gpPhysicalPropertiesOf(entity));
+}
+
+EZ_FORCE_INLINE gpAngularMomentum& gpAngularMomentumOf(gpEntityBase& entity)
+{
+    return gpAngularMomentumOf(gpPhysicalPropertiesOf(entity));
+}
+EZ_FORCE_INLINE const gpAngularMomentum& gpAngularMomentumOf(const gpEntityBase& entity)
+{
+    return gpAngularMomentumOf(gpPhysicalPropertiesOf(entity));
+}
+
+EZ_FORCE_INLINE gpInverseInertia& gpInverseInertiaOf(gpEntityBase& entity)
+{
+    return gpInverseInertiaOf(gpPhysicalPropertiesOf(entity));
+}
+EZ_FORCE_INLINE const gpInverseInertia& gpInverseInertiaOf(const gpEntityBase& entity)
+{
+    return gpInverseInertiaOf(gpPhysicalPropertiesOf(entity));
 }
 
 EZ_FORCE_INLINE gpScalar& gpGravityFactorOf(gpEntityBase& entity)

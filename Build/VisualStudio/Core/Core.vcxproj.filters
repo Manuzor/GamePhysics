@@ -220,14 +220,17 @@
       <Filter>Algorithm</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Units.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms.h">
-      <Filter>Units</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\ScalarSyncer.h">
       <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Transform.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units\UnitBase.h">
+      <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Units2D.h">
+      <Filter>Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms2D.h">
       <Filter>Units</Filter>
     </ClInclude>
   </ItemGroup>

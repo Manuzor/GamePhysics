@@ -158,7 +158,7 @@ void gpCollectGarbageOf(gpWorld& world)
     }
 }
 
-static void AccumulateForces(gpAcceleration& out_Force,
+static void AccumulateForces(gpLinearAcceleration& out_Force,
                              const gpDisplacement& entityPos,
                              ezArrayPtr<const gpForceFieldEntity*> ForceFields)
 {
@@ -171,7 +171,7 @@ static void AccumulateForces(gpAcceleration& out_Force,
         auto vDir = gpValueOf(gpPositionOf(forceField) - entityPos);
         if (vDir.NormalizeIfNotZero().Succeeded())
         {
-            out_Force = out_Force + gpAcceleration(vDir * gpForceFactorOf(forceField));
+            out_Force = out_Force + gpLinearAcceleration(vDir * gpForceFactorOf(forceField));
         }
     }
 }
@@ -187,7 +187,7 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
 
         // Linear movement
         //////////////////////////////////////////////////////////////////////////
-        gpAcceleration linAcceleration(gpZero);
+        gpLinearAcceleration linAcceleration(gpZero);
         AccumulateForces(linAcceleration, gpPositionOf(entity), gpGetConstView(world.m_ForceFields));
         linAcceleration = (linAcceleration + gpGravityOf(world)) * gpGravityFactorOf(entity);
 

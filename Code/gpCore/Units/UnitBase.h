@@ -75,7 +75,7 @@ public:
     EZ_FORCE_INLINE explicit gpVec3UnitBase(ScalarType xyz) : m_Value(xyz) {}
     EZ_FORCE_INLINE explicit gpVec3UnitBase(gpZeroInitialization) : m_Value(Vec3Type::ZeroVector()) {}
     EZ_FORCE_INLINE explicit gpVec3UnitBase(gpNoInitialization) {}
-    EZ_FORCE_INLINE gpVec3UnitBase(const DerivedType& other) : m_Value(gpValueOf(other)) {}
+    EZ_FORCE_INLINE explicit gpVec3UnitBase(const DerivedType& other) : m_Value(gpValueOf(other)) {}
 
     EZ_FORCE_INLINE friend       Vec3Type& gpValueOf(      DerivedType& d) { return gpValueOf(d.m_Value); }
     EZ_FORCE_INLINE friend const Vec3Type& gpValueOf(const DerivedType& d) { return gpValueOf(d.m_Value); }

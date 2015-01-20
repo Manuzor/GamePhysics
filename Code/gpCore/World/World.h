@@ -18,7 +18,7 @@ private:
     ezProfilingId m_ProfilingId_CreateEntity;
     ezProfilingId m_ProfilingId_Extraction;
 
-    gpAcceleration m_Gravity = gpAcceleration(gpVec3::ZeroVector());
+    gpLinearAcceleration m_Gravity = gpLinearAcceleration(gpVec3::ZeroVector());
     ezDynamicArray<gpForceFieldEntity*> m_ForceFields;
     ezDynamicArray<gpEntityBase*> m_CreatedEntities;
     ezDynamicArray<gpEntityBase*> m_SimulatedEntities;
@@ -32,7 +32,7 @@ private:
     // Friends
     //////////////////////////////////////////////////////////////////////////
     friend const ezString& gpNameOf(const gpWorld& world);
-    friend gpAcceleration& gpGravityOf(gpWorld& world);
+    friend gpLinearAcceleration& gpGravityOf(gpWorld& world);
     friend GP_CoreAPI ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity);
     friend GP_CoreAPI ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity);
     friend GP_CoreAPI void gpClearSimulatedEntities(gpWorld& world);
@@ -47,8 +47,8 @@ private:
 };
 
 EZ_FORCE_INLINE const ezString& gpNameOf(const gpWorld& world) { return world.m_sName; }
-EZ_FORCE_INLINE       gpAcceleration& gpGravityOf(      gpWorld& world) { return world.m_Gravity; }
-EZ_FORCE_INLINE const gpAcceleration& gpGravityOf(const gpWorld& world) { return gpGravityOf(const_cast<gpWorld&>(world)); }
+EZ_FORCE_INLINE       gpLinearAcceleration& gpGravityOf(      gpWorld& world) { return world.m_Gravity; }
+EZ_FORCE_INLINE const gpLinearAcceleration& gpGravityOf(const gpWorld& world) { return gpGravityOf(const_cast<gpWorld&>(world)); }
 
 GP_CoreAPI ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity);
 GP_CoreAPI ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity);

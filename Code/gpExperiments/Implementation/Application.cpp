@@ -17,7 +17,7 @@ static gpRigidBody* g_pEntity = nullptr;
 
 static void Populate(gpWorld& world)
 {
-    gpGravityOf(world) = gpAcceleration(gpVec3(0, 9.81f, 0));
+    gpGravityOf(world) = gpLinearAcceleration(gpVec3(0, 9.81f, 0));
 
     g_pEntity = gpCreateEntity<gpRigidBody>(world);
     EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");

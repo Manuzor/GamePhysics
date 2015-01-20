@@ -2,12 +2,13 @@
 
 struct gpPhysicalProperties
 {
-    gpTransform m_Transform       = gpTransform(gpIdentity);
-    gpVelocity  m_LinearVelocity  = gpVelocity(0, 0, 0);
-    gpVelocity  m_AngularVelocity = gpVelocity(0, 0, 0);
-    gpScalar    m_fGravityFactor  = 1.0f;
-    gpMass      m_Mass            = gpMass(1.0f);
-    gpMass      m_InverseMass     = gpMass(1.0f);
+    gpTransform       m_Transform       = gpTransform(gpIdentity);
+    gpLinearVelocity  m_LinearVelocity  = gpLinearVelocity(gpZero);
+    gpAngularMomentum m_AngularMomentum = gpAngularMomentum(gpZero);
+    gpInverseInertia  m_InverseInertia  = gpInverseInertia(gpZero);
+    gpScalar          m_fGravityFactor  = 1.0f;
+    gpMass            m_Mass            = gpMass(1.0f);
+    gpMass            m_InverseMass     = gpMass(1.0f);
 };
 
 EZ_FORCE_INLINE       gpTransform& gpTransformOf(      gpPhysicalProperties& props) { return props.m_Transform; }
@@ -19,11 +20,14 @@ EZ_FORCE_INLINE const gpDisplacement& gpPositionOf(const gpPhysicalProperties& p
 EZ_FORCE_INLINE       gpMat3& gpRotationOf(      gpPhysicalProperties& props) { return gpRotationOf(gpTransformOf(props)); }
 EZ_FORCE_INLINE const gpMat3& gpRotationOf(const gpPhysicalProperties& props) { return gpRotationOf(gpTransformOf(props)); }
 
-EZ_FORCE_INLINE       gpVelocity& gpLinearVelocityOf(      gpPhysicalProperties& props) { return props.m_LinearVelocity; }
-EZ_FORCE_INLINE const gpVelocity& gpLinearVelocityOf(const gpPhysicalProperties& props) { return props.m_LinearVelocity; }
+EZ_FORCE_INLINE       gpLinearVelocity& gpLinearVelocityOf(      gpPhysicalProperties& props) { return props.m_LinearVelocity; }
+EZ_FORCE_INLINE const gpLinearVelocity& gpLinearVelocityOf(const gpPhysicalProperties& props) { return props.m_LinearVelocity; }
 
-EZ_FORCE_INLINE       gpVelocity& gpAngularVelocityOf(      gpPhysicalProperties& props) { return props.m_AngularVelocity; }
-EZ_FORCE_INLINE const gpVelocity& gpAngularVelocityOf(const gpPhysicalProperties& props) { return props.m_AngularVelocity; }
+EZ_FORCE_INLINE       gpAngularMomentum& gpAngularMomentumOf(      gpPhysicalProperties& props) { return props.m_AngularMomentum; }
+EZ_FORCE_INLINE const gpAngularMomentum& gpAngularMomentumOf(const gpPhysicalProperties& props) { return props.m_AngularMomentum; }
+
+EZ_FORCE_INLINE       gpInverseInertia& gpInverseInertiaOf(      gpPhysicalProperties& props) { return props.m_InverseInertia; }
+EZ_FORCE_INLINE const gpInverseInertia& gpInverseInertiaOf(const gpPhysicalProperties& props) { return props.m_InverseInertia; }
 
 EZ_FORCE_INLINE       gpScalar& gpGravityFactorOf(      gpPhysicalProperties& props) { return props.m_fGravityFactor; }
 EZ_FORCE_INLINE const gpScalar& gpGravityFactorOf(const gpPhysicalProperties& props) { return props.m_fGravityFactor; }

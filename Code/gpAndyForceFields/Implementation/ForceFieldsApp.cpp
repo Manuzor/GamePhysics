@@ -394,7 +394,7 @@ void gpAndyForceFieldsApp::SpawnAndFreezePlayer()
         return; // Player is already spawned.
 
     gpPositionOf(player) = gpPositionOf(MouseCursor);
-    gpLinearVelocityOf(player) = gpVelocity(gpVec3::ZeroVector());
+    gpLinearVelocityOf(player) = gpLinearVelocity(gpVec3::ZeroVector());
     gpGravityFactorOf(player) = 0.0f;
 
     auto result = gpAddEntityTo(world, player);
@@ -414,7 +414,7 @@ void gpAndyForceFieldsApp::UnfreezePlayer()
         return; // Player is already moving
 
     gpGravityFactorOf(player) = 1.0f;
-    gpLinearVelocityOf(player) = gpVelocity(gpValueOf(gpPositionOf(MouseCursor) - gpPositionOf(player)));
+    gpLinearVelocityOf(player) = gpLinearVelocity(gpValueOf(gpPositionOf(MouseCursor) - gpPositionOf(player)));
 
     auto fMaxSpeed = s_fPlayerMaxSpeed.GetValue();
 
@@ -422,7 +422,7 @@ void gpAndyForceFieldsApp::UnfreezePlayer()
     {
         auto v = gpValueOf(gpLinearVelocityOf(player));
         v.SetLength(fMaxSpeed);
-        gpLinearVelocityOf(player) = gpVelocity(v);
+        gpLinearVelocityOf(player) = gpLinearVelocity(v);
     }
 
     ezLog::Success("Player is moving.");
