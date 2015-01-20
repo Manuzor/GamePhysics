@@ -14,10 +14,10 @@ public:
 
     /// \remark Don't call this directly, use gpNew<gpEntity>(...) instead!
     template<typename... Args>
-    gpEntityBase* _NewEntity(Args&&... args)
+    gpEntity* _NewEntity(Args&&... args)
     {
         /// \todo Use better memory management for entities.
-        auto pEntity = EZ_DEFAULT_NEW(gpEntityBase)(args...);
+        auto pEntity = EZ_DEFAULT_NEW(gpEntity)(args...);
         InsertCreatedEntity(pEntity);
         return pEntity;
     }
@@ -30,24 +30,26 @@ private:
 
     gpLinearAcceleration m_Gravity = gpLinearAcceleration(gpVec3::ZeroVector());
     ezDynamicArray<gpForceFieldEntity*> m_ForceFields;
-    ezDynamicArray<gpEntityBase*> m_CreatedEntities;
-    ezDynamicArray<gpEntityBase*> m_SimulatedEntities;
-    ezMap<gpEntityBase*, gpEntityDrawInfo> m_EntityDrawInfos;
+    ezDynamicArray<gpEntity*> m_CreatedEntities;
+    ezDynamicArray<gpEntity*> m_SimulatedEntities;
+    ezMap<gpEntity*, gpEntityDrawInfo> m_EntityDrawInfos;
     gpEntityDrawInfo m_EntityDrawInfo_HardDefault;
     gpEntityDrawInfo* m_pEntityDrawInfoDefault;
 
 private:
-    void InsertCreatedEntity(gpEntityBase* pEntity);
+    void InsertCreatedEntity(gpEntity* pEntity);
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
     friend const ezString& gpNameOf(const gpWorld& world);
     friend gpLinearAcceleration& gpGravityOf(gpWorld& world);
-    friend GP_CoreAPI ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity);
-    friend GP_CoreAPI ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity);
+    friend GP_CoreAPI ezResult gpAddTo(gpWorld& world, gpEntity& entity);
+    friend GP_CoreAPI ezResult gpRemoveFrom(gpWorld& world, gpEntity& entity);
+    friend GP_CoreAPI ezResult gpAddTo(gpWorld& world, gpForceFieldEntity& forceField);
+    friend GP_CoreAPI ezResult gpRemoveFrom(gpWorld& world, gpForceFieldEntity& forceField);
     friend GP_CoreAPI void gpClearSimulatedEntities(gpWorld& world);
     friend GP_CoreAPI void gpClearForceFields(gpWorld& world);
-    friend GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntityBase& entity);
+    friend GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntity& entity);
     friend GP_CoreAPI void gpCollectGarbageOf(gpWorld& world);
     friend GP_CoreAPI void gpStepSimulationOf(gpWorld& world, gpTime dt);
     friend gpEntityDrawInfo*& gpDefaultDrawInfoPtrOf(gpWorld& world);
@@ -60,8 +62,10 @@ EZ_FORCE_INLINE const ezString& gpNameOf(const gpWorld& world) { return world.m_
 EZ_FORCE_INLINE       gpLinearAcceleration& gpGravityOf(      gpWorld& world) { return world.m_Gravity; }
 EZ_FORCE_INLINE const gpLinearAcceleration& gpGravityOf(const gpWorld& world) { return gpGravityOf(const_cast<gpWorld&>(world)); }
 
-GP_CoreAPI ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity);
-GP_CoreAPI ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity);
+GP_CoreAPI ezResult gpAddTo(gpWorld& world, gpEntity& entity);
+GP_CoreAPI ezResult gpRemoveFrom(gpWorld& world, gpEntity& entity);
+GP_CoreAPI ezResult gpAddTo(gpWorld& world, gpForceFieldEntity& forceField);
+GP_CoreAPI ezResult gpRemoveFrom(gpWorld& world, gpForceFieldEntity& forceField);
 GP_CoreAPI void gpClearSimulatedEntities(gpWorld& world);
 GP_CoreAPI void gpClearForceFields(gpWorld& world);
 EZ_FORCE_INLINE void gpClear(gpWorld& world)
@@ -69,7 +73,7 @@ EZ_FORCE_INLINE void gpClear(gpWorld& world)
     gpClearSimulatedEntities(world);
     gpClearForceFields(world);
 }
-GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntityBase& entity);
+GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntity& entity);
 GP_CoreAPI void gpCollectGarbageOf(gpWorld& world);
 GP_CoreAPI void gpStepSimulationOf(gpWorld& world, gpTime dt);
 
@@ -92,10 +96,10 @@ GP_CoreAPI void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* p
 namespace gpInternal
 {
     template<>
-    struct gpTypeAllocator<gpEntityBase>
+    struct gpTypeAllocator<gpEntity>
     {
         template<typename... Args>
-        gpEntityBase* New(gpWorld& world, Args&&... args)
+        static gpEntity* New(gpWorld& world, Args&&... args)
         {
             return world._NewEntity(args...);
         }

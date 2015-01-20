@@ -2,7 +2,7 @@
 #include "gpCore/World/Entity.h"
 #include "gpCore/Shapes/Circle.h"
 
-class GP_CoreAPI gpForceFieldEntity : public gpEntityBase
+class GP_CoreAPI gpForceFieldEntity : public gpEntity
 {
     // Data
     //////////////////////////////////////////////////////////////////////////
@@ -14,8 +14,6 @@ class GP_CoreAPI gpForceFieldEntity : public gpEntityBase
     friend gpScalar& gpForceFactorOf(gpForceFieldEntity& forceField);
     friend gpScalar& gpRadiusOf(gpForceFieldEntity& forceField);
     friend bool gpContains(const gpForceFieldEntity& forceField, const gpDisplacement& vPoint);
-public:
-    gpForceFieldEntity() : gpEntityBase(gpEntityType::ForceField) {}
 };
 
 EZ_FORCE_INLINE       gpScalar& gpForceFactorOf(      gpForceFieldEntity& forceField) { return forceField.m_fForceFactor; }

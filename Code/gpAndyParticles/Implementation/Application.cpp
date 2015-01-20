@@ -8,7 +8,6 @@
 #include "gpCore/Rendering/Rendering.h"
 #include "gpCore/Rendering/RenderExtractor.h"
 #include "gpCore/World/World.h"
-#include "gpCore/World/Particle.h"
 
 void gpAndyParticlesApp::AfterEngineInit()
 {
@@ -112,13 +111,13 @@ ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
 
 void gpAndyParticlesApp::PopulateWorld()
 {
-    auto pParticle = gpCreateEntity<gpParticleEntity>(Deref(m_pWorld));
+    auto pParticle = gpNew<gpEntity>(Deref(m_pWorld));
     EZ_ASSERT(pParticle, "Failed to create particle");
     auto& particle = Deref(pParticle);
     gpNameOf(particle) = "TheParticle";
     gpSet(gpPositionOf(particle), 100, 200, 0);
     //gpLinearVelocityOf(particle).Set(10, 10, 0);
-    auto result = gpAddEntityTo(Deref(m_pWorld), particle);
+    auto result = gpAddTo(Deref(m_pWorld), particle);
     EZ_ASSERT(result.Succeeded(), "");
     auto& DrawInfo = gpDrawInfoOf(Deref(m_pWorld), particle);
     DrawInfo.m_Color = ezColor(1, 0, 0, 0.9f);
@@ -139,7 +138,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
     {
         ResetSpawning();
         auto& currentParticle = Deref(m_pCurrentParticle);
-        EZ_VERIFY(gpRemoveEntityFrom(Deref(m_pWorld), currentParticle).Succeeded(), "Failed to remove the current particle!");
+        EZ_VERIFY(gpRemoveFrom(Deref(m_pWorld), currentParticle).Succeeded(), "Failed to remove the current particle!");
         const auto& pos = gpValueOf(gpPositionOf(currentParticle));
         ezLog::Info("Removed particle   '%s' @ {%.3f, %.3f, %.3f}",
                     gpNameOf(currentParticle).GetData(),
@@ -215,7 +214,7 @@ void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 void gpAndyParticlesApp::AddNewParticle(const gpDisplacement& Position)
 {
     static ezUInt32 uiCount = 0;
-    m_pCurrentParticle = gpCreateEntity<gpParticleEntity>(Deref(m_pWorld));
+    m_pCurrentParticle = gpNew<gpEntity>(Deref(m_pWorld));
     EZ_ASSERT(m_pCurrentParticle, "Failed to create new particle");
 
     auto& particle = Deref(m_pCurrentParticle);
@@ -226,7 +225,7 @@ void gpAndyParticlesApp::AddNewParticle(const gpDisplacement& Position)
     }
     gpPositionOf(particle) = Position;
     gpGravityFactorOf(particle) = 0.0f;
-    EZ_VERIFY(gpAddEntityTo(Deref(m_pWorld), particle).Succeeded(), "Failed to add new particle?!");
+    EZ_VERIFY(gpAddTo(Deref(m_pWorld), particle).Succeeded(), "Failed to add new particle?!");
     ezLog::Success("Added new particle '%s' @ {%.3f, %.3f, %.3f}",
                    gpNameOf(particle).GetData(),
                    gpX(Position), gpY(Position), gpZ(Position));

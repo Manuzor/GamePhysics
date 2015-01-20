@@ -8,18 +8,17 @@
 #include "gpCore/Rendering/RenderExtractor.h"
 
 #include "gpCore/World/World.h"
-#include "gpCore/World/RigidBody.h"
 #include "gpCore/Shapes/Polygon.h"
 
 static gpWorld* g_pWorld = nullptr;
 
-static gpRigidBody* g_pEntity = nullptr;
+static gpEntity* g_pEntity = nullptr;
 
 static void Populate(gpWorld& world)
 {
     gpGravityOf(world) = gpLinearAcceleration(gpVec3(0, 0.0f, 0));
 
-    g_pEntity = gpCreateEntity<gpRigidBody>(world);
+    g_pEntity = gpNew<gpEntity>(world);
     EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");
 
     gpMass m(5.0f);
@@ -36,16 +35,16 @@ static void Populate(gpWorld& world)
     gpShapePtrOf(Deref(g_pEntity)) = pShape;
     gpInverseInertiaOf(Deref(g_pEntity)) = invI;
 
-    EZ_VERIFY(gpAddEntityTo(world, Deref(g_pEntity)).Succeeded(), "Failed to add entity to world.");
+    EZ_VERIFY(gpAddTo(world, Deref(g_pEntity)).Succeeded(), "Failed to add entity to world.");
 
     gpApplyForceTo(Deref(g_pEntity), gpForce(20000, 0, 0), gpTime(1), gpDisplacement(0, 1, 0));
 }
 
-static void Cleanup(gpWorld& world, gpRigidBody& entity)
+static void Cleanup(gpWorld& world, gpEntity& entity)
 {
     EZ_DEFAULT_DELETE(gpShapePtrOf(entity));
     gpReleaseReferenceTo(entity);
-    EZ_VERIFY(gpRemoveEntityFrom(world, entity).Succeeded(), "Failed to remove entity from world.");
+    EZ_VERIFY(gpRemoveFrom(world, entity).Succeeded(), "Failed to remove entity from world.");
 
     g_pEntity = nullptr;
     EZ_DEFAULT_DELETE(g_pWorld);

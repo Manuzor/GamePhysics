@@ -3,7 +3,7 @@
 
 class gpWorld;
 class gpRenderExtractor;
-class gpParticleEntity;
+class gpEntity;
 
 class gpAndyParticlesApp : public gpApplicationBase
 {
@@ -21,7 +21,7 @@ private:
     ezTime m_LastUpdate;
     gpWorld* m_pWorld;
 
-    gpParticleEntity* m_pCurrentParticle;
+    gpEntity* m_pCurrentParticle;
 
 private:
     void PopulateWorld();

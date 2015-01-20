@@ -1,7 +1,7 @@
 #include "gpCore/PCH.h"
 #include "gpCore/World/Entity.h"
 
-void gpGetStats(ezStringBuilder& out_Stats, const gpEntityBase& entity)
+void gpGetStats(ezStringBuilder& out_Stats, const gpEntity& entity)
 {
     const auto& vPos = gpValueOf(gpPositionOf(entity));
     const auto& vVel = gpValueOf(gpLinearVelocityOf(entity));

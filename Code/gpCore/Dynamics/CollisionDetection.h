@@ -1,10 +1,8 @@
 #pragma once
 
-class gpParticleEntity;
-class gpForceFieldEntity;
-class gpRigidBody;
+class gpEntity;
 
-GP_CoreAPI bool gpAreColliding(const gpRigidBody& lhs, const gpRigidBody& rhs);
+GP_CoreAPI bool gpAreColliding(const gpEntity& lhs, const gpEntity& rhs);
 
 //////////////////////////////////////////////////////////////////////////
 

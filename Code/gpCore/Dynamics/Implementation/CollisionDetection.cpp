@@ -1,9 +1,7 @@
 #include "gpCore/PCH.h"
 #include "gpCore/Dynamics/CollisionDetection.h"
 
-#include "gpCore/World/Particle.h"
-#include "gpCore/World/ForceField.h"
-#include "gpCore/World/RigidBody.h"
+#include "gpCore/World/Entity.h"
 
 #include "gpCore/Shapes/Circle.h"
 #include "gpCore/Shapes/Rectangle.h"
@@ -27,7 +25,7 @@ bool ShapeCallerHelper(const gpTransform& lhsTransform, const Type& lhsShape,
     return false;
 }
 
-bool gpAreColliding(const gpRigidBody& lhs, const gpRigidBody& rhs)
+bool gpAreColliding(const gpEntity& lhs, const gpEntity& rhs)
 {
     EZ_ASSERT(gpShapePtrOf(lhs) && gpShapePtrOf(rhs), "A rigid body needs a shape!");
     return gpAreColliding(gpTransformOf(lhs), Deref(gpShapePtrOf(lhs)),

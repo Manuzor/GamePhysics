@@ -99,17 +99,11 @@
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World_Rendering.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Particle.cpp">
-      <Filter>World\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\PCH.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\TextFileLogWriter.cpp">
       <Filter>Utilities\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\ForceField.cpp">
-      <Filter>World\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\RigidBody.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\RandomNumbers.cpp">
@@ -180,9 +174,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\World\EntityType.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\Particle.h">
-      <Filter>World</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Common.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Config.h" />
@@ -203,9 +194,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h">
       <Filter>Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\RigidBody.h">
-      <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h">
       <Filter>Shapes</Filter>
