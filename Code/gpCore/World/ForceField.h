@@ -1,5 +1,5 @@
 #pragma once
-#include "gpCore/World/EntityBase.h"
+#include "gpCore/World/Entity.h"
 #include "gpCore/Shapes/Circle.h"
 
 class GP_CoreAPI gpForceFieldEntity : public gpEntityBase

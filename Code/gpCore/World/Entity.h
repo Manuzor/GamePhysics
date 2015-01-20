@@ -25,7 +25,9 @@ class GP_CoreAPI gpEntityBase : public ezRefCounted
 
 public:
     gpEntityBase(gpEntityType TheType) : m_Type(TheType) {}
-    gpEntityBase(const gpEntityBase&) = delete;
+
+    gpEntityBase(const gpEntityBase&)   = delete;
+    gpEntityBase(gpEntityBase&&)        = delete;
     void operator=(const gpEntityBase&) = delete;
 };
 

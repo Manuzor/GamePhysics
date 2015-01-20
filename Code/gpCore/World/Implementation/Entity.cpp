@@ -1,5 +1,5 @@
 #include "gpCore/PCH.h"
-#include "gpCore/World/EntityBase.h"
+#include "gpCore/World/Entity.h"
 
 void gpGetStats(ezStringBuilder& out_Stats, const gpEntityBase& entity)
 {

@@ -7,7 +7,7 @@
 #include "gpCore/Algorithm/Integrate.h"
 
 #include "gpCore/World/World.h"
-#include "gpCore/World/EntityBase.h"
+#include "gpCore/World/Entity.h"
 #include "gpCore/World/Particle.h"
 #include "gpCore/World/ForceField.h"
 #include "gpCore/Utilities/View.h"

@@ -1,5 +1,5 @@
 #pragma once
-#include "gpCore/World/EntityBase.h"
+#include "gpCore/World/Entity.h"
 
 class gpRenderExtractor;
 class gpForceFieldEntity;

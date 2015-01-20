@@ -96,9 +96,6 @@
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\EntityBase.cpp">
-      <Filter>World\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World_Rendering.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
@@ -129,6 +126,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Dynamics\Implementation\CollisionDetection.cpp">
       <Filter>Dynamics\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Entity.cpp">
+      <Filter>World\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -175,9 +175,6 @@
       <Filter>Rendering\Implementation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\World\World.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\EntityBase.h">
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\World\EntityType.h">
@@ -246,6 +243,9 @@
       <Filter>Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Allocation.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\Entity.h">
+      <Filter>World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl">

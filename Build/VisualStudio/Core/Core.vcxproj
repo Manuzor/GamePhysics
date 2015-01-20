@@ -44,7 +44,7 @@
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\FileSystem.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\RandomNumbers.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\TextFileLogWriter.cpp" />
-    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\EntityBase.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Entity.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\ForceField.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Particle.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\PhysicalProperties.cpp" />
@@ -90,7 +90,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\TextFileLogWriter.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\View.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\World\EntityBase.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\Entity.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\EntityType.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\ForceField.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\Particle.h" />
