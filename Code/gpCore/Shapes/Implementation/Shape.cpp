@@ -9,7 +9,7 @@ namespace
     ezDynamicArray<gpInternal::gpSphereShapeLayout*>  g_spheres;
 }
 
-gpShape* gpShape::NewSphere(gpScalar radius)
+gpShape* gpShape::Sphere(gpScalar radius)
 {
     auto pShere = EZ_DEFAULT_NEW(gpInternal::gpSphereShapeLayout);
     gpRadiusOf(Deref(pShere)) = radius;
@@ -17,7 +17,7 @@ gpShape* gpShape::NewSphere(gpScalar radius)
     return pShere;
 }
 
-gpShape* gpShape::NewBox(const gpVec3& halfExtents)
+gpShape* gpShape::Box(const gpVec3& halfExtents)
 {
     auto pBox = EZ_DEFAULT_NEW(gpInternal::gpPolygonShapeLayout);
     gpConvertToBox(Deref(pBox), halfExtents);

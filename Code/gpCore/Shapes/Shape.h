@@ -21,8 +21,8 @@ public:
 
     /// \note This function returns the same pointer for every call because a point-shape has no state to change.
     static gpShape* Point();
-    static gpShape* NewSphere(gpScalar radius);
-    static gpShape* NewBox(const gpVec3& halfExtents);
+    static gpShape* Sphere(gpScalar radius);
+    static gpShape* Box(const gpVec3& halfExtents);
 };
 
 using gpShapeVertices = ezHybridArray<gpVec3, 8>;
