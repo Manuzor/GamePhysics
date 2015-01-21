@@ -186,19 +186,20 @@ static void AccumulateForces(gpLinearAcceleration& out_Force,
     }
 }
 
-void gpStepSimulationOf(gpWorld& world, gpTime dt)
+static void IntegrateEtities(ezArrayPtr<gpEntity*> entities,
+                             ezArrayPtr<const gpForceFieldEntity*> forceFields,
+                             const gpLinearAcceleration& gravity,
+                             gpTime dt)
 {
-    EZ_PROFILE(world.m_ProfilingId_Simulation);
-
-    for(ezUInt32 i = 0; i < world.m_SimulatedEntities.GetCount(); ++i)
+    for (ezUInt32 i = 0; i < entities.GetCount(); ++i)
     {
-        auto& entity = Deref(world.m_SimulatedEntities[i]);
+        auto& entity = Deref(entities[i]);
 
         // Linear movement
         //////////////////////////////////////////////////////////////////////////
         gpLinearAcceleration linAcceleration(gpZero);
-        AccumulateForces(linAcceleration, entity, gpGetConstView(world.m_ForceFields));
-        linAcceleration = (linAcceleration + gpGravityOf(world)) * gpGravityFactorOf(entity);
+        AccumulateForces(linAcceleration, entity, forceFields);
+        linAcceleration = (linAcceleration + gravity) * gpGravityFactorOf(entity);
 
         if(!gpIsZero(linAcceleration))
         {
@@ -238,4 +239,41 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
         gpOrthogonalize(newA);
         gpRotationOf(entity) = gpOrientation(newA);
     }
+}
+
+template<typename Container>
+static void DetectCollision(ezArrayPtr<gpEntity*> entities, Container& out_collidingEntities)
+{
+    for (ezUInt32 i = 0; i < entities.GetCount(); ++i)
+    {
+        auto pLeft = entities[i];
+
+        for (ezUInt32 j = 0; j < entities.GetCount(); ++j)
+        {
+            if (i == j)
+                continue;
+
+            auto pRight = entities[j];
+
+            if (gpAreColliding(Deref(pLeft), Deref(pRight)))
+            {
+                if (!out_collidingEntities.Contains(pLeft))
+                    out_collidingEntities.PushBack(pLeft);
+                if (!out_collidingEntities.Contains(pRight))
+                    out_collidingEntities.PushBack(pRight);
+            }
+        }
+    }
+}
+
+void gpStepSimulationOf(gpWorld& world, gpTime dt)
+{
+    EZ_PROFILE(world.m_ProfilingId_Simulation);
+
+    IntegrateEtities(world.m_SimulatedEntities, gpGetConstView(world.m_ForceFields), gpGravityOf(world), dt);
+
+    ezHybridArray<gpEntity*, 64> collidingEntities;
+    DetectCollision(world.m_SimulatedEntities, collidingEntities);
+
+    /// \todo Resolve collisions...
 }
