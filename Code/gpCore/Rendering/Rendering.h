@@ -8,7 +8,7 @@ namespace gpDrawData
         Line,
         Arrow,
         Polygon,
-        Circle,
+        Sphere,
         Box
     };
 
@@ -81,11 +81,11 @@ namespace gpDrawData
         ezColor m_OutlineColor = { 1.0f, 1.0f, 1.0f, 1.0f };
     };
 
-    struct Circle : public ExtendBaseHelper<Circle, Type::Circle>
+    struct Sphere : public ExtendBaseHelper<Sphere, Type::Sphere>
     {
         gpVec3 m_Position = { 0.0f, 0.0f, 0.0f };
         float m_fRadius = 1.0f;
-        ezUInt32 m_uiNumLineSegments = 10;
+        ezUInt32 m_uiNumSegments = 10;
 
         ezColor m_FillColor = { 1.0f, 1.0f, 1.0f, 1.0f };
         float m_fOutlineWidth = 1.0f;
@@ -107,7 +107,7 @@ void gpDraw(const gpDrawData::Point& Data);
 void gpDraw(const gpDrawData::Line& Data);
 void gpDraw(const gpDrawData::Arrow& Data);
 void gpDraw(const gpDrawData::Polygon& Data);
-void gpDraw(const gpDrawData::Circle& Data);
+void gpDraw(const gpDrawData::Sphere& Data);
 void gpDraw(const gpDrawData::Box& Data);
 
 #if EZ_ENABLED(GP_UseOpenGL)

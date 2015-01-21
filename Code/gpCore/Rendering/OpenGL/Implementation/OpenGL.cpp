@@ -12,7 +12,7 @@ void gpDraw(const gpDrawData::Point& Data)
         return;
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-    glColor4fv(&Data.m_Color.r);
+    glColor4fv(Data.m_Color.GetData());
     glPointSize(Data.m_fPointSize);
 
     GP_OpenGLScope_BeginEnd(GL_POINTS);
@@ -25,13 +25,13 @@ void gpDraw(const gpDrawData::Line& Data)
         return;
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glColor4fv(&Data.m_Color.r);
+    glColor4fv(Data.m_Color.GetData());
 
     glLineWidth(Data.m_fLineWidth);
 
     GP_OpenGLScope_BeginEnd(GL_LINES);
-    glVertex3fv(&Data.m_Start.x);
-    glVertex3fv(&Data.m_End.x);
+    glVertex3fv(Data.m_Start.GetData());
+    glVertex3fv(Data.m_End.GetData());
 }
 
 void gpDraw(const gpDrawData::Arrow& Data)
@@ -54,15 +54,15 @@ void gpDraw(const gpDrawData::Arrow& Data)
     auto RightWing = Data.m_End + gpVec3(-Cos(AngleRightWing), Sin(AngleRightWing), 0.0f) * Data.m_fWingLength;
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glColor4fv(&Data.m_Color.r);
+    glColor4fv(Data.m_Color.GetData());
 
     glLineWidth(Data.m_fLineWidth);
 
     {
         GP_OpenGLScope_BeginEnd(GL_LINES);
-        glVertex3fv(&Data.m_Start.x); glVertex3fv(&Data.m_End.x);
-        glVertex3fv(&Data.m_End.x); glVertex3fv(&LeftWing.x);
-        glVertex3fv(&Data.m_End.x); glVertex3fv(&RightWing.x);
+        glVertex3fv(Data.m_Start.GetData()); glVertex3fv(&Data.m_End.x);
+        glVertex3fv(Data.m_End.GetData());   glVertex3fv(&LeftWing.x);
+        glVertex3fv(Data.m_End.GetData());   glVertex3fv(&RightWing.x);
     }
 }
 
@@ -103,38 +103,38 @@ void gpDraw(const gpDrawData::Polygon& Data)
     }
 }
 
-static void gpDrawCircleHelper(const gpDrawData::Circle& Data, GLenum PolygonMode, const ezColor& Color)
+static void gpDrawSphereHelper(const gpDrawData::Sphere& Data, GLenum PolygonMode, const ezColor& Color)
 {
     glPolygonMode(GL_FRONT_AND_BACK, PolygonMode);
-    glColor4fv(&Color.r);
+    glColor4fv(Color.GetData());
 
-    auto Angle = ezAngle::Degree(360.0f / Data.m_uiNumLineSegments);
+    auto Angle = ezAngle::Degree(360.0f / Data.m_uiNumSegments);
     gpVec3 CurrentSegment;
 
     GP_OpenGLScope_BeginEnd(GL_POLYGON);
-    for (decltype(Data.m_uiNumLineSegments) i = 0; i < Data.m_uiNumLineSegments; ++i)
+    for (decltype(Data.m_uiNumSegments) i = 0; i < Data.m_uiNumSegments; ++i)
     {
         CurrentSegment.Set(Cos(Angle * float(i)) * Data.m_fRadius,
                            Sin(Angle * float(i)) * Data.m_fRadius,
                            0.0f);
         auto Result = Data.m_Position + CurrentSegment;
-        glVertex3fv(&Result.x);
+        glVertex3fv(Result.GetData());
     }
 }
 
-void gpDraw(const gpDrawData::Circle& Data)
+void gpDraw(const gpDrawData::Sphere& Data)
 {
-    EZ_ASSERT(Data.m_uiNumLineSegments >= 3, "");
+    EZ_ASSERT(Data.m_uiNumSegments >= 3, "");
 
     if (!IsZero(Data.m_FillColor.a))
     {
-        gpDrawCircleHelper(Data, GL_FILL, Data.m_FillColor);
+        gpDrawSphereHelper(Data, GL_FILL, Data.m_FillColor);
     }
 
     if (!IsZero(Data.m_OutlineColor.a))
     {
         glLineWidth(Data.m_fOutlineWidth);
-        gpDrawCircleHelper(Data, GL_LINE, Data.m_OutlineColor);
+        gpDrawSphereHelper(Data, GL_LINE, Data.m_OutlineColor);
     }
 }
 

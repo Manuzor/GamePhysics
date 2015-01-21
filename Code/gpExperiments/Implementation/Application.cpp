@@ -89,13 +89,13 @@ static void OnRenderExtraction(gpRenderExtractor* pExtractor)
     pPoint->m_Color.SetRGB(ezVec3(1.0f, 0.0f, 0.0f));
     pPoint->m_fPointSize = angle.GetRadian() * 2;
 
-    auto pCircle = pExtractor->AllocateRenderData<gpDrawData::Circle>();
-    pCircle->m_Position.Set(100, 300, 0);
-    pCircle->m_FillColor = ezColor(0.0f, 1.0f, 0.0f, 0.75f);
-    pCircle->m_OutlineColor = ezColor(0.0f, 0.0f, 0.0f, 1.0f);
-    pCircle->m_fOutlineWidth = angle.GetRadian() * 2;
-    pCircle->m_fRadius = 50.0f;
-    pCircle->m_uiNumLineSegments = 100;
+    auto pSphere = pExtractor->AllocateRenderData<gpDrawData::Sphere>();
+    pSphere->m_Position.Set(100, 300, 0);
+    pSphere->m_FillColor = ezColor(0.0f, 1.0f, 0.0f, 0.75f);
+    pSphere->m_OutlineColor = ezColor(0.0f, 0.0f, 0.0f, 1.0f);
+    pSphere->m_fOutlineWidth = angle.GetRadian() * 2;
+    pSphere->m_fRadius = 50.0f;
+    pSphere->m_uiNumSegments = 100;
 
     auto pPoly = pExtractor->AllocateRenderData<gpDrawData::Polygon>();
     pPoly->m_FillColor = ezColor(1.0f, 0.0f, 0.0f, 0.5f);

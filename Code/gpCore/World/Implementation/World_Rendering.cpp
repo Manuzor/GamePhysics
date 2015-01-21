@@ -47,16 +47,16 @@ static void Extract(gpRenderExtractor* pExtractor,
 {
     switch(gpTypeOf(shape))
     {
-    case gpShapeType::Circle:
+    case gpShapeType::Sphere:
     {
-        auto pCircle = pExtractor->AllocateRenderData<gpDrawData::Circle>();
-        pCircle->m_Position = gpValueOf(gpPositionOf(props));
-        pCircle->m_fRadius = gpRadiusOf(shape);
+        auto pSphere = pExtractor->AllocateRenderData<gpDrawData::Sphere>();
+        pSphere->m_Position = gpValueOf(gpPositionOf(props));
+        pSphere->m_fRadius = gpRadiusOf(shape);
 
-        pCircle->m_uiNumLineSegments = 20;
-        pCircle->m_OutlineColor = drawInfo.m_Color;
-        pCircle->m_FillColor = drawInfo.m_Color;
-        pCircle->m_FillColor.a *= 0.5f;
+        pSphere->m_uiNumSegments = 20;
+        pSphere->m_OutlineColor = drawInfo.m_Color;
+        pSphere->m_FillColor = drawInfo.m_Color;
+        pSphere->m_FillColor.a *= 0.5f;
     }
         break;
     case gpShapeType::Polygon:
@@ -85,11 +85,11 @@ static void Extract(gpRenderExtractor* pExtractor,
     if (ezMath::IsZero(drawInfo.m_Color.a))
         return;
 
-    auto pData = pExtractor->AllocateRenderData<gpDrawData::Circle>();
+    auto pData = pExtractor->AllocateRenderData<gpDrawData::Sphere>();
     pData->m_OutlineColor.a = 0.0f; // no outline
     pData->m_FillColor = drawInfo.m_Color;
     pData->m_FillColor.a *= 0.1f;
-    pData->m_uiNumLineSegments = 20;
+    pData->m_uiNumSegments = 20;
 
     pData->m_Position = gpValueOf(gpPositionOf(forceField));
     pData->m_fRadius = gpRadiusOf(forceField);

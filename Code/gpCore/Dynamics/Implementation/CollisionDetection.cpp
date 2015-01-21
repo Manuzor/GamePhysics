@@ -16,33 +16,33 @@ namespace
         return gpAreEqual(p1, p2);
     }
 
-    bool Point_Circle(const gpTransform& pointTransform,
-                      const gpTransform& circleTransform, const gpShape& circle)
+    bool Point_Sphere(const gpTransform& pointTransform,
+                      const gpTransform& sphereTransform, const gpShape& sphere)
     {
-        // Calculate: |p2 - p1|² <= r²
+        // Calculate: |p2 - p1|² < r²
 
-        auto& p1 = gpPositionOf(circleTransform);
+        auto& p1 = gpPositionOf(sphereTransform);
         auto& p2 = gpPositionOf(pointTransform);
-        auto r  = gpRadiusOf(circle);
+        auto r  = gpRadiusOf(sphere);
 
         auto d = p2 - p1;
-        return gpSquaredLengthOf(d) <= gpSquare(r);
+        return gpSquaredLengthOf(d) < gpSquare(r);
     }
 
-    bool Point_Polygon(const gpTransform& circleTransform,
+    bool Point_Polygon(const gpTransform& sphereTransform,
                        const gpTransform& polygonTransform,
                        const gpShape& polygon)
     {
         GP_NotImplemented;
     }
 
-    bool Circle_Point(const gpTransform& circleTransform, const gpShape& circle,
+    bool Sphere_Point(const gpTransform& sphereTransform, const gpShape& sphere,
                       const gpTransform& pointTransform)
     {
-        return Point_Circle(pointTransform, circleTransform, circle);
+        return Point_Sphere(pointTransform, sphereTransform, sphere);
     }
 
-    bool Circle_Circle(const gpTransform& lhsTransform, const gpShape& lhsShape,
+    bool Sphere_Sphere(const gpTransform& lhsTransform, const gpShape& lhsShape,
                        const gpTransform& rhsTransform, const gpShape& rhsShape)
     {
         // Calculate: |p2 - p1|² <= (r1 + r2)²
@@ -52,10 +52,10 @@ namespace
         auto d   = p2 - p1;
         auto r1  = gpRadiusOf(lhsShape);
         auto r2  = gpRadiusOf(rhsShape);
-        return gpSquaredLengthOf(d) <= gpSquare(r1 + r2);
+        return gpSquaredLengthOf(d) < gpSquare(r1 + r2);
     }
 
-    bool Circle_Polygon(const gpTransform& circleTransform,  const gpShape& circle,
+    bool Sphere_Polygon(const gpTransform& sphereTransform,  const gpShape& sphere,
                         const gpTransform& polygonTransform, const gpShape& polygon)
     {
         GP_NotImplemented;
@@ -68,12 +68,12 @@ namespace
         return Point_Polygon(pointTransform, polygonTransform, polygon);
     }
 
-    bool Polygon_Circle(const gpTransform& polygonTransform,
+    bool Polygon_Sphere(const gpTransform& polygonTransform,
                         const gpShape& polygon,
                         const gpTransform& sphereTransform,
                         const gpShape& sphere)
     {
-        return Circle_Polygon(polygonTransform, polygon, sphereTransform, sphere);
+        return Sphere_Polygon(polygonTransform, polygon, sphereTransform, sphere);
     }
 
     bool Polygon_Polygon(const gpTransform& lhsTransform,
@@ -109,23 +109,23 @@ bool gpAreColliding(const gpTransform& lhsTransform, const gpShape& lhsShape,
         switch(gpTypeOf(rhsShape))
         {
         case gpShapeType::Point:   return Point_Point(  lhsTransform, rhsTransform);
-        case gpShapeType::Circle:  return Point_Circle( lhsTransform, rhsTransform, rhsShape);
+        case gpShapeType::Sphere:  return Point_Sphere( lhsTransform, rhsTransform, rhsShape);
         case gpShapeType::Polygon: return Point_Polygon(lhsTransform, rhsTransform, rhsShape);
         default: break;
         }
-    case gpShapeType::Circle:
+    case gpShapeType::Sphere:
         switch(gpTypeOf(rhsShape))
         {
-        case gpShapeType::Point:   return Circle_Point(  lhsTransform, lhsShape, rhsTransform);
-        case gpShapeType::Circle:  return Circle_Circle( lhsTransform, lhsShape, rhsTransform, rhsShape);
-        case gpShapeType::Polygon: return Circle_Polygon(lhsTransform, lhsShape, rhsTransform, rhsShape);
+        case gpShapeType::Point:   return Sphere_Point(  lhsTransform, lhsShape, rhsTransform);
+        case gpShapeType::Sphere:  return Sphere_Sphere( lhsTransform, lhsShape, rhsTransform, rhsShape);
+        case gpShapeType::Polygon: return Sphere_Polygon(lhsTransform, lhsShape, rhsTransform, rhsShape);
         default: break;
         }
     case gpShapeType::Polygon:
         switch(gpTypeOf(rhsShape))
         {
         case gpShapeType::Point:   return Polygon_Point(  lhsTransform, lhsShape, rhsTransform);
-        case gpShapeType::Circle:  return Polygon_Circle( lhsTransform, lhsShape, rhsTransform, rhsShape);
+        case gpShapeType::Sphere:  return Polygon_Sphere( lhsTransform, lhsShape, rhsTransform, rhsShape);
         case gpShapeType::Polygon: return Polygon_Polygon(lhsTransform, lhsShape, rhsTransform, rhsShape);
         default: break;
         }

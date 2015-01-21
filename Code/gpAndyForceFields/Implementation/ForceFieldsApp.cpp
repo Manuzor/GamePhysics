@@ -109,12 +109,12 @@ static void DespawnTarget(gpWorld* pWorld)
 
 static void CreateTarget(gpWorld* pWorld)
 {
-    static gpShape* pCircle;
+    static gpShape* pSphere;
 
-    if(pCircle == nullptr)
+    if(pSphere == nullptr)
     {
-        static gpShape circle(gpShapeType::Circle);
-        pCircle = &circle;
+        static gpShape sphere(gpShapeType::Sphere);
+        pSphere = &sphere;
     }
 
     g_pPlayerTarget = gpNew<gpEntity>();
@@ -122,7 +122,7 @@ static void CreateTarget(gpWorld* pWorld)
 
     gpAddReferenceTo(playerTarget);
     gpNameOf(playerTarget) = "Target";
-    gpShapePtrOf(playerTarget) = pCircle;
+    gpShapePtrOf(playerTarget) = pSphere;
     gpGravityFactorOf(playerTarget) = 0.0f;
 
     ezLog::Success("Created target.");

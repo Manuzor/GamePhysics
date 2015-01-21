@@ -6,12 +6,12 @@
 namespace
 {
     ezDynamicArray<gpInternal::gpPolygonShapeLayout*> g_polygons;
-    ezDynamicArray<gpInternal::gpCircleShapeLayout*>  g_spheres;
+    ezDynamicArray<gpInternal::gpSphereShapeLayout*>  g_spheres;
 }
 
 gpShape* gpShape::NewSphere(gpScalar radius)
 {
-    auto pShere = EZ_DEFAULT_NEW(gpInternal::gpCircleShapeLayout);
+    auto pShere = EZ_DEFAULT_NEW(gpInternal::gpSphereShapeLayout);
     gpRadiusOf(Deref(pShere)) = radius;
     g_spheres.PushBack(pShere);
     return pShere;

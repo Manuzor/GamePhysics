@@ -11,7 +11,7 @@ namespace gpInternal
             DefaultInit = -1,
 
             Point,
-            Circle,
+            Sphere,
             Line,
             Polygon,
 
