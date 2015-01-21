@@ -12,18 +12,13 @@
 
 static gpWorld* g_pWorld = nullptr;
 
-static gpEntity* g_pEntity = nullptr;
-#define entity Deref(g_pEntity)
-
-static void Populate(gpWorld& world)
+static void RotatingRigidBody(const char* name, gpWorld& world)
 {
-    gpGravityOf(world) = gpLinearAcceleration(gpVec3(0, 0.0f, 0));
-
-    g_pEntity = gpNew<gpEntity>();
-    EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");
+    auto pEntity = gpNew<gpEntity>();
+    auto& entity = Deref(pEntity);
     gpAddReferenceTo(entity);
 
-    gpNameOf(entity)     = "Player";
+    gpNameOf(entity)     = name;
     gpPositionOf(entity) = gpDisplacement(200, 300, 0);
     gpMassOf(entity)     = gpMass(5.0f);
 
@@ -37,12 +32,37 @@ static void Populate(gpWorld& world)
     gpApplyForceTo(entity, gpForce(20000, 0, 0), gpTime(1), gpDisplacement(0, 1, 0));
 }
 
+static gpEntity* Particle(gpWorld& world, const char* name, const gpDisplacement& position)
+{
+    auto pParticle = gpNew<gpEntity>();
+    auto& p = Deref(pParticle);
+
+    gpNameOf(p)     = name;
+    gpPositionOf(p) = position;
+    gpMassOf(p)     = gpMass(1);
+
+    auto result = gpAddTo(world, p);
+    EZ_VERIFY(result.Succeeded(), "Failed to add particle to world.");
+
+    return pParticle;
+}
+
+static void Populate(gpWorld& world)
+{
+    gpGravityOf(world) = gpLinearAcceleration(gpVec3(0, 0.0f, 0));
+
+    //RotatingRigidBody("Player", world);
+
+    auto pLeft  = Particle(world, "left",  gpDisplacement(150, 250, 0));
+    auto pRight = Particle(world, "right", gpDisplacement(350, 250, 0));
+
+    gpScalar magnitude = 10.0f;
+    gpApplyLinearImpulseTo(Deref(pLeft),  gpLinearVelocity( magnitude, 0, 0));
+    gpApplyLinearImpulseTo(Deref(pRight), gpLinearVelocity(-magnitude, 0, 0));
+}
+
 static void Cleanup()
 {
-    gpReleaseReferenceTo(entity);
-    EZ_VERIFY(gpRemoveFrom(Deref(g_pWorld), entity).Succeeded(), "Failed to remove entity from world.");
-
-    g_pEntity = nullptr;
     gpDelete(g_pWorld);
 }
 
