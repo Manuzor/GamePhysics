@@ -1,9 +1,9 @@
 
 namespace gpInternal
 {
-    /// \brief Prevents direct allocations of gpShapeBase
+    /// \brief Prevents direct allocations of gpShape
     template<>
-    struct gpTypeAllocator<gpShapeBase>
+    struct gpTypeAllocator<gpShape>
     {
     };
 }

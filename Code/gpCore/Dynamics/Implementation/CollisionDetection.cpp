@@ -17,7 +17,7 @@ namespace
     }
 
     bool Point_Circle(const gpTransform& pointTransform,
-                      const gpTransform& circleTransform, const gpShapeBase& circle)
+                      const gpTransform& circleTransform, const gpShape& circle)
     {
         // Calculate: |p2 - p1|² <= r²
 
@@ -31,19 +31,19 @@ namespace
 
     bool Point_Polygon(const gpTransform& circleTransform,
                        const gpTransform& polygonTransform,
-                       const gpShapeBase& polygon)
+                       const gpShape& polygon)
     {
         GP_NotImplemented;
     }
 
-    bool Circle_Point(const gpTransform& circleTransform, const gpShapeBase& circle,
+    bool Circle_Point(const gpTransform& circleTransform, const gpShape& circle,
                       const gpTransform& pointTransform)
     {
         return Point_Circle(pointTransform, circleTransform, circle);
     }
 
-    bool Circle_Circle(const gpTransform& lhsTransform, const gpShapeBase& lhsShape,
-                       const gpTransform& rhsTransform, const gpShapeBase& rhsShape)
+    bool Circle_Circle(const gpTransform& lhsTransform, const gpShape& lhsShape,
+                       const gpTransform& rhsTransform, const gpShape& rhsShape)
     {
         // Calculate: |p2 - p1|² <= (r1 + r2)²
 
@@ -55,31 +55,31 @@ namespace
         return gpSquaredLengthOf(d) <= gpSquare(r1 + r2);
     }
 
-    bool Circle_Polygon(const gpTransform& circleTransform,  const gpShapeBase& circle,
-                        const gpTransform& polygonTransform, const gpShapeBase& polygon)
+    bool Circle_Polygon(const gpTransform& circleTransform,  const gpShape& circle,
+                        const gpTransform& polygonTransform, const gpShape& polygon)
     {
         GP_NotImplemented;
     }
 
     bool Polygon_Point(const gpTransform& polygonTransform,
-                       const gpShapeBase& polygon,
+                       const gpShape& polygon,
                        const gpTransform& pointTransform)
     {
         return Point_Polygon(pointTransform, polygonTransform, polygon);
     }
 
     bool Polygon_Circle(const gpTransform& polygonTransform,
-                        const gpShapeBase& polygon,
+                        const gpShape& polygon,
                         const gpTransform& sphereTransform,
-                        const gpShapeBase& sphere)
+                        const gpShape& sphere)
     {
         return Circle_Polygon(polygonTransform, polygon, sphereTransform, sphere);
     }
 
     bool Polygon_Polygon(const gpTransform& lhsTransform,
-                         const gpShapeBase& lhs,
+                         const gpShape& lhs,
                          const gpTransform& rhsTransform,
-                         const gpShapeBase& rhs)
+                         const gpShape& rhs)
     {
         GP_NotImplemented;
     }
@@ -100,8 +100,8 @@ bool gpAreColliding(const gpEntity& lhs, const gpEntity& rhs)
                           gpTransformOf(rhs), Deref(gpShapePtrOf(rhs)));
 }
 
-bool gpAreColliding(const gpTransform& lhsTransform, const gpShapeBase& lhsShape,
-                    const gpTransform& rhsTransform, const gpShapeBase& rhsShape)
+bool gpAreColliding(const gpTransform& lhsTransform, const gpShape& lhsShape,
+                    const gpTransform& rhsTransform, const gpShape& rhsShape)
 {
     switch(gpTypeOf(lhsShape))
     {

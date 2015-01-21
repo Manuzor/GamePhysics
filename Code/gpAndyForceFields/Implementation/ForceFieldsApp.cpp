@@ -109,11 +109,11 @@ static void DespawnTarget(gpWorld* pWorld)
 
 static void CreateTarget(gpWorld* pWorld)
 {
-    static gpShapeBase* pCircle;
+    static gpShape* pCircle;
 
     if(pCircle == nullptr)
     {
-        static gpShapeBase circle(gpShapeType::Circle);
+        static gpShape circle(gpShapeType::Circle);
         pCircle = &circle;
     }
 

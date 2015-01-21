@@ -13,7 +13,7 @@ class GP_CoreAPI gpEntity : public ezRefCounted
     //////////////////////////////////////////////////////////////////////////
 
     gpWorld* m_pWorld = nullptr;
-    ezScopedRefPointer<gpShapeBase> m_pShape = nullptr;
+    ezScopedRefPointer<gpShape> m_pShape = nullptr;
 
     gpPhysicalProperties m_PhysicalProperties;
     ezString m_sName;
@@ -24,25 +24,25 @@ class GP_CoreAPI gpEntity : public ezRefCounted
     friend ezString& gpNameOf(gpEntity& entity);
     friend gpPhysicalProperties& gpPhysicalPropertiesOf(gpEntity& entity);
 
-    EZ_FORCE_INLINE friend ezScopedRefPointer<gpShapeBase>& gpShapePtrOf(gpEntity& entity) { return entity.m_pShape; }
-    EZ_FORCE_INLINE friend const gpShapeBase* gpShapePtrOf(const gpEntity& entity) { return entity.m_pShape; }
+    EZ_FORCE_INLINE friend ezScopedRefPointer<gpShape>& gpShapePtrOf(gpEntity& entity) { return entity.m_pShape; }
+    EZ_FORCE_INLINE friend const gpShape* gpShapePtrOf(const gpEntity& entity) { return entity.m_pShape; }
 
     /// \remark Assumes a valid shape ptr is set
-    EZ_FORCE_INLINE friend gpShapeBase& gpShapeOf(gpEntity& entity)
+    EZ_FORCE_INLINE friend gpShape& gpShapeOf(gpEntity& entity)
     {
         EZ_ASSERT(entity.m_pShape, "");
         return Deref(entity.m_pShape);
     }
 
     /// \remark Assumes a valid shape ptr is set
-    EZ_FORCE_INLINE friend const gpShapeBase& gpShapeOf(const gpEntity& entity)
+    EZ_FORCE_INLINE friend const gpShape& gpShapeOf(const gpEntity& entity)
     {
         EZ_ASSERT(entity.m_pShape, "");
         return Deref(entity.m_pShape);
     }
 
 public:
-    gpEntity() : m_pShape(gpShapeBase::Point()) {}
+    gpEntity() : m_pShape(gpShape::Point()) {}
     gpEntity(const gpEntity&)   = delete;
     gpEntity(gpEntity&&)        = delete;
     void operator=(const gpEntity&) = delete;

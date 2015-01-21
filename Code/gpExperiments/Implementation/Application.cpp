@@ -25,7 +25,7 @@ static void RotatingRigidBody(const char* name, gpWorld& world)
     gpVec3 halfExtends(50.0f, 50.0f, 0.0f);
     gpInverseInertiaOf(entity) = gpInverseInertia::SolidCuboid(gpMassOf(entity), 2.0f * halfExtends);
 
-    gpShapePtrOf(entity) = gpShapeBase::NewBox(halfExtends);
+    gpShapePtrOf(entity) = gpShape::NewBox(halfExtends);
 
     EZ_VERIFY(gpAddTo(world, entity).Succeeded(), "Failed to add entity to world.");
 

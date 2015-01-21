@@ -1,23 +1,23 @@
 
 namespace gpInternal
 {
-    struct gpCircleShapeLayout : public gpShapeBase
+    struct gpCircleShapeLayout : public gpShape
     {
         gpScalar radius;
 
-        gpCircleShapeLayout() : gpShapeBase(gpShapeType::Circle) {}
+        gpCircleShapeLayout() : gpShape(gpShapeType::Circle) {}
     };
 }
 
-EZ_FORCE_INLINE gpShapeType gpTypeOf(const gpShapeBase& shape) { return shape.m_Type; }
+EZ_FORCE_INLINE gpShapeType gpTypeOf(const gpShape& shape) { return shape.m_Type; }
 
-EZ_FORCE_INLINE gpScalar& gpRadiusOf(gpShapeBase& sphere)
+EZ_FORCE_INLINE gpScalar& gpRadiusOf(gpShape& sphere)
 {
     EZ_ASSERT(gpTypeOf(sphere) == gpShapeType::Circle, "Invalid type.");
     return reinterpret_cast<gpInternal::gpCircleShapeLayout&>(sphere).radius;
 }
 
-EZ_FORCE_INLINE gpScalar gpRadiusOf(const gpShapeBase& sphere)
+EZ_FORCE_INLINE gpScalar gpRadiusOf(const gpShape& sphere)
 {
     EZ_ASSERT(gpTypeOf(sphere) == gpShapeType::Circle, "Invalid type.");
     return reinterpret_cast<const gpInternal::gpCircleShapeLayout&>(sphere).radius;

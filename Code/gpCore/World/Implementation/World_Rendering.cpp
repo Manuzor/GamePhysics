@@ -42,7 +42,7 @@ static void Extract(gpRenderExtractor* pExtractor,
 // Extract a shape
 static void Extract(gpRenderExtractor* pExtractor,
                     const gpPhysicalProperties& props,
-                    const gpShapeBase& shape,
+                    const gpShape& shape,
                     const gpEntityDrawInfo& drawInfo)
 {
     switch(gpTypeOf(shape))

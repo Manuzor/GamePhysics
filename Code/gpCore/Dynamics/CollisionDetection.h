@@ -6,10 +6,10 @@ GP_CoreAPI bool gpAreColliding(const gpEntity& lhs, const gpEntity& rhs);
 
 //////////////////////////////////////////////////////////////////////////
 
-class gpShapeBase;
+class gpShape;
 class gpCircleShape;
 class gpPolygonShape;
 
-GP_CoreAPI bool gpAreColliding(const gpTransform& lhsTransform, const gpShapeBase& lhsShape,
-                               const gpTransform& rhsTransform, const gpShapeBase& rhsShape);
+GP_CoreAPI bool gpAreColliding(const gpTransform& lhsTransform, const gpShape& lhsShape,
+                               const gpTransform& rhsTransform, const gpShape& rhsShape);
 

@@ -1,27 +1,27 @@
 
 namespace gpInternal
 {
-    struct gpPolygonShapeLayout : public gpShapeBase
+    struct gpPolygonShapeLayout : public gpShape
     {
         gpShapeVertices vertices;
 
-        gpPolygonShapeLayout() : gpShapeBase(gpShapeType::Polygon) {}
+        gpPolygonShapeLayout() : gpShape(gpShapeType::Polygon) {}
     };
 }
 
-EZ_FORCE_INLINE gpShapeVertices& gpVerticesOf(gpShapeBase& polygon)
+EZ_FORCE_INLINE gpShapeVertices& gpVerticesOf(gpShape& polygon)
 {
     EZ_ASSERT(gpTypeOf(polygon) == gpShapeType::Polygon, "Invalid type.");
     return reinterpret_cast<gpInternal::gpPolygonShapeLayout&>(polygon).vertices;
 }
 
-EZ_FORCE_INLINE const gpShapeVertices& gpVerticesOf(const gpShapeBase& polygon)
+EZ_FORCE_INLINE const gpShapeVertices& gpVerticesOf(const gpShape& polygon)
 {
     EZ_ASSERT(gpTypeOf(polygon) == gpShapeType::Polygon, "Invalid type.");
     return reinterpret_cast<const gpInternal::gpPolygonShapeLayout&>(polygon).vertices;
 }
 
-EZ_FORCE_INLINE void gpConvertToBox(gpShapeBase& polygon, const gpVec3& halfExtends)
+EZ_FORCE_INLINE void gpConvertToBox(gpShape& polygon, const gpVec3& halfExtends)
 {
     gpVerticesOf(polygon).SetCount(4);
     gpVerticesOf(polygon)[0].Set(-halfExtends.x,  halfExtends.y, 0.0f);

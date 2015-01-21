@@ -16,7 +16,7 @@ class GP_CoreAPI gpForceFieldEntity : public gpEntity
 public:
     gpForceFieldEntity()
     {
-        gpShapePtrOf(self) = gpShapeBase::NewSphere(1);
+        gpShapePtrOf(self) = gpShape::NewSphere(1);
     }
 };
 

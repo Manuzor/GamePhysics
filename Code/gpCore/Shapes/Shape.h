@@ -1,7 +1,7 @@
 #pragma once
 #include "gpCore/Shapes/ShapeType.h"
 
-class GP_CoreAPI gpShapeBase : public ezRefCounted
+class GP_CoreAPI gpShape : public ezRefCounted
 {
 private:
     // Data
@@ -10,19 +10,19 @@ private:
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
-    friend gpShapeType gpTypeOf(const gpShapeBase& shape);
+    friend gpShapeType gpTypeOf(const gpShape& shape);
 
 public:
-    gpShapeBase(gpShapeType Type) : m_Type(Type) {}
+    gpShape(gpShapeType Type) : m_Type(Type) {}
 
-    gpShapeBase(const gpShapeBase&)    = delete;
-    gpShapeBase(gpShapeBase&&)         = delete;
-    void operator=(const gpShapeBase&) = delete;
+    gpShape(const gpShape&)    = delete;
+    gpShape(gpShape&&)         = delete;
+    void operator=(const gpShape&) = delete;
 
     /// \note This function returns the same pointer for every call because a point-shape has no state to change.
-    static gpShapeBase* Point();
-    static gpShapeBase* NewSphere(gpScalar radius);
-    static gpShapeBase* NewBox(const gpVec3& halfExtents);
+    static gpShape* Point();
+    static gpShape* NewSphere(gpScalar radius);
+    static gpShape* NewBox(const gpVec3& halfExtents);
 };
 
 using gpShapeVertices = ezHybridArray<gpVec3, 8>;

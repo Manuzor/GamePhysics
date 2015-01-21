@@ -31,7 +31,7 @@ EZ_CREATE_SIMPLE_TEST(Collision, Particle_Sphere)
     {
         auto& left  = Deref(gpNew<gpEntity>());
         auto& right = Deref(gpNew<gpEntity>());
-        gpShapePtrOf(right) = gpShapeBase::NewSphere(1.1f);
+        gpShapePtrOf(right) = gpShape::NewSphere(1.1f);
 
         EZ_TEST_BOOL(gpAreColliding(left, right));
 
@@ -50,9 +50,9 @@ EZ_CREATE_SIMPLE_TEST(Collision, Sphere_Sphere)
     EZ_TEST_BLOCK(ezTestBlock::Enabled, "")
     {
         auto& left  = Deref(gpNew<gpEntity>());
-        gpShapePtrOf(left) = gpShapeBase::NewSphere(1);
+        gpShapePtrOf(left) = gpShape::NewSphere(1);
         auto& right = Deref(gpNew<gpEntity>());
-        gpShapePtrOf(right) = gpShapeBase::NewSphere(1);
+        gpShapePtrOf(right) = gpShape::NewSphere(1);
 
         EZ_TEST_BOOL(gpAreColliding(left, right));
 
