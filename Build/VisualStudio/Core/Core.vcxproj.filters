@@ -225,6 +225,9 @@
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Shape.h">
       <Filter>Shapes</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\Pair.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Memory\Implementation\FixedStackAllocator.inl">

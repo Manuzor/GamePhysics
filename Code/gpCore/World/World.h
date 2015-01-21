@@ -1,8 +1,17 @@
 #pragma once
 #include "gpCore/World/Entity.h"
+#include "gpCore/Utilities/Pair.h"
 
 class gpRenderExtractor;
 class gpForceFieldEntity;
+
+struct gpCollider
+{
+    gpEntity* pEntity;
+    bool isCollisionResolved;
+};
+
+using gpPairOfColliders = gpPair<gpCollider, gpCollider>;
 
 class GP_CoreAPI gpWorld
 {
@@ -22,7 +31,7 @@ public:
         return pEntity;
     }
 
-private:
+private: // Data
     ezString m_sName;
     ezProfilingId m_ProfilingId_Simulation;
     ezProfilingId m_ProfilingId_CreateEntity;
@@ -31,11 +40,12 @@ private:
     gpLinearAcceleration m_Gravity = gpLinearAcceleration(gpVec3::ZeroVector());
     ezDynamicArray<gpForceFieldEntity*> m_ForceFields;
     ezDynamicArray<gpEntity*> m_SimulatedEntities;
+    ezUInt32 m_numEntitiesDuringLastSimulation = 0;
     ezMap<gpEntity*, gpEntityDrawInfo> m_EntityDrawInfos;
     gpEntityDrawInfo m_EntityDrawInfo_HardDefault;
-    gpEntityDrawInfo* m_pEntityDrawInfoDefault;
+    gpEntityDrawInfo* m_pEntityDrawInfoDefault = &m_EntityDrawInfo_HardDefault;
 
-    ezDynamicArray<gpEntity*> m_CollidingBodies;
+    ezDynamicArray<gpPairOfColliders> m_CollidingBodies;
 
 private:
     // Friends

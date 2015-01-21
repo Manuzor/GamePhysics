@@ -2,6 +2,7 @@
 
 #include <Foundation/Utilities/Stats.h>
 #include <Foundation/Communication/GlobalEvent.h>
+#include <Foundation/Algorithm/Sorting.h>
 
 #include "gpCore/Utilities/EzMathExtensions.h"
 
@@ -15,8 +16,7 @@
 #include "gpCore/Dynamics/CollisionDetection.h"
 
 gpWorld::gpWorld(const char* szName) :
-    m_sName(szName),
-    m_pEntityDrawInfoDefault(&m_EntityDrawInfo_HardDefault)
+    m_sName(szName)
 {
     m_SimulatedEntities.Reserve(64);
     m_CollidingBodies.Reserve(64);
@@ -258,10 +258,8 @@ static void DetectCollision(ezArrayPtr<gpEntity*> entities, Container& out_colli
 
             if (gpAreColliding(Deref(pLeft), Deref(pRight)))
             {
-                if (!out_collidingEntities.Contains(pLeft))
-                    out_collidingEntities.PushBack(pLeft);
-                if (!out_collidingEntities.Contains(pRight))
-                    out_collidingEntities.PushBack(pRight);
+                out_collidingEntities.PushBack(gpPairOfColliders({pLeft,  false},
+                                                                 {pRight, false}));
             }
         }
     }
@@ -271,10 +269,31 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
 {
     EZ_PROFILE(world.m_ProfilingId_Simulation);
 
+    // If the number of the simulated entities changed, we have to sort the array.
+    if (world.m_SimulatedEntities.GetCount() != world.m_numEntitiesDuringLastSimulation)
+    {
+        ezSorting::QuickSort(world.m_SimulatedEntities, gpEntityNameComparer());
+        world.m_numEntitiesDuringLastSimulation = world.m_SimulatedEntities.GetCount();
+    }
+
     IntegrateEtities(world.m_SimulatedEntities, gpGetConstView(world.m_ForceFields), gpGravityOf(world), dt);
 
-    world.m_CollidingBodies.Clear();
     DetectCollision(world.m_SimulatedEntities, world.m_CollidingBodies);
 
-    /// \todo Resolve collisions between bodies in world.m_CollidingBodies...
+    // Resolve collisions between bodies in world.m_CollidingBodies...
+    for (ezUInt32 i = 0; i < world.m_CollidingBodies.GetCount(); ++i)
+    {
+        auto& pair = world.m_CollidingBodies[i];
+        auto& left = gpFirstOf(pair);
+        auto& right = gpSecondOf(pair);
+
+        // If both are resolved, nothing needs to be done
+
+        if (left.isCollisionResolved && right.isCollisionResolved)
+            continue;
+
+        /// \todo Do stuff!
+    }
+
+    world.m_CollidingBodies.Clear();
 }

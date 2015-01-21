@@ -81,6 +81,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Units\Units.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\FileSystem.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\Pair.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\RandomNumbers.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\ScalarSyncer.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\TextFileLogWriter.h" />

@@ -5,27 +5,29 @@
 
 class gpWorld;
 
-/// \note By default, every entity is a particle.
+/// \note By default, every entity is a particle, i.e. has a gpShape of gpShapeType::Point.
 ///       Turn it into a rigid body by setting the shape to something else than gpShape::Point().
 class GP_CoreAPI gpEntity : public ezRefCounted
 {
-    // Data
-    //////////////////////////////////////////////////////////////////////////
-
+private: // Data
     gpWorld* m_pWorld = nullptr;
     ezScopedRefPointer<gpShape> m_pShape = nullptr;
 
     gpPhysicalProperties m_PhysicalProperties;
     ezString m_sName;
 
-    // Friends
-    //////////////////////////////////////////////////////////////////////////
-    friend gpWorld*& gpWorldPtrOf(gpEntity& entity);
-    friend ezString& gpNameOf(gpEntity& entity);
-    friend gpPhysicalProperties& gpPhysicalPropertiesOf(gpEntity& entity);
+public: // Accessors / Friends
+    EZ_FORCE_INLINE friend       gpWorld*& gpWorldPtrOf(      gpEntity& entity) { return entity.m_pWorld; }
+    EZ_FORCE_INLINE friend const gpWorld*  gpWorldPtrOf(const gpEntity& entity) { return entity.m_pWorld; }
 
-    EZ_FORCE_INLINE friend ezScopedRefPointer<gpShape>& gpShapePtrOf(gpEntity& entity) { return entity.m_pShape; }
-    EZ_FORCE_INLINE friend const gpShape* gpShapePtrOf(const gpEntity& entity) { return entity.m_pShape; }
+    EZ_FORCE_INLINE friend       ezString& gpNameOf(      gpEntity& entity) { return entity.m_sName; }
+    EZ_FORCE_INLINE friend const ezString& gpNameOf(const gpEntity& entity) { return entity.m_sName; }
+
+    EZ_FORCE_INLINE friend       gpPhysicalProperties& gpPhysicalPropertiesOf(      gpEntity& entity) { return entity.m_PhysicalProperties; }
+    EZ_FORCE_INLINE friend const gpPhysicalProperties& gpPhysicalPropertiesOf(const gpEntity& entity) { return entity.m_PhysicalProperties; }
+
+    EZ_FORCE_INLINE friend ezScopedRefPointer<gpShape>& gpShapePtrOf(      gpEntity& entity) { return entity.m_pShape; }
+    EZ_FORCE_INLINE friend const gpShape*               gpShapePtrOf(const gpEntity& entity) { return entity.m_pShape; }
 
     /// \remark Assumes a valid shape ptr is set
     EZ_FORCE_INLINE friend gpShape& gpShapeOf(gpEntity& entity)
@@ -41,10 +43,11 @@ class GP_CoreAPI gpEntity : public ezRefCounted
         return Deref(entity.m_pShape);
     }
 
-public:
+public: // Construction
     gpEntity() : m_pShape(gpShape::Point()) {}
-    gpEntity(const gpEntity&)   = delete;
-    gpEntity(gpEntity&&)        = delete;
+
+    gpEntity(const gpEntity&)       = delete;
+    gpEntity(gpEntity&&)            = delete;
     void operator=(const gpEntity&) = delete;
 };
 
@@ -55,6 +58,29 @@ struct gpEntityDrawInfo
     ezColor m_LinearVelocityColor = { 0, 1, 1, 0.333f };
     ezAngle m_LinearVelocityArrowWingAngle = ezAngle::Degree(30);
     gpScalar m_fLinearVelocityArrowWingLength = 10.0f;
+};
+
+struct gpEntityNameComparer
+{
+    bool Less(const gpEntity& lhs, const gpEntity& rhs) const
+    {
+        return ezStringUtils::Compare(gpNameOf(lhs).GetData(), gpNameOf(rhs).GetData()) < 0;
+    }
+
+    bool Less(gpEntity*& lhs, gpEntity*& rhs) const
+    {
+        return Less(Deref(lhs), Deref(rhs));
+    }
+
+    bool Less(const gpEntity*& lhs, const gpEntity*& rhs) const
+    {
+        return Less(Deref(lhs), Deref(rhs));
+    }
+
+    bool Less(const gpEntity*const & lhs, const gpEntity*const & rhs) const
+    {
+        return Less(Deref(lhs), Deref(rhs));
+    }
 };
 
 // Allocation
@@ -71,27 +97,6 @@ namespace gpInternal
 // Utility functions
 //////////////////////////////////////////////////////////////////////////
 void gpGetStats(ezStringBuilder& out_Stats, const gpEntity& entity);
-
-EZ_FORCE_INLINE       gpWorld*& gpWorldPtrOf(      gpEntity& entity) { return entity.m_pWorld; }
-EZ_FORCE_INLINE const gpWorld*  gpWorldPtrOf(const gpEntity& entity)
-{
-    return gpWorldPtrOf(const_cast<gpEntity&>(entity));
-}
-
-EZ_FORCE_INLINE       ezString& gpNameOf(      gpEntity& entity) { return entity.m_sName; }
-EZ_FORCE_INLINE const ezString& gpNameOf(const gpEntity& entity)
-{
-    return gpNameOf(const_cast<gpEntity&>(entity));
-}
-
-EZ_FORCE_INLINE gpPhysicalProperties& gpPhysicalPropertiesOf(gpEntity& entity)
-{
-    return entity.m_PhysicalProperties;
-}
-EZ_FORCE_INLINE const gpPhysicalProperties& gpPhysicalPropertiesOf(const gpEntity& entity)
-{
-    return gpPhysicalPropertiesOf(const_cast<gpEntity&>(entity));
-}
 
 EZ_FORCE_INLINE gpTransform& gpTransformOf(      gpEntity& entity)
 {
