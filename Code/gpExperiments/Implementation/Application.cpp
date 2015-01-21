@@ -57,7 +57,7 @@ static void Populate(gpWorld& world)
     auto pLeft  = Particle(world, "left",  gpDisplacement(150, 250, 0));
     auto pRight = Particle(world, "right", gpDisplacement(350, 250, 0));
 
-    gpScalar magnitude = 10.0f;
+    gpScalar magnitude = 30.0f;
     gpApplyLinearImpulseTo(Deref(pLeft),  gpLinearVelocity( magnitude, 0, 0));
     gpApplyLinearImpulseTo(Deref(pRight), gpLinearVelocity(-magnitude, 0, 0));
 }

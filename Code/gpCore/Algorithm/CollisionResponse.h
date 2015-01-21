@@ -2,13 +2,13 @@
 
 class gpEntity;
 
-GP_CoreAPI void gpResolveCollision(const gpEntity& lhs, const gpEntity& rhs);
+GP_CoreAPI void gpResolveCollision(gpEntity& lhs, gpEntity& rhs);
 
 //////////////////////////////////////////////////////////////////////////
 
 class gpPhysicalProperties;
 class gpShape;
 
-GP_CoreAPI void gpResolveCollision(const gpPhysicalProperties& lhsProps, const gpShape& lhsShape,
-                                   const gpPhysicalProperties& rhsProps, const gpShape& rhsShape);
+GP_CoreAPI void gpResolveCollision(gpPhysicalProperties& lhsProps, const gpShape& lhsShape,
+                                   gpPhysicalProperties& rhsProps, const gpShape& rhsShape);
 

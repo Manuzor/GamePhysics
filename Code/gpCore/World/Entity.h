@@ -164,22 +164,13 @@ EZ_FORCE_INLINE const gpScalar& gpGravityFactorOf(const gpEntity& entity)
     return gpGravityFactorOf(gpPhysicalPropertiesOf(entity));
 }
 
-EZ_FORCE_INLINE gpMassSyncer gpMassOf(gpEntity& entity)
+EZ_FORCE_INLINE gpMass& gpMassOf(gpEntity& entity)
 {
     return gpMassOf(gpPhysicalPropertiesOf(entity));
 }
-EZ_FORCE_INLINE const gpMass gpMassOf(const gpEntity& entity)
+EZ_FORCE_INLINE const gpMass& gpMassOf(const gpEntity& entity)
 {
     return gpMassOf(gpPhysicalPropertiesOf(entity));
-}
-
-EZ_FORCE_INLINE gpMassSyncer gpInverseMassOf(gpEntity& entity)
-{
-    return gpInverseMassOf(gpPhysicalPropertiesOf(entity));
-}
-EZ_FORCE_INLINE const gpMass gpInverseMassOf(const gpEntity& entity)
-{
-    return gpInverseMassOf(gpPhysicalPropertiesOf(entity));
 }
 
 // Algorithms

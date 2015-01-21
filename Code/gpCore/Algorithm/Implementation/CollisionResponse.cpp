@@ -8,60 +8,79 @@
 //////////////////////////////////////////////////////////////////////////
 namespace
 {
-    void Point_Point(const gpPhysicalProperties& lhs, const gpPhysicalProperties& rhs)
+    void Point_Point(gpPhysicalProperties& lhs, gpPhysicalProperties& rhs)
     {
         GP_NotImplemented;
     }
 
-    void Point_Sphere(const gpPhysicalProperties& pointProps,
-                      const gpPhysicalProperties& sphereProps, const gpShape& sphere)
+    void Point_Sphere(gpPhysicalProperties& pointProps,
+                      gpPhysicalProperties& sphereProps, const gpShape& sphere)
     {
         GP_NotImplemented;
     }
 
-    void Point_Polygon(const gpPhysicalProperties& sphereProps,
-                       const gpPhysicalProperties& polygonProps,
+    void Point_Polygon(gpPhysicalProperties& sphereProps,
+                       gpPhysicalProperties& polygonProps,
                        const gpShape& polygon)
     {
         GP_NotImplemented;
     }
 
-    void Sphere_Point(const gpPhysicalProperties& sphereProps, const gpShape& sphere,
-                      const gpPhysicalProperties& pointProps)
+    void Sphere_Point(gpPhysicalProperties& sphereProps, const gpShape& sphere,
+                      gpPhysicalProperties& pointProps)
     {
         return Point_Sphere(pointProps, sphereProps, sphere);
     }
 
-    void Sphere_Sphere(const gpPhysicalProperties& lhsProps, const gpShape& lhsShape,
-                       const gpPhysicalProperties& rhsProps, const gpShape& rhsShape)
+    void Sphere_Sphere(gpPhysicalProperties& lhsProps, const gpShape& lhsShape,
+                       gpPhysicalProperties& rhsProps, const gpShape& rhsShape)
+    {
+        // Algorithm from http://www.gamasutra.com/view/feature/131424/pool_hall_lessons_fast_accurate_.php
+
+        auto d = gpPositionOf(lhsProps) - gpPositionOf(rhsProps);
+        auto n = gpValueOf(d).GetNormalized();
+
+        auto& v1 = gpValueOf(gpLinearVelocityOf(lhsProps));
+        auto& v2 = gpValueOf(gpLinearVelocityOf(rhsProps));
+
+        const gpScalar m1 = gpValueOf(gpMassOf(lhsProps));
+        const gpScalar m2 = gpValueOf(gpMassOf(rhsProps));
+
+        auto a1 = v1.Dot(n);
+        auto a2 = v2.Dot(n);
+
+        auto p = (2 * (a1 - a2))
+              // ---------------
+               / (m1 + m2);
+
+        v1 -= p * m2 * n;
+        v2 += p * m1 * n;
+    }
+
+    void Sphere_Polygon(gpPhysicalProperties& sphereProps,  const gpShape& sphere,
+                        gpPhysicalProperties& polygonProps, const gpShape& polygon)
     {
         GP_NotImplemented;
     }
 
-    void Sphere_Polygon(const gpPhysicalProperties& sphereProps,  const gpShape& sphere,
-                        const gpPhysicalProperties& polygonProps, const gpShape& polygon)
-    {
-        GP_NotImplemented;
-    }
-
-    void Polygon_Point(const gpPhysicalProperties& polygonProps,
+    void Polygon_Point(gpPhysicalProperties& polygonProps,
                        const gpShape& polygon,
-                       const gpPhysicalProperties& pointProps)
+                       gpPhysicalProperties& pointProps)
     {
         return Point_Polygon(pointProps, polygonProps, polygon);
     }
 
-    void Polygon_Sphere(const gpPhysicalProperties& polygonProps,
+    void Polygon_Sphere(gpPhysicalProperties& polygonProps,
                         const gpShape& polygon,
-                        const gpPhysicalProperties& sphereProps,
+                        gpPhysicalProperties& sphereProps,
                         const gpShape& sphere)
     {
         return Sphere_Polygon(polygonProps, polygon, sphereProps, sphere);
     }
 
-    void Polygon_Polygon(const gpPhysicalProperties& lhsProps,
+    void Polygon_Polygon(gpPhysicalProperties& lhsProps,
                          const gpShape& lhs,
-                         const gpPhysicalProperties& rhsProps,
+                         gpPhysicalProperties& rhsProps,
                          const gpShape& rhs)
     {
         GP_NotImplemented;
@@ -70,7 +89,7 @@ namespace
 
 //////////////////////////////////////////////////////////////////////////
 
-void gpResolveCollision(const gpEntity& lhs, const gpEntity& rhs)
+void gpResolveCollision(gpEntity& lhs, gpEntity& rhs)
 {
     EZ_ASSERT(gpWorldPtrOf(lhs) == gpWorldPtrOf(rhs),
               "Collisions between objects that are not in the same simulation can never be resolved! "
@@ -80,8 +99,8 @@ void gpResolveCollision(const gpEntity& lhs, const gpEntity& rhs)
                        gpPhysicalPropertiesOf(rhs), gpShapeOf(rhs));
 }
 
-void gpResolveCollision(const gpPhysicalProperties& lhsProps, const gpShape& lhsShape,
-                        const gpPhysicalProperties& rhsProps, const gpShape& rhsShape)
+void gpResolveCollision(gpPhysicalProperties& lhsProps, const gpShape& lhsShape,
+                        gpPhysicalProperties& rhsProps, const gpShape& rhsShape)
 {
     switch(gpTypeOf(lhsShape))
     {

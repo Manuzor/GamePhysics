@@ -2,7 +2,6 @@
 
 // Scalar units
 //////////////////////////////////////////////////////////////////////////
-#include "gpCore/Utilities/ScalarSyncer.h"
 
 class gpMass : public gpScalarUnitBase<gpMass>
 {
@@ -10,7 +9,6 @@ public:
     using BaseType = gpScalarUnitBase<gpMass>;
     GP_DefineScalarUnitConstructors(gpMass);
 };
-using gpMassSyncer = gpScalarSyncerTemplate<gpMass>;
 
 class gpTime : public gpScalarUnitBase<gpTime, double>
 {
@@ -137,3 +135,8 @@ public:
     using BaseType = gpVec3UnitBase<gpForce>;
     GP_DefineVec3UnitConstructors(gpForce);
 };
+
+// Some goodies
+//////////////////////////////////////////////////////////////////////////
+#include "gpCore/Utilities/ScalarSyncer.h"
+using gpMassSyncer = gpScalarSyncerTemplate<gpMass>;

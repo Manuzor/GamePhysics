@@ -30,6 +30,6 @@ void gpUpdateStats(const ezStringView sStatName, const gpPhysicalProperties& Pro
 
     // Gravity Factor
     sbStatName.Format("%s/GravityFactor", sStatName.GetData());
-    sbStatValue.Format("%f", Props.m_fGravityFactor);
+    sbStatValue.Format("%f", gpGravityFactorOf(Props));
     ezStats::SetStat(sbStatName, sbStatValue);
 }
