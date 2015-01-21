@@ -5,15 +5,65 @@
 #include <gpCore/World/Entity.h>
 #include <gpCore/Dynamics/CollisionDetection.h>
 
-EZ_CREATE_SIMPLE_TEST_GROUP(CollisionDetection);
+EZ_CREATE_SIMPLE_TEST_GROUP(Collision);
 
 const auto e = ezMath::BasicType<gpScalar>::DefaultEpsilon();
 
-EZ_CREATE_SIMPLE_TEST(CollisionDetection, Circle_Circle)
+EZ_CREATE_SIMPLE_TEST(Collision, Particle_Particle)
 {
-    EZ_TEST_BLOCK(ezTestBlock::Enabled, "Collision")
+    EZ_TEST_BLOCK(ezTestBlock::Enabled, "")
     {
-        gpEntity body1;
-        gpEntity body2;
+        auto& left  = Deref(gpNew<gpEntity>());
+        auto& right = Deref(gpNew<gpEntity>());
+
+        EZ_TEST_BOOL(gpAreColliding(left, right));
+
+        gpPositionOf(right) = gpDisplacement(1, 0, 0);
+        EZ_TEST_BOOL(!gpAreColliding(left, right));
     }
+
+    gpTriggerGarbageCollection();
+}
+
+EZ_CREATE_SIMPLE_TEST(Collision, Particle_Sphere)
+{
+    EZ_TEST_BLOCK(ezTestBlock::Enabled, "")
+    {
+        auto& left  = Deref(gpNew<gpEntity>());
+        auto& right = Deref(gpNew<gpEntity>());
+        gpShapePtrOf(right) = gpShapeBase::NewSphere(1.1f);
+
+        EZ_TEST_BOOL(gpAreColliding(left, right));
+
+        gpPositionOf(right) = gpDisplacement(1, 0, 0);
+        EZ_TEST_BOOL(gpAreColliding(left, right));
+
+        gpPositionOf(right) = gpDisplacement(2, 0, 0);
+        EZ_TEST_BOOL(!gpAreColliding(left, right));
+    }
+
+    gpTriggerGarbageCollection();
+}
+
+EZ_CREATE_SIMPLE_TEST(Collision, Sphere_Sphere)
+{
+    EZ_TEST_BLOCK(ezTestBlock::Enabled, "")
+    {
+        auto& left  = Deref(gpNew<gpEntity>());
+        gpShapePtrOf(left) = gpShapeBase::NewSphere(1);
+        auto& right = Deref(gpNew<gpEntity>());
+        gpShapePtrOf(right) = gpShapeBase::NewSphere(1);
+
+        EZ_TEST_BOOL(gpAreColliding(left, right));
+
+        gpPositionOf(left)  = gpDisplacement(-1, 0, 0);
+        gpPositionOf(right) = gpDisplacement( 1, 0, 0);
+        EZ_TEST_BOOL(gpAreColliding(left, right));
+
+        gpPositionOf(left)  = gpDisplacement(-2, 0, 0);
+        gpPositionOf(right) = gpDisplacement( 2, 0, 0);
+        EZ_TEST_BOOL(!gpAreColliding(left, right));
+    }
+
+    gpTriggerGarbageCollection();
 }

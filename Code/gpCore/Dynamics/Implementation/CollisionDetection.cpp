@@ -45,14 +45,14 @@ namespace
     bool Circle_Circle(const gpTransform& lhsTransform, const gpShapeBase& lhsShape,
                        const gpTransform& rhsTransform, const gpShapeBase& rhsShape)
     {
-        // Calculate: |p2 - p1|² <= r1² + r2²
+        // Calculate: |p2 - p1|² <= (r1 + r2)²
 
         auto& p1 = gpPositionOf(lhsTransform);
         auto& p2 = gpPositionOf(rhsTransform);
         auto d   = p2 - p1;
         auto r1  = gpRadiusOf(lhsShape);
         auto r2  = gpRadiusOf(rhsShape);
-        return gpSquaredLengthOf(d) <= gpSquare(r1) + gpSquare(r2);
+        return gpSquaredLengthOf(d) <= gpSquare(r1 + r2);
     }
 
     bool Circle_Polygon(const gpTransform& circleTransform,  const gpShapeBase& circle,
