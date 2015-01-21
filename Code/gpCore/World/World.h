@@ -5,14 +5,6 @@
 class gpRenderExtractor;
 class gpForceFieldEntity;
 
-struct gpCollider
-{
-    gpEntity* pEntity;
-    bool isCollisionResolved;
-};
-
-using gpPairOfColliders = gpPair<gpCollider, gpCollider>;
-
 class GP_CoreAPI gpWorld
 {
 public:
@@ -37,7 +29,7 @@ private: // Data
     ezProfilingId m_ProfilingId_CreateEntity;
     ezProfilingId m_ProfilingId_Extraction;
 
-    gpLinearAcceleration m_Gravity = gpLinearAcceleration(gpVec3::ZeroVector());
+    gpLinearAcceleration m_Gravity = gpLinearAcceleration(gpZero);
     ezDynamicArray<gpForceFieldEntity*> m_ForceFields;
     ezDynamicArray<gpEntity*> m_SimulatedEntities;
     ezUInt32 m_numEntitiesDuringLastSimulation = 0;
@@ -45,7 +37,7 @@ private: // Data
     gpEntityDrawInfo m_EntityDrawInfo_HardDefault;
     gpEntityDrawInfo* m_pEntityDrawInfoDefault = &m_EntityDrawInfo_HardDefault;
 
-    ezDynamicArray<gpPairOfColliders> m_CollidingBodies;
+    ezDynamicArray<gpPair<gpEntity*, gpEntity*>> m_CollidingBodies;
 
 private:
     // Friends

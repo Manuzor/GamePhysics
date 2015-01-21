@@ -14,6 +14,7 @@ private: // Data
 
     gpPhysicalProperties m_PhysicalProperties;
     ezString m_sName;
+    bool m_needsCollisionResponse;
 
 public: // Accessors / Friends
     EZ_FORCE_INLINE friend       gpWorld*& gpWorldPtrOf(      gpEntity& entity) { return entity.m_pWorld; }
@@ -41,6 +42,9 @@ public: // Accessors / Friends
         EZ_ASSERT(entity.m_pShape, "");
         return Deref(entity.m_pShape);
     }
+
+    EZ_FORCE_INLINE friend       bool& gpNeedsCollisionResponse(      gpEntity& entity) { return entity.m_needsCollisionResponse; }
+    EZ_FORCE_INLINE friend const bool& gpNeedsCollisionResponse(const gpEntity& entity) { return entity.m_needsCollisionResponse; }
 
 public: // Construction
     gpEntity() : m_pShape(gpShape::Point()) {}

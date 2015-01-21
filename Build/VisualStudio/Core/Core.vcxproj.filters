@@ -121,6 +121,9 @@
     <ClCompile Include="..\..\..\Code\gpCore\Algorithm\Implementation\CollisionDetection.cpp">
       <Filter>Algorithm\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Algorithm\Implementation\CollisionResponse.cpp">
+      <Filter>Algorithm\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h">
@@ -220,6 +223,9 @@
       <Filter>Algorithm</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Algorithm\UnitConversion.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\CollisionResponse.h">
       <Filter>Algorithm</Filter>
     </ClInclude>
   </ItemGroup>

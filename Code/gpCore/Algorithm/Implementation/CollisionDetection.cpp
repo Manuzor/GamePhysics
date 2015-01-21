@@ -89,15 +89,12 @@ namespace
 
 bool gpAreColliding(const gpEntity& lhs, const gpEntity& rhs)
 {
-    if (gpWorldPtrOf(lhs) != gpWorldPtrOf(rhs))
-    {
-        /// Objects that are not in the same simulation will never collide!
-        /// \note It is allowed for both object to be in no simulation at all.
-        return false;
-    }
+    EZ_ASSERT(gpWorldPtrOf(lhs) == gpWorldPtrOf(rhs),
+              "Objects that are not in the same simulation can never collide! "
+              "Note: It is allowed for both object to be in no simulation at all.");
 
-    return gpAreColliding(gpTransformOf(lhs), Deref(gpShapePtrOf(lhs)),
-                          gpTransformOf(rhs), Deref(gpShapePtrOf(rhs)));
+    return gpAreColliding(gpTransformOf(lhs), gpShapeOf(lhs),
+                          gpTransformOf(rhs), gpShapeOf(rhs));
 }
 
 bool gpAreColliding(const gpTransform& lhsTransform, const gpShape& lhsShape,

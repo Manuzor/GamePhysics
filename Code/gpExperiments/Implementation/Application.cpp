@@ -40,6 +40,7 @@ static gpEntity* Particle(gpWorld& world, const char* name, const gpDisplacement
     gpNameOf(p)     = name;
     gpPositionOf(p) = position;
     gpMassOf(p)     = gpMass(1);
+    gpShapePtrOf(p) = gpShape::NewSphere(10);
 
     auto result = gpAddTo(world, p);
     EZ_VERIFY(result.Succeeded(), "Failed to add particle to world.");

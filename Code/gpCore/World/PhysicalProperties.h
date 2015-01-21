@@ -1,7 +1,8 @@
 #pragma once
 
-struct gpPhysicalProperties
+class gpPhysicalProperties
 {
+public: // Data
     gpTransform       m_Transform       = gpTransform(gpIdentity);
     gpLinearVelocity  m_LinearVelocity  = gpLinearVelocity(gpZero);
     gpAngularMomentum m_AngularMomentum = gpAngularMomentum(gpZero);

@@ -12,6 +12,7 @@
 #include "gpCore/Utilities/View.h"
 
 #include "gpCore/Algorithm/CollisionDetection.h"
+#include "gpCore/Algorithm/CollisionResponse.h"
 
 gpWorld::gpWorld(const char* szName) :
     m_sName(szName)
@@ -247,17 +248,15 @@ static void DetectCollision(ezArrayPtr<gpEntity*> entities, Container& out_colli
     {
         auto pLeft = entities[i];
 
-        for (ezUInt32 j = 0; j < entities.GetCount(); ++j)
+        for (ezUInt32 j = i + 1; j < entities.GetCount(); ++j)
         {
-            if (i == j)
-                continue;
-
             auto pRight = entities[j];
 
             if (gpAreColliding(Deref(pLeft), Deref(pRight)))
             {
-                out_collidingEntities.PushBack(gpPairOfColliders({pLeft,  false},
-                                                                 {pRight, false}));
+                gpNeedsCollisionResponse(Deref(pLeft))  = true;
+                gpNeedsCollisionResponse(Deref(pRight)) = true;
+                out_collidingEntities.PushBack({pLeft, pRight});
             }
         }
     }
@@ -281,16 +280,22 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
     // Resolve collisions between bodies in world.m_CollidingBodies...
     for (ezUInt32 i = 0; i < world.m_CollidingBodies.GetCount(); ++i)
     {
-        auto& pair = world.m_CollidingBodies[i];
-        auto& left = gpFirstOf(pair);
-        auto& right = gpSecondOf(pair);
+        auto& pair  = world.m_CollidingBodies[i];
+        auto& left  = Deref(gpFirstOf(pair));
+        auto& right = Deref(gpSecondOf(pair));
 
-        // If both are resolved, nothing needs to be done
-
-        if (left.isCollisionResolved && right.isCollisionResolved)
+        bool oneOfTheBodiesWasResolved = !gpNeedsCollisionResponse(left) || !gpNeedsCollisionResponse(right);
+        if (oneOfTheBodiesWasResolved)
+        {
+            // Suppose body A collides with bodies B and C in the same simulation phase,
+            // then we resolve for either A-B or A-C, and ignore the other collision
+            // in the hopes that it was automagically resolved or will be resolved in the next simulation step.
             continue;
+        }
 
-        /// \todo Do stuff!
+        gpResolveCollision(left, right);
+        gpNeedsCollisionResponse(left)  = false;
+        gpNeedsCollisionResponse(right) = false;
     }
 
     world.m_CollidingBodies.Clear();
