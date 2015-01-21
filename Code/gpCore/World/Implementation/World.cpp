@@ -19,6 +19,7 @@ gpWorld::gpWorld(const char* szName) :
     m_pEntityDrawInfoDefault(&m_EntityDrawInfo_HardDefault)
 {
     m_SimulatedEntities.Reserve(64);
+    m_CollidingBodies.Reserve(64);
 
     ezStringBuilder sbProfilingName;
     sbProfilingName.Format("%s/%s", m_sName.GetData(), "Simulation");
@@ -272,8 +273,8 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
 
     IntegrateEtities(world.m_SimulatedEntities, gpGetConstView(world.m_ForceFields), gpGravityOf(world), dt);
 
-    ezHybridArray<gpEntity*, 64> collidingEntities;
-    DetectCollision(world.m_SimulatedEntities, collidingEntities);
+    world.m_CollidingBodies.Clear();
+    DetectCollision(world.m_SimulatedEntities, world.m_CollidingBodies);
 
-    /// \todo Resolve collisions...
+    /// \todo Resolve collisions between bodies in world.m_CollidingBodies...
 }

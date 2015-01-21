@@ -35,6 +35,8 @@ private:
     gpEntityDrawInfo m_EntityDrawInfo_HardDefault;
     gpEntityDrawInfo* m_pEntityDrawInfoDefault;
 
+    ezDynamicArray<gpEntity*> m_CollidingBodies;
+
 private:
     // Friends
     //////////////////////////////////////////////////////////////////////////
