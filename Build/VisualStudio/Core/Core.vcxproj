@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\gpCore\Algorithm\Implementation\CollisionDetection.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Input.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Rendering.cpp" />
-    <ClCompile Include="..\..\..\Code\gpCore\Dynamics\Implementation\CollisionDetection.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Implementation\Allocation.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Implementation\Window.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp" />
@@ -51,7 +51,8 @@
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World_Rendering.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\Integrate.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\CollisionDetection.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\UnitConversion.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Allocation.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Application\ApplicationBase.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Common.h" />
@@ -59,7 +60,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\Dependencies\EzEngine.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Dependencies\OpenGL.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Dependencies\Stl.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Dynamics\CollisionDetection.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Memory\FixedStackAllocator.h" />
     <ClInclude Include="..\..\..\Code\gpCore\PCH.h" />
@@ -76,7 +76,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\Transform.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units\UnitBase.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units\Units.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />

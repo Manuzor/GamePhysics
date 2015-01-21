@@ -1,7 +1,6 @@
 #pragma once
 #include "gpCore/Shapes/Shape.h"
 #include "gpCore/World/PhysicalProperties.h"
-#include "gpCore/Algorithm/Integrate.h"
 
 class gpWorld;
 

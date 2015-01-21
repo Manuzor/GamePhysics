@@ -11,7 +11,7 @@
 #include "gpCore/Rendering/RenderExtractor.h"
 #include "gpCore/World/World.h"
 #include "gpCore/World/ForceField.h"
-#include "gpCore/Dynamics/CollisionDetection.h"
+#include "gpCore/Algorithm/CollisionDetection.h"
 #include "gpCore/Shapes/Shape.h"
 #include "gpCore/Shapes/Rectangle.h"
 #include "gpCore/Task.h"

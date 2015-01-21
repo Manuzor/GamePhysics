@@ -55,11 +55,8 @@
     <Filter Include="Units">
       <UniqueIdentifier>{06560e95-9e7c-405a-a8bf-c916780d294d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dynamics">
-      <UniqueIdentifier>{fae5c353-af9e-4e71-9645-a1560f3faa0c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dynamics\Implementation">
-      <UniqueIdentifier>{ce5df00d-56bd-41b1-91d8-a13d9fc6f69c}</UniqueIdentifier>
+    <Filter Include="Algorithm\Implementation">
+      <UniqueIdentifier>{7c816363-7bc7-4ce6-a871-566b1ec482bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -112,9 +109,6 @@
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\FileSystem.cpp">
       <Filter>Utilities\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\Dynamics\Implementation\CollisionDetection.cpp">
-      <Filter>Dynamics\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Entity.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
@@ -123,6 +117,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Implementation\Allocation.cpp">
       <Filter>Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Algorithm\Implementation\CollisionDetection.cpp">
+      <Filter>Algorithm\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,9 +195,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\FileSystem.h">
       <Filter>Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\Integrate.h">
-      <Filter>Algorithm</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Units.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\ScalarSyncer.h">
       <Filter>Utilities</Filter>
@@ -209,14 +203,8 @@
     <ClInclude Include="..\..\..\Code\gpCore\Units\UnitBase.h">
       <Filter>Units</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms.h">
-      <Filter>Units</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Units\Units.h">
       <Filter>Units</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Dynamics\CollisionDetection.h">
-      <Filter>Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Allocation.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\Entity.h">
@@ -227,6 +215,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\Pair.h">
       <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\CollisionDetection.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\UnitConversion.h">
+      <Filter>Algorithm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 
 #include <gpCore/Shapes/Shape.h>
 #include <gpCore/World/Entity.h>
-#include <gpCore/Dynamics/CollisionDetection.h>
+#include <gpCore/Algorithm/CollisionDetection.h>
 
 EZ_CREATE_SIMPLE_TEST_GROUP(Collision);
 

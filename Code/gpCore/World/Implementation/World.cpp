@@ -6,14 +6,12 @@
 
 #include "gpCore/Utilities/EzMathExtensions.h"
 
-#include "gpCore/Algorithm/Integrate.h"
-
 #include "gpCore/World/World.h"
 #include "gpCore/World/Entity.h"
 #include "gpCore/World/ForceField.h"
 #include "gpCore/Utilities/View.h"
 
-#include "gpCore/Dynamics/CollisionDetection.h"
+#include "gpCore/Algorithm/CollisionDetection.h"
 
 gpWorld::gpWorld(const char* szName) :
     m_sName(szName)

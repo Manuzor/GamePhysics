@@ -1,5 +1,5 @@
 #include "gpCore/PCH.h"
-#include "gpCore/Dynamics/CollisionDetection.h"
+#include "gpCore/Algorithm/CollisionDetection.h"
 
 #include "gpCore/World/Entity.h"
 #include "gpCore/Shapes/Shape.h"

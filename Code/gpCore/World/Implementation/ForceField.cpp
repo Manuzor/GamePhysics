@@ -4,7 +4,7 @@
 #include <Foundation/Communication/GlobalEvent.h>
 
 #include "gpCore/World/ForceField.h"
-#include "gpCore/Dynamics/CollisionDetection.h"
+#include "gpCore/Algorithm/CollisionDetection.h"
 
 void gpUpdateStats(const ezStringView sStatName, const gpForceFieldEntity& ForceField)
 {
