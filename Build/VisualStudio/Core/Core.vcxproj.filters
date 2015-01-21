@@ -66,9 +66,6 @@
     <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp">
       <Filter>Memory\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.cpp">
-      <Filter>Shapes\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Implementation\Window.cpp">
       <Filter>Implementation</Filter>
     </ClCompile>
@@ -115,22 +112,19 @@
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\FileSystem.cpp">
       <Filter>Utilities\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.cpp">
-      <Filter>Shapes\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Dynamics\Implementation\CollisionDetection.cpp">
       <Filter>Dynamics\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Entity.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Shape.cpp">
+      <Filter>Shapes\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h">
       <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Circle.h">
-      <Filter>Shapes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\OpenGL\OpenGL.h">
       <Filter>Rendering\OpenGL</Filter>
@@ -192,9 +186,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h">
       <Filter>Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h">
       <Filter>Shapes</Filter>
     </ClInclude>
@@ -203,9 +194,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\FileSystem.h">
       <Filter>Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Polygon.h">
-      <Filter>Shapes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Algorithm\Integrate.h">
       <Filter>Algorithm</Filter>
@@ -231,11 +219,11 @@
     <ClInclude Include="..\..\..\Code\gpCore\World\Entity.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Shape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl">
-      <Filter>Shapes\Implementation</Filter>
-    </None>
     <None Include="..\..\..\Code\gpCore\Memory\Implementation\FixedStackAllocator.inl">
       <Filter>Memory\Implementation</Filter>
     </None>
@@ -246,6 +234,15 @@
       <Filter>Rendering\Implementation</Filter>
     </None>
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Rectangle.inl">
+      <Filter>Shapes\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.inl">
+      <Filter>Shapes\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Sphere.inl">
+      <Filter>Shapes\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Allocation.inl">
       <Filter>Shapes\Implementation</Filter>
     </None>
   </ItemGroup>

@@ -10,6 +10,7 @@ namespace gpInternal
         {
             DefaultInit = -1,
 
+            Point,
             Circle,
             Line,
             Polygon,

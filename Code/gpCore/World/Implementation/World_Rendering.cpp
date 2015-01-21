@@ -10,9 +10,7 @@
 #include "gpCore/World/Entity.h"
 #include "gpCore/World/ForceField.h"
 
-#include "gpCore/Shapes/ShapeBase.h"
-#include "gpCore/Shapes/Circle.h"
-#include "gpCore/Shapes/Polygon.h"
+#include "gpCore/Shapes/Shape.h"
 
 // Extract a particle
 static void Extract(gpRenderExtractor* pExtractor,
@@ -53,7 +51,7 @@ static void Extract(gpRenderExtractor* pExtractor,
     {
         auto pCircle = pExtractor->AllocateRenderData<gpDrawData::Circle>();
         pCircle->m_Position = gpValueOf(gpPositionOf(props));
-        pCircle->m_fRadius = gpRadiusOf(static_cast<const gpCircleShape&>(shape));
+        pCircle->m_fRadius = gpRadiusOf(shape);
 
         pCircle->m_uiNumLineSegments = 20;
         pCircle->m_OutlineColor = drawInfo.m_Color;
@@ -63,11 +61,10 @@ static void Extract(gpRenderExtractor* pExtractor,
         break;
     case gpShapeType::Polygon:
     {
-        auto& polygon = static_cast<const gpPolygonShape&>(shape);
         auto pPolyData = pExtractor->AllocateRenderData<gpDrawData::Polygon>();
 
         pPolyData->m_Transform = gpTransformOf(props);
-        pPolyData->m_Vertices = gpVerticesOf(polygon);
+        pPolyData->m_Vertices = gpVerticesOf(shape);
         pPolyData->m_OutlineColor = drawInfo.m_Color;
         pPolyData->m_FillColor = drawInfo.m_Color;
         pPolyData->m_FillColor.a *= 0.5f;

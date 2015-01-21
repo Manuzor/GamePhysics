@@ -11,7 +11,8 @@
 #include "gpCore/Rendering/RenderExtractor.h"
 #include "gpCore/World/World.h"
 #include "gpCore/World/ForceField.h"
-#include "gpCore/Shapes/Circle.h"
+#include "gpCore/Dynamics/CollisionDetection.h"
+#include "gpCore/Shapes/Shape.h"
 #include "gpCore/Shapes/Rectangle.h"
 #include "gpCore/Task.h"
 #include "gpCore/Utilities/RandomNumbers.h"
@@ -92,7 +93,7 @@ static void SpawnTarget(gpWorld* pWorld)
     gpAddTo(Deref(pWorld), playerTarget);
     gpDrawInfoOf(Deref(pWorld), playerTarget).m_Color = ezColor::GetYellow();
 
-    gpRadiusOf(static_cast<gpCircleShape&>(Deref(gpShapePtrOf(playerTarget)))) = g_fPlayerTargetRadius.GetValue();
+    gpRadiusOf(gpShapeOf(playerTarget)) = g_fPlayerTargetRadius.GetValue();
 
     ezLog::Success("Target spawned.");
 }
@@ -108,12 +109,12 @@ static void DespawnTarget(gpWorld* pWorld)
 
 static void CreateTarget(gpWorld* pWorld)
 {
-    static gpCircleShape* pCircle;
+    static gpShapeBase* pCircle;
 
     if(pCircle == nullptr)
     {
-        static gpCircleShape Circle;
-        pCircle = &Circle;
+        static gpShapeBase circle(gpShapeType::Circle);
+        pCircle = &circle;
     }
 
     g_pPlayerTarget = gpNew<gpEntity>(Deref(pWorld));
@@ -336,7 +337,7 @@ void gpAndyForceFieldsApp::CreateForceFields()
 
     for (ezUInt64 i = 0; i < uiNumForceFields; ++i)
     {
-        auto pForceField = gpCreateEntity<gpForceFieldEntity>(world);
+        auto pForceField = gpNew<gpForceFieldEntity>(world);
         EZ_ASSERT(pForceField, "Failed to create force field.");
 
         auto& forceField = Deref(pForceField);
@@ -490,9 +491,7 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
             ezLog::Info("Player left the world");
         }
 
-        if (gpContains(gpPhysicalPropertiesOf(playerTarget),
-                       static_cast<gpCircleShape&>(Deref(gpShapePtrOf(playerTarget))),
-                       gpPositionOf(player)))
+        if (gpAreColliding(playerTarget, player))
         {
             ezLog::Info("Player hit the target!");
             ResetWorld();

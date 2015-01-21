@@ -2,28 +2,23 @@
 #include "gpCore/Dynamics/CollisionDetection.h"
 
 #include "gpCore/World/Entity.h"
+#include "gpCore/Shapes/Shape.h"
 
-#include "gpCore/Shapes/Circle.h"
-#include "gpCore/Shapes/Rectangle.h"
-#include "gpCore/Shapes/Polygon.h"
-
-/// \brief Takes care of calling the proper gpAreColliding function, according to the actual type of \a unknown.
-template<typename Type>
-bool ShapeCallerHelper(const gpTransform& lhsTransform, const Type& lhsShape,
-                       const gpTransform& rhsTransform, const gpShapeBase& rhsShape)
+namespace
 {
-    switch(gpTypeOf(lhsShape))
+    bool CircleCircle(const gpTransform& lhsTransform, const gpShapeBase& lhsShape,
+                      const gpTransform& rhsTransform, const gpShapeBase& rhsShape)
     {
-    case gpShapeType::Circle:
-        return gpAreColliding(lhsTransform, lhsShape, rhsTransform, static_cast<const gpCircleShape&>(rhsShape));
-    case gpShapeType::Polygon:
-        return gpAreColliding(lhsTransform, lhsShape, rhsTransform, static_cast<const gpPolygonShape&>(rhsShape));
-    default: break;
-    }
+        // Calculate: |d2 - d1|² <= r1² + r2²
 
-    EZ_REPORT_FAILURE("Unsupported shape type in collision detection.");
-    return false;
+        auto d  = gpPositionOf(rhsTransform) - gpPositionOf(lhsTransform);
+        auto r1 = gpRadiusOf(lhsShape);
+        auto r2 = gpRadiusOf(rhsShape);
+        return gpSquaredLengthOf(d) <= gpSquare(r1) + gpSquare(r2);
+    }
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 bool gpAreColliding(const gpEntity& lhs, const gpEntity& rhs)
 {
@@ -38,64 +33,22 @@ bool gpAreColliding(const gpTransform& lhsTransform, const gpShapeBase& lhsShape
     switch(gpTypeOf(lhsShape))
     {
     case gpShapeType::Circle:
-        return ShapeCallerHelper(lhsTransform, static_cast<const gpCircleShape&>(lhsShape), rhsTransform, rhsShape);
+        switch(gpTypeOf(rhsShape))
+        {
+        case gpShapeType::Circle:  return CircleCircle(lhsTransform, lhsShape, rhsTransform, rhsShape);
+        case gpShapeType::Polygon: GP_NotImplemented;
+        default: break;
+        }
     case gpShapeType::Polygon:
-        return ShapeCallerHelper(lhsTransform, static_cast<const gpPolygonShape&>(lhsShape), rhsTransform, rhsShape);
+        switch(gpTypeOf(rhsShape))
+        {
+        case gpShapeType::Circle:  GP_NotImplemented;
+        case gpShapeType::Polygon: GP_NotImplemented;
+        default: break;
+        }
     default: break;
     }
 
     EZ_REPORT_FAILURE("Unsupported shape type in collision detection.");
     return false;
 }
-
-bool gpAreColliding(const gpTransform& lhsTransform, const gpCircleShape& lhsShape,
-                    const gpTransform& rhsTransform, const gpShapeBase&   rhsShape)
-{
-    return ShapeCallerHelper(lhsTransform, lhsShape,
-                        rhsTransform, rhsShape);
-}
-
-bool gpAreColliding(const gpTransform& lhsTransform, const gpPolygonShape& lhsShape,
-                    const gpTransform& rhsTransform, const gpShapeBase&   rhsShape)
-{
-    return ShapeCallerHelper(lhsTransform, lhsShape,
-                        rhsTransform, rhsShape);
-}
-
-// Symmetric functions
-//////////////////////////////////////////////////////////////////////////
-
-bool gpAreColliding(const gpTransform& lhsTransform, const gpPolygonShape& lhsShape,
-                    const gpTransform& rhsTransform, const gpCircleShape& rhsShape)
-{
-    // Swap operands
-    // lhs, rhs => rhs, lhs
-    return gpAreColliding(rhsTransform, rhsShape, lhsTransform, lhsShape);
-}
-
-// Most specialized functions
-//////////////////////////////////////////////////////////////////////////
-
-bool gpAreColliding(const gpTransform& lhsTransform, const gpCircleShape& lhsShape,
-                    const gpTransform& rhsTransform, const gpCircleShape& rhsShape)
-{
-    // Calculate: |d2 - d1|² <= r1² + r2²
-
-    auto d  = gpPositionOf(rhsTransform) - gpPositionOf(lhsTransform);
-    auto r1 = gpRadiusOf(lhsShape);
-    auto r2 = gpRadiusOf(rhsShape);
-    return gpSquaredLengthOf(d) <= gpSquare(r1) + gpSquare(r2);
-}
-
-bool gpAreColliding(const gpTransform& lhsTransform, const gpPolygonShape& lhsShape,
-                    const gpTransform& rhsTransform, const gpPolygonShape& rhsShape)
-{
-    GP_NotImplemented;
-}
-
-bool gpAreColliding(const gpTransform& lhsTransform, const gpCircleShape& lhsShape,
-                    const gpTransform& rhsTransform, const gpPolygonShape& rhsShape)
-{
-    GP_NotImplemented;
-}
-

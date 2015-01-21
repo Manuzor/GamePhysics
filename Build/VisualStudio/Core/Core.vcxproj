@@ -39,8 +39,7 @@
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\RenderExtractor.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\OpenGL\Implementation\OpenGL.cpp" />
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.cpp" />
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Shape.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\FileSystem.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\RandomNumbers.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\TextFileLogWriter.cpp" />
@@ -69,10 +68,8 @@
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\Renderer.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\RenderExtractor.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\Rendering.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Circle.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Polygon.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Shape.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Transform.h" />
@@ -97,8 +94,10 @@
     <None Include="..\..\..\Code\gpCore\Memory\Implementation\FixedStackAllocator.inl" />
     <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_Async.inl" />
     <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_NonAsync.inl" />
-    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl" />
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Allocation.inl" />
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.inl" />
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Rectangle.inl" />
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Sphere.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{64B962F4-03D4-491E-8FC7-C10C23595E83}</ProjectGuid>

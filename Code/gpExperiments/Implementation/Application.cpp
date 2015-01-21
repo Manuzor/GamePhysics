@@ -8,7 +8,7 @@
 #include "gpCore/Rendering/RenderExtractor.h"
 
 #include "gpCore/World/World.h"
-#include "gpCore/Shapes/Polygon.h"
+#include "gpCore/Shapes/Shape.h"
 
 static gpWorld* g_pWorld = nullptr;
 
@@ -30,9 +30,7 @@ static void Populate(gpWorld& world)
     gpVec3 halfExtends(50.0f, 50.0f, 0.0f);
     gpInverseInertiaOf(entity) = gpInverseInertia::SolidCuboid(gpMassOf(entity), 2.0f * halfExtends);
 
-    auto pPolygon = gpNew<gpPolygonShape>();
-    gpConvertToBox(Deref(pPolygon), halfExtends);
-    gpShapePtrOf(entity) = pPolygon;
+    gpShapePtrOf(entity) = gpShapeBase::NewBox(halfExtends);
 
     EZ_VERIFY(gpAddTo(world, entity).Succeeded(), "Failed to add entity to world.");
 
@@ -41,7 +39,7 @@ static void Populate(gpWorld& world)
 
 static void Cleanup(gpWorld& world, gpEntity& e)
 {
-    gpDelete(gpShapePtrOf(e));
+    gpReleaseReferenceTo(gpShapeOf(e));
     gpReleaseReferenceTo(e);
     EZ_VERIFY(gpRemoveFrom(world, e).Succeeded(), "Failed to remove entity from world.");
 

@@ -13,11 +13,11 @@ public:
     ~gpWorld();
 
     /// \remark Don't call this directly, use gpNew<gpEntity>(...) instead!
-    template<typename... Args>
-    gpEntity* _NewEntity(Args&&... args)
+    template<typename Type, typename... Args>
+    Type* _NewEntity(Args&&... args)
     {
-        /// \todo Use better memory management for entities.
-        auto pEntity = EZ_DEFAULT_NEW(gpEntity)(args...);
+        /// \todo Use better memory management here.
+        auto pEntity = EZ_DEFAULT_NEW(Type)(args...);
         InsertCreatedEntity(pEntity);
         return pEntity;
     }
@@ -101,7 +101,17 @@ namespace gpInternal
         template<typename... Args>
         static gpEntity* New(gpWorld& world, Args&&... args)
         {
-            return world._NewEntity(args...);
+            return world._NewEntity<gpEntity>(args...);
+        }
+    };
+
+    template<>
+    struct gpTypeAllocator<gpForceFieldEntity>
+    {
+        template<typename... Args>
+        static gpForceFieldEntity* New(gpWorld& world, Args&&... args)
+        {
+            return world._NewEntity<gpForceFieldEntity>(args...);
         }
     };
 

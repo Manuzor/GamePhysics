@@ -1,5 +1,5 @@
 #pragma once
-#include "gpCore/Shapes/ShapeBase.h"
+#include "gpCore/Shapes/Shape.h"
 #include "gpCore/World/PhysicalProperties.h"
 #include "gpCore/Algorithm/Integrate.h"
 
@@ -11,7 +11,7 @@ class GP_CoreAPI gpEntity : public ezRefCounted
     //////////////////////////////////////////////////////////////////////////
 
     gpWorld* m_pWorld = nullptr;
-    gpShapeBase* m_pShape = nullptr;
+    ezScopedRefPointer<gpShapeBase> m_pShape = nullptr;
 
     gpPhysicalProperties m_PhysicalProperties;
     ezString m_sName;
@@ -22,8 +22,8 @@ class GP_CoreAPI gpEntity : public ezRefCounted
     friend ezString& gpNameOf(gpEntity& entity);
     friend gpPhysicalProperties& gpPhysicalPropertiesOf(gpEntity& entity);
 
-    EZ_FORCE_INLINE friend       gpShapeBase*& gpShapePtrOf(      gpEntity& entity) { return entity.m_pShape; }
-    EZ_FORCE_INLINE friend const gpShapeBase*  gpShapePtrOf(const gpEntity& entity) { return entity.m_pShape; }
+    EZ_FORCE_INLINE friend ezScopedRefPointer<gpShapeBase>& gpShapePtrOf(gpEntity& entity) { return entity.m_pShape; }
+    EZ_FORCE_INLINE friend const gpShapeBase* gpShapePtrOf(const gpEntity& entity) { return entity.m_pShape; }
 
     /// \remark Assumes a valid shape ptr is set
     EZ_FORCE_INLINE friend gpShapeBase& gpShapeOf(gpEntity& entity)

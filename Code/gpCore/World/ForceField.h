@@ -1,19 +1,22 @@
 #pragma once
 #include "gpCore/World/Entity.h"
-#include "gpCore/Shapes/Circle.h"
+#include "gpCore/Shapes/Shape.h"
 
 class GP_CoreAPI gpForceFieldEntity : public gpEntity
 {
     // Data
     //////////////////////////////////////////////////////////////////////////
     gpScalar m_fForceFactor = 0.0f;
-    gpCircleShape m_Area;
+    gpShapeBase m_Area;
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
     friend gpScalar& gpForceFactorOf(gpForceFieldEntity& forceField);
     friend gpScalar& gpRadiusOf(gpForceFieldEntity& forceField);
     friend bool gpContains(const gpForceFieldEntity& forceField, const gpDisplacement& vPoint);
+
+public:
+    gpForceFieldEntity() {}
 };
 
 EZ_FORCE_INLINE       gpScalar& gpForceFactorOf(      gpForceFieldEntity& forceField) { return forceField.m_fForceFactor; }
@@ -33,7 +36,9 @@ EZ_FORCE_INLINE const gpScalar& gpRadiusOf(const gpForceFieldEntity& forceField)
 
 EZ_FORCE_INLINE bool gpContains(const gpForceFieldEntity& forceField, const gpDisplacement& point)
 {
-    return gpContains(gpPhysicalPropertiesOf(forceField), forceField.m_Area, point);
+    GP_NotImplemented;
+    return false;
+    //return gpContains(gpPhysicalPropertiesOf(forceField), forceField.m_Area, point);
 }
 
 GP_CoreAPI void gpUpdateStats(const ezStringView sStatName, const gpForceFieldEntity& ForceField);

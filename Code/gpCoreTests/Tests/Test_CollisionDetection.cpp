@@ -1,7 +1,7 @@
 #include "gpCoreTests/PCH.h"
 #include <TestFramework/Framework/TestFramework.h>
 
-#include <gpCore/Shapes/Circle.h>
+#include <gpCore/Shapes/Shape.h>
 #include <gpCore/World/Entity.h>
 #include <gpCore/Dynamics/CollisionDetection.h>
 
