@@ -5,6 +5,8 @@
 
 class gpWorld;
 
+/// \note By default, every entity is a particle.
+///       Turn it into a rigid body by setting the shape to something else than gpShape::Point().
 class GP_CoreAPI gpEntity : public ezRefCounted
 {
     // Data
@@ -40,7 +42,7 @@ class GP_CoreAPI gpEntity : public ezRefCounted
     }
 
 public:
-    gpEntity() {}
+    gpEntity() : m_pShape(gpShapeBase::Point()) {}
     gpEntity(const gpEntity&)   = delete;
     gpEntity(gpEntity&&)        = delete;
     void operator=(const gpEntity&) = delete;
@@ -54,6 +56,17 @@ struct gpEntityDrawInfo
     ezAngle m_LinearVelocityArrowWingAngle = ezAngle::Degree(30);
     gpScalar m_fLinearVelocityArrowWingLength = 10.0f;
 };
+
+// Allocation
+//////////////////////////////////////////////////////////////////////////
+namespace gpInternal
+{
+    template<>
+    struct GP_CoreAPI gpTypeAllocator<gpEntity>
+    {
+        static gpEntity* New();
+    };
+}
 
 // Utility functions
 //////////////////////////////////////////////////////////////////////////

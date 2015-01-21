@@ -30,9 +30,9 @@ public:
     GP_DefineMat3UnitConstructors(gpOrientation);
     gpOrientation(const gpVec3& v) : BaseType(gpZero)
     {
-        gpValueOf(Deref(this)).Element(0, 0) = v.x;
-        gpValueOf(Deref(this)).Element(1, 1) = v.y;
-        gpValueOf(Deref(this)).Element(2, 2) = v.z;
+        gpValueOf(self).Element(0, 0) = v.x;
+        gpValueOf(self).Element(1, 1) = v.y;
+        gpValueOf(self).Element(2, 2) = v.z;
     }
 };
 

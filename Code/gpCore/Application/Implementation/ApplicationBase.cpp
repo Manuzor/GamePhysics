@@ -114,6 +114,9 @@ void gpApplicationBase::Cleanup()
 
     ezFileSystem::ClearAllDataDirectories();
     ezFileSystem::ClearAllDataDirectoryFactories();
+
+    // This is the only place where we do this, i.e. we leak memory until the end.
+    gpTriggerGarbageCollection();
 }
 
 void gpApplicationBase::WindowEventHandler(gpWindow::EventData* pEventData)

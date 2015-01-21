@@ -1,6 +1,7 @@
 #include "gpCore/PCH.h"
 
 #include <Foundation/Utilities/Stats.h>
+#include <Foundation/Communication/GlobalEvent.h>
 
 #include "gpCore/Utilities/EzMathExtensions.h"
 
@@ -11,11 +12,12 @@
 #include "gpCore/World/ForceField.h"
 #include "gpCore/Utilities/View.h"
 
+#include "gpCore/Dynamics/CollisionDetection.h"
+
 gpWorld::gpWorld(const char* szName) :
     m_sName(szName),
     m_pEntityDrawInfoDefault(&m_EntityDrawInfo_HardDefault)
 {
-    m_CreatedEntities.Reserve(64);
     m_SimulatedEntities.Reserve(64);
 
     ezStringBuilder sbProfilingName;
@@ -29,21 +31,11 @@ gpWorld::gpWorld(const char* szName) :
 
 gpWorld::~gpWorld()
 {
-    gpClear(Deref(this));
+    gpClear(self);
 
     ezProfilingSystem::DeleteId(m_ProfilingId_Extraction);
     ezProfilingSystem::DeleteId(m_ProfilingId_CreateEntity);
     ezProfilingSystem::DeleteId(m_ProfilingId_Simulation);
-
-    for (ezUInt32 i = 0; i < m_CreatedEntities.GetCount(); ++i)
-    {
-        auto pEntity = m_CreatedEntities[i];
-        if(pEntity)
-        {
-            EZ_ASSERT(!pEntity->IsReferenced(), "Someone did not release their reference!");
-            ezFoundation::GetDefaultAllocator()->Deallocate(pEntity);
-        }
-    }
 }
 
 ezResult gpAddTo(gpWorld& world, gpEntity& entity)
@@ -177,29 +169,16 @@ gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntity& entity)
     return world.m_EntityDrawInfos[AddressOf(entity)];
 }
 
-void gpCollectGarbageOf(gpWorld& world)
-{
-    for (ezUInt32 i = 0; i < world.m_CreatedEntities.GetCount(); ++i)
-    {
-        auto& pEntity = world.m_CreatedEntities[i];
-        if (pEntity && !pEntity->IsReferenced())
-        {
-            EZ_DEFAULT_DELETE(pEntity);
-        }
-    }
-}
-
 static void AccumulateForces(gpLinearAcceleration& out_Force,
-                             const gpDisplacement& entityPos,
+                             const gpEntity& entity,
                              ezArrayPtr<const gpForceFieldEntity*> ForceFields)
 {
     for (ezUInt32 i = 0; i < ForceFields.GetCount(); ++i)
     {
         auto& forceField = Deref(ForceFields[i]);
-        auto bIsAffected = gpContains(forceField, entityPos);
-        if (!bIsAffected)
+        if (!gpAreColliding(forceField, entity))
             continue;
-        auto vDir = gpValueOf(gpPositionOf(forceField) - entityPos);
+        auto vDir = gpValueOf(gpPositionOf(forceField) - gpPositionOf(entity));
         if (vDir.NormalizeIfNotZero().Succeeded())
         {
             out_Force = out_Force + gpLinearAcceleration(vDir * gpForceFactorOf(forceField));
@@ -214,12 +193,11 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
     for(ezUInt32 i = 0; i < world.m_SimulatedEntities.GetCount(); ++i)
     {
         auto& entity = Deref(world.m_SimulatedEntities[i]);
-        const gpMass& mass = gpMassOf(entity); /// \todo Use mass in calculations?
 
         // Linear movement
         //////////////////////////////////////////////////////////////////////////
         gpLinearAcceleration linAcceleration(gpZero);
-        AccumulateForces(linAcceleration, gpPositionOf(entity), gpGetConstView(world.m_ForceFields));
+        AccumulateForces(linAcceleration, entity, gpGetConstView(world.m_ForceFields));
         linAcceleration = (linAcceleration + gpGravityOf(world)) * gpGravityFactorOf(entity);
 
         if(!gpIsZero(linAcceleration))
@@ -254,18 +232,4 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
         gpOrthogonalize(newA);
         gpRotationOf(entity) = gpOrientation(newA);
     }
-}
-
-void gpWorld::InsertCreatedEntity(gpEntity* pEntity)
-{
-    for (ezUInt32 i = 0; i < m_CreatedEntities.GetCount(); ++i)
-    {
-        if (m_CreatedEntities[i] == nullptr)
-        {
-            m_CreatedEntities.Insert(pEntity, i);
-            return;
-        }
-    }
-
-    m_CreatedEntities.PushBack(pEntity);
 }

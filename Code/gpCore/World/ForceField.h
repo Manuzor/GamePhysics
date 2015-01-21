@@ -7,17 +7,34 @@ class GP_CoreAPI gpForceFieldEntity : public gpEntity
     // Data
     //////////////////////////////////////////////////////////////////////////
     gpScalar m_fForceFactor = 0.0f;
-    gpShapeBase m_Area;
 
     // Friends
     //////////////////////////////////////////////////////////////////////////
     friend gpScalar& gpForceFactorOf(gpForceFieldEntity& forceField);
     friend gpScalar& gpRadiusOf(gpForceFieldEntity& forceField);
-    friend bool gpContains(const gpForceFieldEntity& forceField, const gpDisplacement& vPoint);
 
 public:
-    gpForceFieldEntity() {}
+    gpForceFieldEntity()
+    {
+        gpShapePtrOf(self) = gpShapeBase::NewSphere(1);
+    }
 };
+
+// Allocation
+//////////////////////////////////////////////////////////////////////////
+namespace gpInternal
+{
+    template<>
+    struct GP_CoreAPI gpTypeAllocator<gpForceFieldEntity>
+    {
+        static gpForceFieldEntity* New();
+    };
+
+    /// \note Delete & friends are not implemented on purpose.
+}
+
+// Functions
+//////////////////////////////////////////////////////////////////////////
 
 EZ_FORCE_INLINE       gpScalar& gpForceFactorOf(      gpForceFieldEntity& forceField) { return forceField.m_fForceFactor; }
 EZ_FORCE_INLINE const gpScalar& gpForceFactorOf(const gpForceFieldEntity& forceField)
@@ -27,18 +44,13 @@ EZ_FORCE_INLINE const gpScalar& gpForceFactorOf(const gpForceFieldEntity& forceF
 
 EZ_FORCE_INLINE gpScalar& gpRadiusOf(gpForceFieldEntity& forceField)
 {
-    return gpRadiusOf(forceField.m_Area);
+    return gpRadiusOf(gpShapeOf(forceField));
 }
 EZ_FORCE_INLINE const gpScalar& gpRadiusOf(const gpForceFieldEntity& forceField)
 {
     return gpRadiusOf(const_cast<gpForceFieldEntity&>(forceField));
 }
 
-EZ_FORCE_INLINE bool gpContains(const gpForceFieldEntity& forceField, const gpDisplacement& point)
-{
-    GP_NotImplemented;
-    return false;
-    //return gpContains(gpPhysicalPropertiesOf(forceField), forceField.m_Area, point);
-}
+GP_CoreAPI bool gpAffects(const gpForceFieldEntity& forceField, const gpEntity& entity);
 
 GP_CoreAPI void gpUpdateStats(const ezStringView sStatName, const gpForceFieldEntity& ForceField);

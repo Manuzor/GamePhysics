@@ -53,8 +53,8 @@ public:
     EZ_FORCE_INLINE void operator /=(ScalarType factor)        { Self() = Self() / factor; }
 
 private:
-    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(Deref(this)); }
-    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(Deref(this)); }
+    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(self); }
+    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(self); }
 };
 
 #define GP_DefineScalarUnitConstructors(TheUnitName)                                  \
@@ -135,8 +135,8 @@ public:
     EZ_FORCE_INLINE void operator /=(ScalarType factor)        { Self() = Self() / factor; }
 
 private:
-    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(Deref(this)); }
-    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(Deref(this)); }
+    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(self); }
+    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(self); }
 };
 
 #define GP_DefineVec3UnitConstructors(TheUnitName)                                                                                  \
@@ -228,8 +228,8 @@ public:
     EZ_FORCE_INLINE void operator -=(const DerivedType& other) { Self() = Self() - other; }
 
 private:
-    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(Deref(this)); }
-    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(Deref(this)); }
+    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(self); }
+    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(self); }
 };
 
 #define GP_DefineMat3UnitConstructors(TheUnitName)                                                                                  \

@@ -31,11 +31,14 @@ namespace gpInternal
     };
 }
 
-template<typename Type> EZ_FORCE_INLINE void gpAddReferenceTo(Type& object)  { object.AddRef(); }
-template<typename Type> EZ_FORCE_INLINE void gpAddReferenceTo(Type* pObject) { pObject->AddRef(); }
-
+template<typename Type> EZ_FORCE_INLINE void gpAddReferenceTo(Type& object)      { object.AddRef(); }
 template<typename Type> EZ_FORCE_INLINE void gpReleaseReferenceTo(Type& object)  { object.ReleaseRef(); }
-template<typename Type> EZ_FORCE_INLINE void gpReleaseReferenceTo(Type* pObject) { pObject->ReleaseRef(); }
+
+template<typename Type> EZ_FORCE_INLINE void gpAddReferenceTo(Type* pObject)     { gpAddReferenceTo(Deref(pObject)); }
+template<typename Type> EZ_FORCE_INLINE void gpReleaseReferenceTo(Type* pObject) { gpReleaseReferenceTo(Deref(pObject)); }
+
+template<typename Type> EZ_FORCE_INLINE bool gpIsReferenced(Type& object)  { return object.IsReferenced(); }
+template<typename Type> EZ_FORCE_INLINE bool gpIsReferenced(Type* pObject) { return gpIsReferenced(Deref(pObject)); }
 
 /// \brief Dereferences the \a this pointer in a more human-friendly way.
 ///

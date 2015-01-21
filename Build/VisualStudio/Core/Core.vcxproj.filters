@@ -121,6 +121,9 @@
     <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Shape.cpp">
       <Filter>Shapes\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Implementation\Allocation.cpp">
+      <Filter>Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h">

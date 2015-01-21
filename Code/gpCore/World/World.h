@@ -30,15 +30,12 @@ private:
 
     gpLinearAcceleration m_Gravity = gpLinearAcceleration(gpVec3::ZeroVector());
     ezDynamicArray<gpForceFieldEntity*> m_ForceFields;
-    ezDynamicArray<gpEntity*> m_CreatedEntities;
     ezDynamicArray<gpEntity*> m_SimulatedEntities;
     ezMap<gpEntity*, gpEntityDrawInfo> m_EntityDrawInfos;
     gpEntityDrawInfo m_EntityDrawInfo_HardDefault;
     gpEntityDrawInfo* m_pEntityDrawInfoDefault;
 
 private:
-    void InsertCreatedEntity(gpEntity* pEntity);
-
     // Friends
     //////////////////////////////////////////////////////////////////////////
     friend const ezString& gpNameOf(const gpWorld& world);
@@ -50,12 +47,9 @@ private:
     friend GP_CoreAPI void gpClearSimulatedEntities(gpWorld& world);
     friend GP_CoreAPI void gpClearForceFields(gpWorld& world);
     friend GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntity& entity);
-    friend GP_CoreAPI void gpCollectGarbageOf(gpWorld& world);
     friend GP_CoreAPI void gpStepSimulationOf(gpWorld& world, gpTime dt);
     friend gpEntityDrawInfo*& gpDefaultDrawInfoPtrOf(gpWorld& world);
     friend GP_CoreAPI void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor);
-    template<typename Type>
-    friend Type* gpCreateEntity(gpWorld& world);
 };
 
 EZ_FORCE_INLINE const ezString& gpNameOf(const gpWorld& world) { return world.m_sName; }
@@ -74,17 +68,7 @@ EZ_FORCE_INLINE void gpClear(gpWorld& world)
     gpClearForceFields(world);
 }
 GP_CoreAPI gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntity& entity);
-GP_CoreAPI void gpCollectGarbageOf(gpWorld& world);
 GP_CoreAPI void gpStepSimulationOf(gpWorld& world, gpTime dt);
-
-template<typename Type>
-EZ_FORCE_INLINE Type* gpCreateEntity(gpWorld& world)
-{
-    EZ_PROFILE(world.m_ProfilingId_CreateEntity);
-    auto pEntity = EZ_DEFAULT_NEW(Type);
-    world.InsertCreatedEntity(pEntity);
-    return pEntity;
-}
 
 EZ_FORCE_INLINE gpEntityDrawInfo*& gpDefaultDrawInfoPtrOf(gpWorld& world) { return world.m_pEntityDrawInfoDefault; }
 EZ_FORCE_INLINE gpEntityDrawInfo*  gpDefaultDrawInfoPtrOf(const gpWorld& world)
@@ -93,27 +77,3 @@ EZ_FORCE_INLINE gpEntityDrawInfo*  gpDefaultDrawInfoPtrOf(const gpWorld& world)
 }
 GP_CoreAPI void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor);
 
-namespace gpInternal
-{
-    template<>
-    struct gpTypeAllocator<gpEntity>
-    {
-        template<typename... Args>
-        static gpEntity* New(gpWorld& world, Args&&... args)
-        {
-            return world._NewEntity<gpEntity>(args...);
-        }
-    };
-
-    template<>
-    struct gpTypeAllocator<gpForceFieldEntity>
-    {
-        template<typename... Args>
-        static gpForceFieldEntity* New(gpWorld& world, Args&&... args)
-        {
-            return world._NewEntity<gpForceFieldEntity>(args...);
-        }
-    };
-
-    /// \note Delete & friends are not implemented on purpose.
-}

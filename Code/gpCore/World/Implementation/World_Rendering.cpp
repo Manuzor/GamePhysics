@@ -133,15 +133,15 @@ void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor)
 
         auto pShape = gpShapePtrOf(entity);
 
-        if (pShape)
-        {
-            // This is a rigid body.
-            Extract(pExtractor, gpPhysicalPropertiesOf(entity), Deref(pShape), Deref(pEntityDrawInfo));
-        }
-        else
+        if (gpTypeOf(Deref(pShape)) == gpShapeType::Point)
         {
             // This is a particle.
             Extract(pExtractor, gpPhysicalPropertiesOf(entity), Deref(pEntityDrawInfo));
+        }
+        else
+        {
+            // This is a rigid body.
+            Extract(pExtractor, gpPhysicalPropertiesOf(entity), Deref(pShape), Deref(pEntityDrawInfo));
         }
     }
 }

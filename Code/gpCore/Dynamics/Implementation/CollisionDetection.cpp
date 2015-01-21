@@ -4,17 +4,84 @@
 #include "gpCore/World/Entity.h"
 #include "gpCore/Shapes/Shape.h"
 
+// Collision detection algorithms
+//////////////////////////////////////////////////////////////////////////
 namespace
 {
-    bool CircleCircle(const gpTransform& lhsTransform, const gpShapeBase& lhsShape,
-                      const gpTransform& rhsTransform, const gpShapeBase& rhsShape)
+    bool Point_Point(const gpTransform& lhs, const gpTransform& rhs)
     {
-        // Calculate: |d2 - d1|² <= r1² + r2²
+        // Calculate: p1 == p2
+        auto& p1 = gpPositionOf(lhs);
+        auto& p2 = gpPositionOf(rhs);
+        return gpAreEqual(p1, p2);
+    }
 
-        auto d  = gpPositionOf(rhsTransform) - gpPositionOf(lhsTransform);
-        auto r1 = gpRadiusOf(lhsShape);
-        auto r2 = gpRadiusOf(rhsShape);
+    bool Point_Circle(const gpTransform& pointTransform,
+                      const gpTransform& circleTransform, const gpShapeBase& circle)
+    {
+        // Calculate: |p2 - p1|² <= r
+
+        auto& p1 = gpPositionOf(circleTransform);
+        auto& p2 = gpPositionOf(pointTransform);
+        auto r  = gpRadiusOf(circle);
+
+        auto d = p2 - p1;
+        return gpSquaredLengthOf(d) <= r;
+    }
+
+    bool Point_Polygon(const gpTransform& circleTransform,
+                       const gpTransform& polygonTransform,
+                       const gpShapeBase& polygon)
+    {
+        GP_NotImplemented;
+    }
+
+    bool Circle_Point(const gpTransform& circleTransform, const gpShapeBase& circle,
+                      const gpTransform& pointTransform)
+    {
+        return Point_Circle(pointTransform, circleTransform, circle);
+    }
+
+    bool Circle_Circle(const gpTransform& lhsTransform, const gpShapeBase& lhsShape,
+                       const gpTransform& rhsTransform, const gpShapeBase& rhsShape)
+    {
+        // Calculate: |p2 - p1|² <= r1² + r2²
+
+        auto& p1 = gpPositionOf(lhsTransform);
+        auto& p2 = gpPositionOf(rhsTransform);
+        auto d   = p2 - p1;
+        auto r1  = gpRadiusOf(lhsShape);
+        auto r2  = gpRadiusOf(rhsShape);
         return gpSquaredLengthOf(d) <= gpSquare(r1) + gpSquare(r2);
+    }
+
+    bool Circle_Polygon(const gpTransform& circleTransform,  const gpShapeBase& circle,
+                        const gpTransform& polygonTransform, const gpShapeBase& polygon)
+    {
+        GP_NotImplemented;
+    }
+
+    bool Polygon_Point(const gpTransform& polygonTransform,
+                       const gpShapeBase& polygon,
+                       const gpTransform& pointTransform)
+    {
+        return Point_Polygon(pointTransform, polygonTransform, polygon);
+    }
+
+    bool Polygon_Circle(const gpTransform& polygonTransform,
+                        const gpShapeBase& polygon,
+                        const gpTransform& sphereTransform,
+                        const gpShapeBase& sphere)
+    {
+        return Circle_Polygon(polygonTransform, polygon, sphereTransform, sphere);
+    }
+
+    bool Polygon_Polygon(const gpTransform& lhsTransform,
+                         const gpShapeBase& lhs,
+                         const gpTransform& rhsTransform,
+                         const gpShapeBase& rhs)
+    {
+        GP_NotImplemented;
     }
 }
 
@@ -22,7 +89,13 @@ namespace
 
 bool gpAreColliding(const gpEntity& lhs, const gpEntity& rhs)
 {
-    EZ_ASSERT(gpShapePtrOf(lhs) && gpShapePtrOf(rhs), "A rigid body needs a shape!");
+    if (gpWorldPtrOf(lhs) != gpWorldPtrOf(rhs))
+    {
+        /// Objects that are not in the same simulation will never collide!
+        /// \note It is allowed for both object to be in no simulation at all.
+        return false;
+    }
+
     return gpAreColliding(gpTransformOf(lhs), Deref(gpShapePtrOf(lhs)),
                           gpTransformOf(rhs), Deref(gpShapePtrOf(rhs)));
 }
@@ -32,18 +105,28 @@ bool gpAreColliding(const gpTransform& lhsTransform, const gpShapeBase& lhsShape
 {
     switch(gpTypeOf(lhsShape))
     {
+    case gpShapeType::Point:
+        switch(gpTypeOf(rhsShape))
+        {
+        case gpShapeType::Point:   return Point_Point(  lhsTransform, rhsTransform);
+        case gpShapeType::Circle:  return Point_Circle( lhsTransform, rhsTransform, rhsShape);
+        case gpShapeType::Polygon: return Point_Polygon(lhsTransform, rhsTransform, rhsShape);
+        default: break;
+        }
     case gpShapeType::Circle:
         switch(gpTypeOf(rhsShape))
         {
-        case gpShapeType::Circle:  return CircleCircle(lhsTransform, lhsShape, rhsTransform, rhsShape);
-        case gpShapeType::Polygon: GP_NotImplemented;
+        case gpShapeType::Point:   return Circle_Point(  lhsTransform, lhsShape, rhsTransform);
+        case gpShapeType::Circle:  return Circle_Circle( lhsTransform, lhsShape, rhsTransform, rhsShape);
+        case gpShapeType::Polygon: return Circle_Polygon(lhsTransform, lhsShape, rhsTransform, rhsShape);
         default: break;
         }
     case gpShapeType::Polygon:
         switch(gpTypeOf(rhsShape))
         {
-        case gpShapeType::Circle:  GP_NotImplemented;
-        case gpShapeType::Polygon: GP_NotImplemented;
+        case gpShapeType::Point:   return Polygon_Point(  lhsTransform, lhsShape, rhsTransform);
+        case gpShapeType::Circle:  return Polygon_Circle( lhsTransform, lhsShape, rhsTransform, rhsShape);
+        case gpShapeType::Polygon: return Polygon_Polygon(lhsTransform, lhsShape, rhsTransform, rhsShape);
         default: break;
         }
     default: break;

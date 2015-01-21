@@ -1,7 +1,6 @@
 
 namespace gpInternal
 {
-
     struct gpPolygonShapeLayout : public gpShapeBase
     {
         gpShapeVertices vertices;

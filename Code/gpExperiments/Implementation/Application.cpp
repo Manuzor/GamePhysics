@@ -19,7 +19,7 @@ static void Populate(gpWorld& world)
 {
     gpGravityOf(world) = gpLinearAcceleration(gpVec3(0, 0.0f, 0));
 
-    g_pEntity = gpNew<gpEntity>(world);
+    g_pEntity = gpNew<gpEntity>();
     EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");
     gpAddReferenceTo(entity);
 
@@ -37,11 +37,10 @@ static void Populate(gpWorld& world)
     gpApplyForceTo(entity, gpForce(20000, 0, 0), gpTime(1), gpDisplacement(0, 1, 0));
 }
 
-static void Cleanup(gpWorld& world, gpEntity& e)
+static void Cleanup()
 {
-    gpReleaseReferenceTo(gpShapeOf(e));
-    gpReleaseReferenceTo(e);
-    EZ_VERIFY(gpRemoveFrom(world, e).Succeeded(), "Failed to remove entity from world.");
+    gpReleaseReferenceTo(entity);
+    EZ_VERIFY(gpRemoveFrom(Deref(g_pWorld), entity).Succeeded(), "Failed to remove entity from world.");
 
     g_pEntity = nullptr;
     gpDelete(g_pWorld);
@@ -123,13 +122,12 @@ void gpExperimentsApp::AfterEngineInit()
     });
 
     g_pWorld = gpNew<gpWorld>("World");
-    EZ_ASSERT(g_pWorld, "Unable to create world.");
     Populate(Deref(g_pWorld));
 }
 
 void gpExperimentsApp::BeforeEngineShutdown()
 {
-    ::Cleanup(Deref(g_pWorld), Deref(g_pEntity));
+    ::Cleanup();
 
     ezStartup::ShutdownEngine();
     Cleanup();
