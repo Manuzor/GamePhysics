@@ -5,5 +5,7 @@
 
 void gpTriggerGarbageCollection()
 {
-    ezGlobalEvent::Broadcast(GP_Core_GarbageCollectionEvent);
+    EZ_LOG_BLOCK("Garbage Collection");
+    ezLog::Dev("Triggering");
+    ezGlobalEvent::Broadcast("gpCore_GarbageCollectionEvent");
 }

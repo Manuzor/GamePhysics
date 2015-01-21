@@ -212,6 +212,12 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
         // Angular Movement
         //////////////////////////////////////////////////////////////////////////
 
+        if (gpTypeOf(gpShapeOf(entity)) == gpShapeType::Point)
+        {
+            // No need to simulate angular movement for particles.
+            continue;
+        }
+
         auto& A          = gpValueOf(gpRotationOf(entity));
         auto& invI       = gpInverseInertiaOf(entity);
         auto transposedA = gpTransposeOf(A);

@@ -48,13 +48,11 @@ void gpDeleteArray(ezArrayPtr<T>& arr)
     gpInternal::gpTypeAllocator<T>::DeleteArray(arr);
 }
 
-/// \brief Name of the global garbage collection event.
+/// \brief Triggers the the global event GP_Core_GarbageCollectionEvent
 /// \example To add a listener, do the following in some translation unit:
-///          EZ_ON_GLOBAL_EVENT(GP_Core_GarbageCollectionEvent)
+///          EZ_ON_GLOBAL_EVENT(gpCore_GarbageCollectionEvent)
 ///          {
 ///              // handle gc ...
 ///          }
-#define GP_Core_GarbageCollectionEvent "gpCore_GarbageCollectionEvent"
-
-/// \brief Triggers the the global event GP_Core_GarbageCollectionEvent
+/// \note Do NOT use this macro GP_Core_GarbageCollectionEvent directly, but the string it contains.
 GP_CoreAPI void gpTriggerGarbageCollection();

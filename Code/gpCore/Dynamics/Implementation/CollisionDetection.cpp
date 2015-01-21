@@ -19,14 +19,14 @@ namespace
     bool Point_Circle(const gpTransform& pointTransform,
                       const gpTransform& circleTransform, const gpShapeBase& circle)
     {
-        // Calculate: |p2 - p1|² <= r
+        // Calculate: |p2 - p1|² <= r²
 
         auto& p1 = gpPositionOf(circleTransform);
         auto& p2 = gpPositionOf(pointTransform);
         auto r  = gpRadiusOf(circle);
 
         auto d = p2 - p1;
-        return gpSquaredLengthOf(d) <= r;
+        return gpSquaredLengthOf(d) <= gpSquare(r);
     }
 
     bool Point_Polygon(const gpTransform& circleTransform,

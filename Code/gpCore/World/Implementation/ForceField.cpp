@@ -40,18 +40,22 @@ gpForceFieldEntity* gpInternal::gpTypeAllocator<gpForceFieldEntity>::New()
     return pForceField;
 }
 
-EZ_ON_GLOBAL_EVENT(GP_Core_GarbageCollectionEvent)
+EZ_ON_GLOBAL_EVENT(gpCore_GarbageCollectionEvent)
 {
+    ezUInt32 numCollected = 0;
     for (ezUInt32 i = 0; i < g_forceFields.GetCount(); ++i)
     {
         auto& pForceField = g_forceFields[i];
         if (pForceField && !pForceField->IsReferenced())
         {
             EZ_DEFAULT_DELETE(pForceField); // This call also nulls pEntity
+            ++numCollected;
         }
     }
 
     /// \todo Clean up g_forceFields using the following algorithm:
     ///       1) Sort it, so all nullptr entries are at the back. Make sure to count the nullptr instances.
     ///       2) Set count of g_forceFields to originalSize - numNullPtrs
+
+    ezLog::Dev("Collected force fields: %u", numCollected);
 }
