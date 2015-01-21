@@ -37,6 +37,7 @@ private: // Data
     gpEntityDrawInfo m_EntityDrawInfo_HardDefault;
     gpEntityDrawInfo* m_pEntityDrawInfoDefault = &m_EntityDrawInfo_HardDefault;
 
+    ezDynamicArray<gpEntity*> m_ResolvedBodies;
     ezDynamicArray<gpPair<gpEntity*, gpEntity*>> m_CollidingBodies;
 
 private:

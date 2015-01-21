@@ -254,11 +254,21 @@ static void DetectCollision(ezArrayPtr<gpEntity*> entities, Container& out_colli
 
             if (gpAreColliding(Deref(pLeft), Deref(pRight)))
             {
-                gpNeedsCollisionResponse(Deref(pLeft))  = true;
-                gpNeedsCollisionResponse(Deref(pRight)) = true;
                 out_collidingEntities.PushBack({pLeft, pRight});
             }
         }
+    }
+}
+
+template<typename ColliderPairContainer>
+static void ResolveCollisions(ColliderPairContainer& collidingBodies)
+{
+    // Resolve collisions between bodies in collidingBodies
+    for (ezUInt32 i = 0; i < collidingBodies.GetCount(); ++i)
+    {
+        auto& pair  = collidingBodies[i];
+        gpResolveCollision(Deref(gpFirstOf (pair)),
+                           Deref(gpSecondOf(pair)));
     }
 }
 
@@ -276,27 +286,6 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
     IntegrateEtities(world.m_SimulatedEntities, gpGetConstView(world.m_ForceFields), gpGravityOf(world), dt);
 
     DetectCollision(world.m_SimulatedEntities, world.m_CollidingBodies);
-
-    // Resolve collisions between bodies in world.m_CollidingBodies...
-    for (ezUInt32 i = 0; i < world.m_CollidingBodies.GetCount(); ++i)
-    {
-        auto& pair  = world.m_CollidingBodies[i];
-        auto& left  = Deref(gpFirstOf(pair));
-        auto& right = Deref(gpSecondOf(pair));
-
-        bool oneOfTheBodiesWasResolved = !gpNeedsCollisionResponse(left) || !gpNeedsCollisionResponse(right);
-        if (oneOfTheBodiesWasResolved)
-        {
-            // Suppose body A collides with bodies B and C in the same simulation phase,
-            // then we resolve for either A-B or A-C, and ignore the other collision
-            // in the hopes that it was automagically resolved or will be resolved in the next simulation step.
-            continue;
-        }
-
-        gpResolveCollision(left, right);
-        gpNeedsCollisionResponse(left)  = false;
-        gpNeedsCollisionResponse(right) = false;
-    }
-
+    ResolveCollisions(world.m_CollidingBodies);
     world.m_CollidingBodies.Clear();
 }

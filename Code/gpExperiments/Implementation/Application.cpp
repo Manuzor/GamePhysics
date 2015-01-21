@@ -32,15 +32,15 @@ static void RotatingRigidBody(const char* name, gpWorld& world)
     gpApplyForceTo(entity, gpForce(20000, 0, 0), gpTime(1), gpDisplacement(0, 1, 0));
 }
 
-static gpEntity* Particle(gpWorld& world, const char* name, const gpDisplacement& position)
+static gpEntity* Particle(gpWorld& world, const char* name, const gpDisplacement& position, const gpLinearVelocity& velocity)
 {
     auto pParticle = gpNew<gpEntity>();
     auto& p = Deref(pParticle);
 
-    gpNameOf(p)     = name;
-    gpPositionOf(p) = position;
-    gpMassOf(p)     = gpMass(1);
-    gpShapePtrOf(p) = gpShape::NewSphere(10);
+    gpNameOf(p)           = name;
+    gpPositionOf(p)       = position;
+    gpLinearVelocityOf(p) = velocity;
+    gpMassOf(p)           = gpMass(1);
 
     auto result = gpAddTo(world, p);
     EZ_VERIFY(result.Succeeded(), "Failed to add particle to world.");
@@ -54,12 +54,27 @@ static void Populate(gpWorld& world)
 
     //RotatingRigidBody("Player", world);
 
-    auto pLeft  = Particle(world, "left",  gpDisplacement(150, 250, 0));
-    auto pRight = Particle(world, "right", gpDisplacement(350, 250, 0));
-
+    //auto pShape        = gpShape::NewBox(gpVec3(10, 10, 0));
+    auto pShape        = gpShape::NewSphere(10);
     gpScalar magnitude = 30.0f;
-    gpApplyLinearImpulseTo(Deref(pLeft),  gpLinearVelocity( magnitude, 0, 0));
-    gpApplyLinearImpulseTo(Deref(pRight), gpLinearVelocity(-magnitude, 0, 0));
+    gpScalar offset    = 90.0f;
+    gpScalar padding   = 75.0f;
+    ezStringBuilder name;
+    gpDisplacement center(250, 250, 0);
+    for (ezUInt32 x = 0; x < 5; ++x)
+    {
+        for (ezUInt32 y = 0; y < 5; ++y)
+        {
+            name.Format("particle %d, %d", x, y);
+            gpDisplacement d(padding * x + offset, padding * y + offset, 0);
+            auto velVec = gpValueOf(center - d);
+            if (!velVec.IsZero())
+                velVec.Normalize();
+            gpLinearVelocity v(velVec * magnitude);
+            auto p = Particle(world, name.GetData(), d, v);
+            gpShapePtrOf(Deref(p)) = pShape;
+        }
+    }
 }
 
 static void Cleanup()

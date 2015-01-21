@@ -83,7 +83,7 @@ namespace
                          gpPhysicalProperties& rhsProps,
                          const gpShape& rhs)
     {
-        GP_NotImplemented;
+        ezLog::Dev("Implement me!");
     }
 }
 

@@ -81,7 +81,7 @@ namespace
                          const gpTransform& rhsTransform,
                          const gpShape& rhs)
     {
-        GP_NotImplemented;
+        return false;
     }
 }
 

@@ -101,7 +101,7 @@ public:
     EZ_FORCE_INLINE friend ScalarType gpSquaredLengthOf(DerivedType& d) { return gpValueOf(d).GetLengthSquared(); }
     EZ_FORCE_INLINE friend ScalarType* gpDataOf(DerivedType& d) { return gpValueOf(d).GetData(); }
     EZ_FORCE_INLINE friend ScalarType gpLengthOfAndNormalize(DerivedType& d) { return gpValueOf(d).GetLengthAndNormalize(); }
-    EZ_FORCE_INLINE friend DerivedType gpNormalized(const DerivedType& d) { return gpValueOf(d).GetNormalized(); }
+    EZ_FORCE_INLINE friend DerivedType gpNormalized(const DerivedType& d) { return DerivedType(gpValueOf(d).GetNormalized()); }
     EZ_FORCE_INLINE friend void gpNormalize(DerivedType& d) { return gpValueOf(d).Normalize(); }
     EZ_FORCE_INLINE friend ezResult gpNormalizeIfNotZero(DerivedType& d,
                                                          const DerivedType& fallback,
