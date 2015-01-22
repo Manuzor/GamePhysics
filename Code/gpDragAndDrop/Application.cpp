@@ -10,24 +10,27 @@
 #include "gpCore/World/World.h"
 #include "gpCore/Shapes.h"
 
+#include "gpCore/Utilities/RandomNumbers.h"
+
 static gpWorld* g_pWorld = nullptr;
 static ezDynamicArray<gpEntity*> g_entities;
 
 static const gpScalar g_defaultDamping = 0.001f;
 
-static gpEntity* Sphere(gpWorld& world, const char* name, const gpDisplacement& position)
+static gpRandomNumberGenerator g_rand;
+
+static gpEntity* Sphere(const char* name, const gpDisplacement& position)
 {
     auto pParticle = gpNew<gpEntity>();
     g_entities.PushBack(pParticle);
 
     auto& p = Deref(pParticle);
-    auto result = gpAddTo(world, p);
-    EZ_VERIFY(result.Succeeded(), "Failed to add particle to world.");
 
     gpNameOf(p)          = name;
     gpPositionOf(p)      = position;
-    gpMassOf(p)          = gpMass(1);
+    gpMassOf(p)          = gpMass((gpScalar)g_rand.GenerateInteger(5, 100));
     gpLinearDampingOf(p) = g_defaultDamping;
+    gpShapePtrOf(p)      = gpNew<gpSphereShape>(gpValueOf(gpMassOf(p)) * 0.2f);
 
     return pParticle;
 }
@@ -46,8 +49,8 @@ static void Populate(gpWorld& world)
         {
             name.Format("particle %d, %d", x, y);
             gpDisplacement d(padding * x + offset, padding * y + offset, 0);
-            auto p = Sphere(world, name.GetData(), d);
-            gpShapePtrOf(Deref(p)) = pShape;
+            auto p = Sphere(name.GetData(), d);
+            gpAddTo(world, Deref(p));
         }
     }
 }
