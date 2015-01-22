@@ -2,7 +2,7 @@
 #include "gpCore/Algorithm/CollisionResponse.h"
 
 #include "gpCore/World/Entity.h"
-#include "gpCore/Shapes/Shape.h"
+#include "gpCore/Shapes.h"
 
 // Collision detection algorithms
 //////////////////////////////////////////////////////////////////////////

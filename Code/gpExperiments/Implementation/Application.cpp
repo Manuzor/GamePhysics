@@ -8,7 +8,7 @@
 #include "gpCore/Rendering/RenderExtractor.h"
 
 #include "gpCore/World/World.h"
-#include "gpCore/Shapes/Shape.h"
+#include "gpCore/Shapes.h"
 
 static gpWorld* g_pWorld = nullptr;
 
@@ -25,7 +25,7 @@ static void RotatingRigidBody(const char* name, gpWorld& world)
     gpVec3 halfExtends(50.0f, 50.0f, 0.0f);
     gpInverseInertiaOf(entity) = gpInverseInertia::SolidCuboid(gpMassOf(entity), 2.0f * halfExtends);
 
-    gpShapePtrOf(entity) = gpShape::Box(halfExtends);
+    gpShapePtrOf(entity) = gpNew<gpBoxShape>(halfExtends);
 
     EZ_VERIFY(gpAddTo(world, entity).Succeeded(), "Failed to add entity to world.");
 
@@ -54,8 +54,8 @@ static void Populate(gpWorld& world)
 
     //RotatingRigidBody("Player", world);
 
-    //auto pShape        = gpShape::Box(gpVec3(10, 10, 0));
-    auto pShape        = gpShape::Sphere(10);
+    //auto pShape        = gpNew<gpBoxShape>(gpVec3(10, 10, 0));
+    auto pShape        = gpNew<gpSphereShape>(10.0f);
     gpScalar magnitude = 30.0f;
     gpScalar offset    = 90.0f;
     gpScalar padding   = 75.0f;

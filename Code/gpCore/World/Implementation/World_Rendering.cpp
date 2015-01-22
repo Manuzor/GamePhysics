@@ -10,7 +10,7 @@
 #include "gpCore/World/Entity.h"
 #include "gpCore/World/ForceField.h"
 
-#include "gpCore/Shapes/Shape.h"
+#include "gpCore/Shapes.h"
 
 // Extract a particle
 static void Extract(gpRenderExtractor* pExtractor,

@@ -14,7 +14,7 @@ void gpGetStats(ezStringBuilder& out_Stats, const gpEntity& entity)
 
 ezDynamicArray<gpEntity*> g_entities;
 
-gpEntity* gpInternal::gpTypeAllocator<gpEntity>::New()
+gpEntity* gpTypeAllocator<gpEntity>::New()
 {
     auto pEntity = EZ_DEFAULT_NEW(gpEntity);
     g_entities.PushBack(pEntity);

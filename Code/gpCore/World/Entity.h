@@ -1,5 +1,5 @@
 #pragma once
-#include "gpCore/Shapes/Shape.h"
+#include "gpCore/Shapes.h"
 #include "gpCore/World/PhysicalProperties.h"
 
 class gpWorld;
@@ -43,7 +43,7 @@ public: // Accessors / Friends
     }
 
 public: // Construction
-    gpEntity() : m_pShape(gpShape::Point()) {}
+    gpEntity() : m_pShape(gpNew<gpPointShape>()) {}
 
     gpEntity(const gpEntity&)       = delete;
     gpEntity(gpEntity&&)            = delete;
@@ -84,18 +84,19 @@ struct gpEntityNameComparer
 
 // Allocation
 //////////////////////////////////////////////////////////////////////////
-namespace gpInternal
+
+/// \brief Template specialization for entities.
+/// \example local pForceField = gpNew<gpForceFieldEntity>();
+/// \note Delete & friends are not implemented on purpose.
+template<>
+struct GP_CoreAPI gpTypeAllocator<gpEntity>
 {
-    template<>
-    struct GP_CoreAPI gpTypeAllocator<gpEntity>
-    {
-        static gpEntity* New();
-    };
-}
+    static gpEntity* New();
+};
 
 // Utility functions
 //////////////////////////////////////////////////////////////////////////
-void gpGetStats(ezStringBuilder& out_Stats, const gpEntity& entity);
+GP_CoreAPI void gpGetStats(ezStringBuilder& out_Stats, const gpEntity& entity);
 
 EZ_FORCE_INLINE gpTransform& gpTransformOf(      gpEntity& entity)
 {

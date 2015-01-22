@@ -33,7 +33,7 @@ bool gpAffects(const gpForceFieldEntity& forceField, const gpEntity& entity)
 
 ezDynamicArray<gpForceFieldEntity*> g_forceFields;
 
-gpForceFieldEntity* gpInternal::gpTypeAllocator<gpForceFieldEntity>::New()
+gpForceFieldEntity* gpTypeAllocator<gpForceFieldEntity>::New()
 {
     auto pForceField = EZ_DEFAULT_NEW(gpForceFieldEntity);
     g_forceFields.PushBack(pForceField);

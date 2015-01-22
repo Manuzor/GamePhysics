@@ -12,7 +12,7 @@
 #include "gpCore/World/World.h"
 #include "gpCore/World/ForceField.h"
 #include "gpCore/Algorithm/CollisionDetection.h"
-#include "gpCore/Shapes/Shape.h"
+#include "gpCore/Shapes.h"
 #include "gpCore/Shapes/Rectangle.h"
 #include "gpCore/Task.h"
 #include "gpCore/Utilities/RandomNumbers.h"
@@ -113,16 +113,17 @@ static void CreateTarget(gpWorld* pWorld)
 
     if(pSphere == nullptr)
     {
-        static gpShape sphere(gpShapeType::Sphere);
-        pSphere = &sphere;
+        static gpSphereShape sphere;
+        gpAddReferenceTo(sphere);
+        pSphere = AddressOf(sphere);
     }
 
     g_pPlayerTarget = gpNew<gpEntity>();
     EZ_ASSERT(g_pPlayerTarget, "Failed to create player target (rigid body)");
 
     gpAddReferenceTo(playerTarget);
-    gpNameOf(playerTarget) = "Target";
-    gpShapePtrOf(playerTarget) = pSphere;
+    gpNameOf(playerTarget)          = "Target";
+    gpShapePtrOf(playerTarget)      = pSphere;
     gpGravityFactorOf(playerTarget) = 0.0f;
 
     ezLog::Success("Created target.");

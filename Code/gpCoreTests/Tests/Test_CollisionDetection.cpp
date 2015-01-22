@@ -1,7 +1,7 @@
 #include "gpCoreTests/PCH.h"
 #include <TestFramework/Framework/TestFramework.h>
 
-#include <gpCore/Shapes/Shape.h>
+#include <gpCore/Shapes.h>
 #include <gpCore/World/Entity.h>
 #include <gpCore/Algorithm/CollisionDetection.h>
 
@@ -31,7 +31,7 @@ EZ_CREATE_SIMPLE_TEST(Collision, Particle_Sphere)
     {
         auto& left  = Deref(gpNew<gpEntity>());
         auto& right = Deref(gpNew<gpEntity>());
-        gpShapePtrOf(right) = gpShape::Sphere(1.1f);
+        gpShapePtrOf(right) = gpNew<gpSphereShape>(1.1f);
 
         EZ_TEST_BOOL(gpAreColliding(left, right));
 
@@ -50,9 +50,9 @@ EZ_CREATE_SIMPLE_TEST(Collision, Sphere_Sphere)
     EZ_TEST_BLOCK(ezTestBlock::Enabled, "")
     {
         auto& left  = Deref(gpNew<gpEntity>());
-        gpShapePtrOf(left) = gpShape::Sphere(1);
+        gpShapePtrOf(left) = gpNew<gpSphereShape>(1.0f);
         auto& right = Deref(gpNew<gpEntity>());
-        gpShapePtrOf(right) = gpShape::Sphere(1);
+        gpShapePtrOf(right) = gpNew<gpSphereShape>(1.0f);
 
         EZ_TEST_BOOL(gpAreColliding(left, right));
 

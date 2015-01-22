@@ -1,24 +1,14 @@
 
-namespace gpInternal
-{
-    struct gpPolygonShapeLayout : public gpShape
-    {
-        gpShapeVertices vertices;
-
-        gpPolygonShapeLayout() : gpShape(gpShapeType::Polygon) {}
-    };
-}
-
-EZ_FORCE_INLINE gpShapeVertices& gpVerticesOf(gpShape& polygon)
+EZ_FORCE_INLINE gpPolygonShape::VertexContainer& gpVerticesOf(gpShape& polygon)
 {
     EZ_ASSERT(gpTypeOf(polygon) == gpShapeType::Polygon, "Invalid type.");
-    return reinterpret_cast<gpInternal::gpPolygonShapeLayout&>(polygon).vertices;
+    return reinterpret_cast<gpPolygonShape&>(polygon).m_vertices;
 }
 
-EZ_FORCE_INLINE const gpShapeVertices& gpVerticesOf(const gpShape& polygon)
+EZ_FORCE_INLINE const gpPolygonShape::VertexContainer& gpVerticesOf(const gpShape& polygon)
 {
     EZ_ASSERT(gpTypeOf(polygon) == gpShapeType::Polygon, "Invalid type.");
-    return reinterpret_cast<const gpInternal::gpPolygonShapeLayout&>(polygon).vertices;
+    return reinterpret_cast<const gpPolygonShape&>(polygon).m_vertices;
 }
 
 EZ_FORCE_INLINE void gpConvertToBox(gpShape& polygon, const gpVec3& halfExtends)

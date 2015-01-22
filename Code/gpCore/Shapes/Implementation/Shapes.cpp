@@ -1,35 +1,41 @@
 #include "gpCore/PCH.h"
-#include "gpCore/Shapes/Shape.h"
+#include "gpCore/Shapes.h"
 
 #include <Foundation/Communication/GlobalEvent.h>
 
 namespace
 {
-    ezDynamicArray<gpInternal::gpPolygonShapeLayout*> g_polygons;
-    ezDynamicArray<gpInternal::gpSphereShapeLayout*>  g_spheres;
+    gpPointShape g_point;
+    ezDynamicArray<gpPolygonShape*> g_polygons;
+    ezDynamicArray<gpSphereShape*>  g_spheres;
 }
 
-gpShape* gpShape::Sphere(gpScalar radius)
+gpPointShape* gpTypeAllocator<gpPointShape>::New() { return AddressOf(g_point); }
+
+gpSphereShape* gpTypeAllocator<gpSphereShape>::New(gpScalar radius)
 {
-    auto pShere = EZ_DEFAULT_NEW(gpInternal::gpSphereShapeLayout);
+    auto pShere = EZ_DEFAULT_NEW(gpSphereShape);
     gpRadiusOf(Deref(pShere)) = radius;
     g_spheres.PushBack(pShere);
     return pShere;
 }
 
-gpShape* gpShape::Box(const gpVec3& halfExtents)
+// [missing] polygon New() function
+
+gpBoxShape* gpTypeAllocator<gpBoxShape>::New(const gpVec3& halfExtents)
 {
-    auto pBox = EZ_DEFAULT_NEW(gpInternal::gpPolygonShapeLayout);
+    auto pBox = EZ_DEFAULT_NEW(gpBoxShape);
     gpConvertToBox(Deref(pBox), halfExtents);
     g_polygons.PushBack(pBox);
     return pBox;
 }
 
-gpShape* gpShape::Point()
+void gpReleaseReferenceTo(gpShape& shape)
 {
-    static gpShape point(gpShapeType::Point);
-    return AddressOf(point);
+    ezLog::Success("Releasing reference to shape type!");
+    shape.ReleaseRef();
 }
+
 
 EZ_ON_GLOBAL_EVENT(gpCore_GarbageCollectionEvent)
 {

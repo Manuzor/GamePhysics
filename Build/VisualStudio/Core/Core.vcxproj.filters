@@ -112,9 +112,6 @@
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Entity.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Shape.cpp">
-      <Filter>Shapes\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Implementation\Allocation.cpp">
       <Filter>Implementation</Filter>
     </ClCompile>
@@ -123,6 +120,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Algorithm\Implementation\CollisionResponse.cpp">
       <Filter>Algorithm\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\ShapeCreation.cpp">
+      <Filter>Shapes\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -189,9 +189,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h">
       <Filter>Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\RandomNumbers.h">
       <Filter>Utilities</Filter>
     </ClInclude>
@@ -213,9 +210,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\World\Entity.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Shape.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\Pair.h">
       <Filter>Utilities</Filter>
     </ClInclude>
@@ -228,6 +222,10 @@
     <ClInclude Include="..\..\..\Code\gpCore\Algorithm\CollisionResponse.h">
       <Filter>Algorithm</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Memory\Implementation\FixedStackAllocator.inl">
@@ -248,7 +246,7 @@
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Sphere.inl">
       <Filter>Shapes\Implementation</Filter>
     </None>
-    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Allocation.inl">
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Point.inl">
       <Filter>Shapes\Implementation</Filter>
     </None>
   </ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 #include "gpCore/World/Entity.h"
-#include "gpCore/Shapes/Shape.h"
+#include "gpCore/Shapes.h"
 
 class GP_CoreAPI gpForceFieldEntity : public gpEntity
 {
@@ -16,22 +16,21 @@ class GP_CoreAPI gpForceFieldEntity : public gpEntity
 public:
     gpForceFieldEntity()
     {
-        gpShapePtrOf(self) = gpShape::Sphere(1);
+        gpShapePtrOf(self) = gpNew<gpSphereShape>(1.0f);
     }
 };
 
 // Allocation
 //////////////////////////////////////////////////////////////////////////
-namespace gpInternal
-{
-    template<>
-    struct GP_CoreAPI gpTypeAllocator<gpForceFieldEntity>
-    {
-        static gpForceFieldEntity* New();
-    };
 
-    /// \note Delete & friends are not implemented on purpose.
-}
+/// \brief Template specialization for force fields.
+/// \example local pForceField = gpNew<gpForceFieldEntity>();
+/// \note Delete & friends are not implemented on purpose.
+template<>
+struct GP_CoreAPI gpTypeAllocator<gpForceFieldEntity>
+{
+    static gpForceFieldEntity* New();
+};
 
 // Functions
 //////////////////////////////////////////////////////////////////////////
