@@ -178,8 +178,25 @@ EZ_FORCE_INLINE const gpMass& gpMassOf(const gpEntity& entity)
     return gpMassOf(gpPhysicalPropertiesOf(entity));
 }
 
+EZ_FORCE_INLINE gpScalar& gpLinearDampingOf(gpEntity& entity)
+{
+    return gpLinearDampingOf(gpPhysicalPropertiesOf(entity));
+}
+EZ_FORCE_INLINE const gpScalar& gpLinearDampingOf(const gpEntity& entity)
+{
+    return gpLinearDampingOf(gpPhysicalPropertiesOf(entity));
+}
+
 // Algorithms
 //////////////////////////////////////////////////////////////////////////
+
+EZ_FORCE_INLINE gpLinearVelocity gpApplyLinearDampingTo(const gpLinearVelocity& velocity, gpScalar linearDamping)
+{
+    // Clamp the linear damping to the range [0;1], subtract 1 and use the absolute value to determine,
+    // how much velocity is preserved.
+    auto factor = ezMath::Abs(ezMath::Clamp(linearDamping, 0.0f, 1.0f) - 1.0f);
+    return velocity * factor;
+}
 
 EZ_FORCE_INLINE void gpApplyLinearImpulseTo(gpEntity& entity, const gpLinearVelocity& v)
 {
@@ -190,7 +207,7 @@ EZ_FORCE_INLINE void gpApplyLinearImpulseTo(gpEntity& entity,
                                             const gpLinearVelocity& v,
                                             const gpDisplacement& applicationPosition)
 {
-    gpLinearVelocityOf(entity) = gpLinearVelocityOf(entity) + v;
+    gpLinearVelocityOf(entity) += v;
 }
 
 EZ_FORCE_INLINE void gpApplyForceTo(gpEntity& entity, const gpForce& Force, gpTime dt)

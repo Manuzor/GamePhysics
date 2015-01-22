@@ -207,6 +207,8 @@ static void IntegrateEtities(ezArrayPtr<gpEntity*> entities,
             gpLinearVelocityOf(entity) += linAcceleration * dt;
         }
 
+        gpLinearVelocityOf(entity) = gpApplyLinearDampingTo(gpLinearVelocityOf(entity), gpLinearDampingOf(entity));
+
         // x += v * dt
         gpPositionOf(entity) += gpLinearVelocityOf(entity) * dt;
 

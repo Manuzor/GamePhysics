@@ -9,6 +9,7 @@ private: // Data
     gpInverseInertia  m_InverseInertia  = gpInverseInertia(gpZero);
     gpScalar          m_fGravityFactor  = 1.0f;
     gpMass            m_Mass            = gpMass(1.0f);
+    gpScalar          m_LinearDamping   = 0.0f;
 
 public: // Accessors / Friends
 
@@ -30,6 +31,9 @@ public: // Accessors / Friends
 
     EZ_FORCE_INLINE friend       gpMass& gpMassOf(      gpPhysicalProperties& props) { return props.m_Mass; }
     EZ_FORCE_INLINE friend const gpMass& gpMassOf(const gpPhysicalProperties& props) { return props.m_Mass; }
+
+    EZ_FORCE_INLINE friend       gpScalar& gpLinearDampingOf(      gpPhysicalProperties& props) { return props.m_LinearDamping; }
+    EZ_FORCE_INLINE friend const gpScalar& gpLinearDampingOf(const gpPhysicalProperties& props) { return props.m_LinearDamping; }
 };
 
 EZ_FORCE_INLINE       gpDisplacement& gpPositionOf(      gpPhysicalProperties& props) { return gpPositionOf(gpTransformOf(props)); }
