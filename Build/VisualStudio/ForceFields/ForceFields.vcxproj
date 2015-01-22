@@ -18,10 +18,24 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\gpForceFields\ForceFieldsApp.h" />
+    <ClInclude Include="..\..\..\Code\gpForceFields\PCH.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\gpForceFields\ForceFieldsApp.cpp" />
+    <ClCompile Include="..\..\..\Code\gpForceFields\Main.cpp" />
+    <ClCompile Include="..\..\..\Code\gpForceFields\PCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{486EC64D-A786-44F7-90B7-5A4440CDFC9A}</ProjectGuid>
+    <ProjectGuid>{D0CF6110-FF55-41CB-9250-19BE932C6BEE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>AndyParticles</RootNamespace>
+    <RootNamespace>ForceFields</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -96,8 +110,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>gpAndyParticles/PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\AndyParticles\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>gpForceFields/PCH.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\ForceFields\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,8 +124,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>gpAndyParticles/PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\AndyParticles\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>gpForceFields/PCH.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\ForceFields\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,8 +140,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>gpAndyParticles/PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\AndyParticles\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>gpForceFields/PCH.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\ForceFields\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,8 +158,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>gpAndyParticles/PCH.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\AndyParticles\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>gpForceFields/PCH.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(GP_CodeRootDir)\ForceFields\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,24 +168,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\Code\gpAndyParticles\ParticlesApp.h" />
-    <ClInclude Include="..\..\..\Code\gpAndyParticles\PCH.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\Code\gpAndyParticles\ParticlesApp.cpp" />
-    <ClCompile Include="..\..\..\Code\gpAndyParticles\Main.cpp" />
-    <ClCompile Include="..\..\..\Code\gpAndyParticles\PCH.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gpAndyParticles/PCH.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">gpAndyParticles/PCH.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gpAndyParticles/PCH.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gpAndyParticles/PCH.h</PrecompiledHeaderFile>
-    </ClCompile>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

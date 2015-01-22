@@ -5,10 +5,10 @@ class gpWorld;
 class gpRenderExtractor;
 class gpEntity;
 
-class gpAndyForceFieldsApp : public gpApplicationBase
+class gpForceFieldsApp : public gpApplicationBase
 {
 public:
-    gpAndyForceFieldsApp(const char* szTitle) : gpApplicationBase(szTitle), m_pWorld(nullptr), m_pPlayer(nullptr) {}
+    gpForceFieldsApp(const char* szTitle) : gpApplicationBase(szTitle), m_pWorld(nullptr), m_pPlayer(nullptr) {}
 
     virtual void AfterEngineInit() override;
     virtual void BeforeEngineShutdown() override;

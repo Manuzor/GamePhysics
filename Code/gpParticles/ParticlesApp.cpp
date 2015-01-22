@@ -1,15 +1,15 @@
-#include "gpAndyParticles/PCH.h"
+#include "gpParticles/PCH.h"
 
 #include <Core/Input/InputManager.h>
 #include <Foundation/Communication/Telemetry.h>
 #include <Foundation/Utilities/Stats.h>
 
-#include "gpAndyParticles/ParticlesApp.h"
+#include "gpParticles/ParticlesApp.h"
 #include "gpCore/Rendering/Rendering.h"
 #include "gpCore/Rendering/RenderExtractor.h"
 #include "gpCore/World/World.h"
 
-void gpAndyParticlesApp::AfterEngineInit()
+void gpParticlesApp::AfterEngineInit()
 {
     SetupFileSystem();
     SetupLogging();
@@ -57,7 +57,7 @@ void gpAndyParticlesApp::AfterEngineInit()
     }
 }
 
-void gpAndyParticlesApp::BeforeEngineShutdown()
+void gpParticlesApp::BeforeEngineShutdown()
 {
 
     EZ_DEFAULT_DELETE(m_pWorld);
@@ -70,7 +70,7 @@ void gpAndyParticlesApp::BeforeEngineShutdown()
     ezTelemetry::CloseConnection();
 }
 
-ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
+ezApplication::ApplicationExecution gpParticlesApp::Run()
 {
     m_pWindow->ProcessWindowMessages();
 
@@ -136,7 +136,7 @@ ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
     return Continue;
 }
 
-void gpAndyParticlesApp::PopulateWorld()
+void gpParticlesApp::PopulateWorld()
 {
     auto pParticle = gpNew<gpEntity>();
     EZ_ASSERT(pParticle, "Failed to create particle");
@@ -151,13 +151,13 @@ void gpAndyParticlesApp::PopulateWorld()
     DrawInfo.m_fScale = 8.0f;
 }
 
-void gpAndyParticlesApp::Update(ezTime dt)
+void gpParticlesApp::Update(ezTime dt)
 {
     static bool bAddedParticle = false;
 
     auto ResetSpawning = [&]{
         bAddedParticle = false;
-        gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyParticlesApp::ExtractVelocityData, this));
+        gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpParticlesApp::ExtractVelocityData, this));
     };
 
     if (ezInputManager::GetInputActionState("Game", "CancelSpawn") == ezKeyState::Pressed
@@ -187,7 +187,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
         ezInputManager::GetInputSlotState(ezInputSlot_MousePositionY, &fY);
         fY *= gpWindow::GetHeightCVar()->GetValue();
 
-        gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(&gpAndyParticlesApp::ExtractVelocityData, this));
+        gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(&gpParticlesApp::ExtractVelocityData, this));
 
         AddNewParticle(gpDisplacement(fX, fY, 0.0f));
         bAddedParticle = true;
@@ -224,7 +224,7 @@ void gpAndyParticlesApp::Update(ezTime dt)
     }
 }
 
-void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
+void gpParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 {
     auto pLine = pExtractor->AllocateRenderData<gpDrawData::Line>();
     pLine->m_Start = gpValueOf(gpPositionOf(Deref(m_pCurrentParticle)));
@@ -237,7 +237,7 @@ void gpAndyParticlesApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 
 }
 
-void gpAndyParticlesApp::AddNewParticle(const gpDisplacement& Position)
+void gpParticlesApp::AddNewParticle(const gpDisplacement& Position)
 {
     static ezUInt32 uiCount = 0;
     m_pCurrentParticle = gpNew<gpEntity>();

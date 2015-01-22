@@ -5,10 +5,10 @@ class gpWorld;
 class gpRenderExtractor;
 class gpEntity;
 
-class gpAndyParticlesApp : public gpApplicationBase
+class gpParticlesApp : public gpApplicationBase
 {
 public:
-    gpAndyParticlesApp(const char* szTitle) : gpApplicationBase(szTitle), m_pWorld(nullptr), m_pCurrentParticle(nullptr) {}
+    gpParticlesApp(const char* szTitle) : gpApplicationBase(szTitle), m_pWorld(nullptr), m_pCurrentParticle(nullptr) {}
 
     virtual void AfterEngineInit() override;
     virtual void BeforeEngineShutdown() override;

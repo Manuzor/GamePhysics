@@ -1,4 +1,4 @@
-#include "gpAndyForceFields/PCH.h"
+#include "gpForceFields/PCH.h"
 
 #include <Core/Input/InputManager.h>
 #include <Foundation/Communication/Telemetry.h>
@@ -6,7 +6,7 @@
 #include <Foundation/Threading/TaskSystem.h>
 #include <Foundation/Time/Stopwatch.h>
 
-#include "gpAndyForceFields/ForceFieldsApp.h"
+#include "gpForceFields/ForceFieldsApp.h"
 #include "gpCore/Rendering/Rendering.h"
 #include "gpCore/Rendering/RenderExtractor.h"
 #include "gpCore/World/World.h"
@@ -45,7 +45,7 @@ namespace
 
 static PlayerSpawnState PlayerState = PlayerSpawnState::NotInWorld;
 
-ezCVarFloat gpAndyForceFieldsApp::s_fPlayerMaxSpeed("Player/MaxSpeed", 150.0f, ezCVarFlags::Default, "The maximum speed the player may reach via user input.");
+ezCVarFloat gpForceFieldsApp::s_fPlayerMaxSpeed("Player/MaxSpeed", 150.0f, ezCVarFlags::Default, "The maximum speed the player may reach via user input.");
 
 static ezCVarInt g_iPlayerSpawnAreaWidth("Player/SpawnArea/Width", 150, ezCVarFlags::Default, "Width of the spawn area of the player.");
 static ezCVarInt g_iPlayerSpawnAreaHeight("Player/SpawnArea/Height", 150, ezCVarFlags::Default, "Width of the spawn area of the player.");
@@ -204,7 +204,7 @@ static gpDisplacement gpPositionOf(gpPositionOfOverloadHelper)
 
 static bool g_bSkipUpdate = false;
 
-void gpAndyForceFieldsApp::AfterEngineInit()
+void gpForceFieldsApp::AfterEngineInit()
 {
     SetupFileSystem();
     SetupLogging();
@@ -266,7 +266,7 @@ void gpAndyForceFieldsApp::AfterEngineInit()
     });
 }
 
-void gpAndyForceFieldsApp::BeforeEngineShutdown()
+void gpForceFieldsApp::BeforeEngineShutdown()
 {
     gpReleaseReferenceTo(playerTarget);
     gpReleaseReferenceTo(player);
@@ -280,7 +280,7 @@ void gpAndyForceFieldsApp::BeforeEngineShutdown()
     ezTelemetry::CloseConnection();
 }
 
-ezApplication::ApplicationExecution gpAndyForceFieldsApp::Run()
+ezApplication::ApplicationExecution gpForceFieldsApp::Run()
 {
     m_pWindow->ProcessWindowMessages();
 
@@ -329,7 +329,7 @@ ezApplication::ApplicationExecution gpAndyForceFieldsApp::Run()
     return Continue;
 }
 
-void gpAndyForceFieldsApp::CreateForceFields()
+void gpForceFieldsApp::CreateForceFields()
 {
     static ezUInt32 uiInstanceCount = 0;
 
@@ -363,7 +363,7 @@ void gpAndyForceFieldsApp::CreateForceFields()
     ezLog::Success("Created %u force fields", uiNumForceFields);
 }
 
-void gpAndyForceFieldsApp::CreatePlayer()
+void gpForceFieldsApp::CreatePlayer()
 {
     m_pPlayer = gpNew<gpEntity>();
     EZ_ASSERT(m_pPlayer, "Failed to create player (particle)");
@@ -375,7 +375,7 @@ void gpAndyForceFieldsApp::CreatePlayer()
     //gpSet(gpLinearVelocityOf(player), /* => */ 10, 10, 0);
 }
 
-bool gpAndyForceFieldsApp::CanSpawnPlayer()
+bool gpForceFieldsApp::CanSpawnPlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
@@ -388,7 +388,7 @@ bool gpAndyForceFieldsApp::CanSpawnPlayer()
     return gpContains(SpawnArea, gpPositionOf(MouseCursor));
 }
 
-void gpAndyForceFieldsApp::SpawnAndFreezePlayer()
+void gpForceFieldsApp::SpawnAndFreezePlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
@@ -408,7 +408,7 @@ void gpAndyForceFieldsApp::SpawnAndFreezePlayer()
     ezLog::Success("Player added to the world.");
 }
 
-void gpAndyForceFieldsApp::UnfreezePlayer()
+void gpForceFieldsApp::UnfreezePlayer()
 {
     EZ_ASSERT(m_pPlayer, "Not initialized.");
 
@@ -430,7 +430,7 @@ void gpAndyForceFieldsApp::UnfreezePlayer()
     ezLog::Success("Player is moving.");
 }
 
-void gpAndyForceFieldsApp::DespawnPlayer()
+void gpForceFieldsApp::DespawnPlayer()
 {
     EZ_ASSERT(m_pPlayer, "Player not created.");
 
@@ -442,7 +442,7 @@ void gpAndyForceFieldsApp::DespawnPlayer()
     ezLog::Info("Despawned player.");
 }
 
-void gpAndyForceFieldsApp::Update(ezTime dt)
+void gpForceFieldsApp::Update(ezTime dt)
 {
     // Control Pause/Resumed state
     //////////////////////////////////////////////////////////////////////////
@@ -554,7 +554,7 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
     gpStepSimulationOf(world, dt);
 }
 
-void gpAndyForceFieldsApp::ResetWorld()
+void gpForceFieldsApp::ResetWorld()
 {
     DespawnPlayer();
     DespawnTarget(m_pWorld);
@@ -567,7 +567,7 @@ void gpAndyForceFieldsApp::ResetWorld()
     EnableSpawnDataExtraction(true);
 }
 
-void gpAndyForceFieldsApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
+void gpForceFieldsApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
 {
     auto pVelVector = pExtractor->AllocateRenderData<gpDrawData::Arrow>();
     pVelVector->m_Start = gpValueOf(gpPositionOf(player));
@@ -579,18 +579,18 @@ void gpAndyForceFieldsApp::ExtractVelocityData(gpRenderExtractor* pExtractor)
     pVelVector->m_End.y *= gpWindow::GetHeightCVar()->GetValue();
 }
 
-void gpAndyForceFieldsApp::EnableVelocityDataExtraction(bool bEnabled)
+void gpForceFieldsApp::EnableVelocityDataExtraction(bool bEnabled)
 {
     static bool bIsExtracting = false;
 
     if (bEnabled && !bIsExtracting)
     {
-        gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
+        gpRenderExtractor::AddExtractionListener(gpRenderExtractionListener(&gpForceFieldsApp::ExtractVelocityData, this));
         bIsExtracting = true;
     }
     else if(!bEnabled && bIsExtracting)
     {
-        gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpAndyForceFieldsApp::ExtractVelocityData, this));
+        gpRenderExtractor::RemoveExtractionListener(gpRenderExtractionListener(&gpForceFieldsApp::ExtractVelocityData, this));
         bIsExtracting = false;
     }
 }
