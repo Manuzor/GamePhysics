@@ -250,6 +250,7 @@ void gpAndyForceFieldsApp::AfterEngineInit()
         ezLog::Info("Escape Key  -> Exit Game");
         ezLog::Info("Left Mouse  -> Spawn or Fire Player");
         ezLog::Info("Right Mouse -> Despawn Player");
+        ezLog::Info("Space Key   -> Reset World");
     }
 
     g_StopWatch.StopAndReset();
@@ -303,9 +304,8 @@ ezApplication::ApplicationExecution gpAndyForceFieldsApp::Run()
         else
         {
             Update(tUpdateInterval);
+            gpStepSimulationOf(world, tUpdateInterval);
         }
-
-        gpStepSimulationOf(world, tUpdateInterval);
 
         m_LastUpdate += tUpdateInterval;
     }
@@ -473,7 +473,7 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
 
             ezLog::Info("Failed to spawn player. Make sure to click in the spawn area.");
             g_StopWatch.Resume();
-            g_SpawnAreaColor.a *= 2;
+            g_SpawnAreaColor.a = ezMath::Clamp(g_SpawnAreaColor.a * 0.2f, 0.0f, 1.0f);
             break;
         case PlayerSpawnState::Spawning:
             PlayerState = PlayerSpawnState::Spawned;

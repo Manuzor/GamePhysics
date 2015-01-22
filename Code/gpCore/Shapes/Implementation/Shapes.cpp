@@ -32,7 +32,13 @@ gpSphereShape* gpTypeAllocator<gpSphereShape>::New(gpScalar radius)
     return pShere;
 }
 
-// [missing] polygon New() function
+gpPolygonShape* gpTypeAllocator<gpPolygonShape>::New(ezArrayPtr<gpVec3> vertices)
+{
+    auto pPolygon = EZ_DEFAULT_NEW(gpPolygonShape);
+    gpVerticesOf(Deref(pPolygon)) = vertices;
+    g_allShapes.PushBack(pPolygon);
+    return pPolygon;
+}
 
 gpBoxShape* gpTypeAllocator<gpBoxShape>::New(const gpVec3& halfExtents)
 {

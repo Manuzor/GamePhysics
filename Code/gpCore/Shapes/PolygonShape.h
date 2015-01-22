@@ -27,4 +27,14 @@ public: // Construction
     gpPolygonShape() : gpShape(gpShapeType::Polygon) {}
 };
 
+/// \brief Template specialization which takes care of creating polygon shapes.
+template<>
+struct GP_CoreAPI gpTypeAllocator<gpPolygonShape>
+{
+    /// \brief Create a new polygon shape from the given \a vertices.
+    /// \note You can convert an existing polygon to a box using gpConvertToBox.
+    ///       Or create a box directly using gpNew<gpBoxShape>(halfExtents).
+    static gpPolygonShape* New(ezArrayPtr<gpVec3> vertices);
+};
+
 #include <gpCore/Shapes/Implementation/Polygon.inl>
