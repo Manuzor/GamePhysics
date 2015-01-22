@@ -28,6 +28,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <PreprocessorDefinitions>_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
       <ImportLibrary>$(GP_OutputRootDir)\Lib\$(GP_UniqueOutputName)\$(TargetName).lib</ImportLibrary>

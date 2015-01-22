@@ -1,23 +1,24 @@
 #include "gpCore/PCH.h"
 
 #include <Foundation/Utilities/Stats.h>
+#include <Foundation/Communication/GlobalEvent.h>
+#include <Foundation/Algorithm/Sorting.h>
 
 #include "gpCore/Utilities/EzMathExtensions.h"
 
-#include "gpCore/Algorithm/Integrate.h"
-
 #include "gpCore/World/World.h"
-#include "gpCore/World/EntityBase.h"
-#include "gpCore/World/Particle.h"
+#include "gpCore/World/Entity.h"
 #include "gpCore/World/ForceField.h"
 #include "gpCore/Utilities/View.h"
 
+#include "gpCore/Algorithm/CollisionDetection.h"
+#include "gpCore/Algorithm/CollisionResponse.h"
+
 gpWorld::gpWorld(const char* szName) :
-    m_sName(szName),
-    m_pEntityDrawInfoDefault(&m_EntityDrawInfo_HardDefault)
+    m_sName(szName)
 {
-    m_CreatedEntities.Reserve(64);
     m_SimulatedEntities.Reserve(64);
+    m_CollidingBodies.Reserve(64);
 
     ezStringBuilder sbProfilingName;
     sbProfilingName.Format("%s/%s", m_sName.GetData(), "Simulation");
@@ -30,24 +31,14 @@ gpWorld::gpWorld(const char* szName) :
 
 gpWorld::~gpWorld()
 {
-    gpClear(Deref(this));
+    gpClear(self);
 
     ezProfilingSystem::DeleteId(m_ProfilingId_Extraction);
     ezProfilingSystem::DeleteId(m_ProfilingId_CreateEntity);
     ezProfilingSystem::DeleteId(m_ProfilingId_Simulation);
-
-    for (ezUInt32 i = 0; i < m_CreatedEntities.GetCount(); ++i)
-    {
-        auto pEntity = m_CreatedEntities[i];
-        if(pEntity)
-        {
-            EZ_ASSERT(!pEntity->IsReferenced(), "Someone did not release their reference!");
-            ezFoundation::GetDefaultAllocator()->Deallocate(pEntity);
-        }
-    }
 }
 
-ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity)
+ezResult gpAddTo(gpWorld& world, gpEntity& entity)
 {
     if(gpWorldPtrOf(entity) != nullptr)
     {
@@ -59,19 +50,7 @@ ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity)
     gpAddReferenceTo(entity);
     gpWorldPtrOf(entity) = &world;
 
-    switch(gpTypeOf(entity))
-    {
-    case gpEntityType::ForceField:
-    {
-        auto& forceField = static_cast<gpForceFieldEntity&>(entity);
-        world.m_ForceFields.PushBack(AddressOf(forceField));
-        break;
-    }
-    default:
-        world.m_SimulatedEntities.PushBack(AddressOf(entity));
-        break;
-    }
-
+    world.m_SimulatedEntities.PushBack(AddressOf(entity));
 
     // Update stats
     {
@@ -83,7 +62,7 @@ ezResult gpAddEntityTo(gpWorld& world, gpEntityBase& entity)
     return EZ_SUCCESS;
 }
 
-ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity)
+ezResult gpRemoveFrom(gpWorld& world, gpEntity& entity)
 {
     if (gpWorldPtrOf(entity) != &world)
     {
@@ -92,18 +71,7 @@ ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity)
         return EZ_FAILURE;
     }
 
-    switch(gpTypeOf(entity))
-    {
-    case gpEntityType::ForceField:
-    {
-        auto& forceField = static_cast<gpForceFieldEntity&>(entity);
-        world.m_ForceFields.RemoveSwap(AddressOf(forceField));
-        break;
-    }
-    default:
-        world.m_SimulatedEntities.RemoveSwap(AddressOf(entity));
-        break;
-    }
+    world.m_SimulatedEntities.RemoveSwap(AddressOf(entity));
 
     // Remove draw data if it exists
     {
@@ -125,11 +93,66 @@ ezResult gpRemoveEntityFrom(gpWorld& world, gpEntityBase& entity)
     return EZ_SUCCESS;
 }
 
+ezResult gpAddTo(gpWorld& world, gpForceFieldEntity& forceField)
+{
+    if(gpWorldPtrOf(forceField) != nullptr)
+    {
+        EZ_ASSERT(gpWorldPtrOf(forceField) == &world,
+                  "The entity you tried to add to this world already exists in another world.");
+        return EZ_FAILURE;
+    }
+
+    gpAddReferenceTo(forceField);
+    gpWorldPtrOf(forceField) = &world;
+
+    world.m_ForceFields.PushBack(AddressOf(forceField));
+
+    // Update stats
+    {
+        ezStringBuilder sbStatName;
+        sbStatName.Format("%s/%s", gpNameOf(world).GetData(), gpNameOf(forceField).GetData());
+        ezStats::SetStat(sbStatName, "");
+    }
+
+    return EZ_SUCCESS;
+}
+
+ezResult gpRemoveFrom(gpWorld& world, gpForceFieldEntity& forceField)
+{
+    if (gpWorldPtrOf(forceField) != &world)
+    {
+        EZ_ASSERT(gpWorldPtrOf(forceField) == nullptr,
+                  "The entity you tried to remove from this world exists in another world!");
+        return EZ_FAILURE;
+    }
+
+    world.m_ForceFields.RemoveSwap(AddressOf(forceField));
+
+    // Remove draw data if it exists
+    {
+        auto it = world.m_EntityDrawInfos.Find(AddressOf(forceField));
+        if(it.IsValid())
+            world.m_EntityDrawInfos.Erase(it);
+    }
+
+    // Remove stat
+    {
+        ezStringBuilder sbStatName;
+        sbStatName.Format("%s/%s", gpNameOf(world).GetData(), gpNameOf(forceField).GetData());
+        ezStats::RemoveStat(sbStatName);
+    }
+
+    gpWorldPtrOf(forceField) = nullptr;
+    gpReleaseReferenceTo(forceField);
+
+    return EZ_SUCCESS;
+}
+
 void gpClearSimulatedEntities(gpWorld& world)
 {
     while(!world.m_SimulatedEntities.IsEmpty())
     {
-        gpRemoveEntityFrom(world, Deref(world.m_SimulatedEntities.PeekBack()));
+        gpRemoveFrom(world, Deref(world.m_SimulatedEntities.PeekBack()));
     }
 }
 
@@ -137,38 +160,25 @@ void gpClearForceFields(gpWorld& world)
 {
     while(!world.m_ForceFields.IsEmpty())
     {
-        gpRemoveEntityFrom(world, Deref(world.m_ForceFields.PeekBack()));
+        gpRemoveFrom(world, Deref(world.m_ForceFields.PeekBack()));
     }
 }
 
-gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntityBase& entity)
+gpEntityDrawInfo& gpDrawInfoOf(gpWorld& world, gpEntity& entity)
 {
     return world.m_EntityDrawInfos[AddressOf(entity)];
 }
 
-void gpCollectGarbageOf(gpWorld& world)
-{
-    for (ezUInt32 i = 0; i < world.m_CreatedEntities.GetCount(); ++i)
-    {
-        auto& pEntity = world.m_CreatedEntities[i];
-        if (pEntity && !pEntity->IsReferenced())
-        {
-            EZ_DEFAULT_DELETE(pEntity);
-        }
-    }
-}
-
 static void AccumulateForces(gpLinearAcceleration& out_Force,
-                             const gpDisplacement& entityPos,
+                             const gpEntity& entity,
                              ezArrayPtr<const gpForceFieldEntity*> ForceFields)
 {
     for (ezUInt32 i = 0; i < ForceFields.GetCount(); ++i)
     {
         auto& forceField = Deref(ForceFields[i]);
-        auto bIsAffected = gpContains(forceField, entityPos);
-        if (!bIsAffected)
+        if (!gpAreColliding(forceField, entity))
             continue;
-        auto vDir = gpValueOf(gpPositionOf(forceField) - entityPos);
+        auto vDir = gpValueOf(gpPositionOf(forceField) - gpPositionOf(entity));
         if (vDir.NormalizeIfNotZero().Succeeded())
         {
             out_Force = out_Force + gpLinearAcceleration(vDir * gpForceFactorOf(forceField));
@@ -176,20 +186,20 @@ static void AccumulateForces(gpLinearAcceleration& out_Force,
     }
 }
 
-void gpStepSimulationOf(gpWorld& world, gpTime dt)
+static void IntegrateEtities(ezArrayPtr<gpEntity*> entities,
+                             ezArrayPtr<const gpForceFieldEntity*> forceFields,
+                             const gpLinearAcceleration& gravity,
+                             gpTime dt)
 {
-    EZ_PROFILE(world.m_ProfilingId_Simulation);
-
-    for(ezUInt32 i = 0; i < world.m_SimulatedEntities.GetCount(); ++i)
+    for (ezUInt32 i = 0; i < entities.GetCount(); ++i)
     {
-        auto& entity = Deref(world.m_SimulatedEntities[i]);
-        const gpMass& mass = gpMassOf(entity); /// \todo Use mass in calculations?
+        auto& entity = Deref(entities[i]);
 
         // Linear movement
         //////////////////////////////////////////////////////////////////////////
         gpLinearAcceleration linAcceleration(gpZero);
-        AccumulateForces(linAcceleration, gpPositionOf(entity), gpGetConstView(world.m_ForceFields));
-        linAcceleration = (linAcceleration + gpGravityOf(world)) * gpGravityFactorOf(entity);
+        AccumulateForces(linAcceleration, entity, forceFields);
+        linAcceleration = (linAcceleration + gravity) * gpGravityFactorOf(entity);
 
         if(!gpIsZero(linAcceleration))
         {
@@ -202,6 +212,12 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
 
         // Angular Movement
         //////////////////////////////////////////////////////////////////////////
+
+        if (gpTypeOf(gpShapeOf(entity)) == gpShapeType::Point)
+        {
+            // No need to simulate angular movement for particles.
+            continue;
+        }
 
         auto& A          = gpValueOf(gpRotationOf(entity));
         auto& invI       = gpInverseInertiaOf(entity);
@@ -225,16 +241,51 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
     }
 }
 
-void gpWorld::InsertCreatedEntity(gpEntityBase* pEntity)
+template<typename Container>
+static void DetectCollision(ezArrayPtr<gpEntity*> entities, Container& out_collidingEntities)
 {
-    for (ezUInt32 i = 0; i < m_CreatedEntities.GetCount(); ++i)
+    for (ezUInt32 i = 0; i < entities.GetCount(); ++i)
     {
-        if (m_CreatedEntities[i] == nullptr)
+        auto pLeft = entities[i];
+
+        for (ezUInt32 j = i + 1; j < entities.GetCount(); ++j)
         {
-            m_CreatedEntities.Insert(pEntity, i);
-            return;
+            auto pRight = entities[j];
+
+            if (gpAreColliding(Deref(pLeft), Deref(pRight)))
+            {
+                out_collidingEntities.PushBack({pLeft, pRight});
+            }
         }
     }
+}
 
-    m_CreatedEntities.PushBack(pEntity);
+template<typename ColliderPairContainer>
+static void ResolveCollisions(ColliderPairContainer& collidingBodies)
+{
+    // Resolve collisions between bodies in collidingBodies
+    for (ezUInt32 i = 0; i < collidingBodies.GetCount(); ++i)
+    {
+        auto& pair  = collidingBodies[i];
+        gpResolveCollision(Deref(gpFirstOf (pair)),
+                           Deref(gpSecondOf(pair)));
+    }
+}
+
+void gpStepSimulationOf(gpWorld& world, gpTime dt)
+{
+    EZ_PROFILE(world.m_ProfilingId_Simulation);
+
+    // If the number of the simulated entities changed, we have to sort the array.
+    if (world.m_SimulatedEntities.GetCount() != world.m_numEntitiesDuringLastSimulation)
+    {
+        ezSorting::QuickSort(world.m_SimulatedEntities, gpEntityNameComparer());
+        world.m_numEntitiesDuringLastSimulation = world.m_SimulatedEntities.GetCount();
+    }
+
+    IntegrateEtities(world.m_SimulatedEntities, gpGetConstView(world.m_ForceFields), gpGravityOf(world), dt);
+
+    DetectCollision(world.m_SimulatedEntities, world.m_CollidingBodies);
+    ResolveCollisions(world.m_CollidingBodies);
+    world.m_CollidingBodies.Clear();
 }

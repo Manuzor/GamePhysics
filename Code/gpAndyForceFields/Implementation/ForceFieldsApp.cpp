@@ -10,12 +10,11 @@
 #include "gpCore/Rendering/Rendering.h"
 #include "gpCore/Rendering/RenderExtractor.h"
 #include "gpCore/World/World.h"
-#include "gpCore/World/Particle.h"
 #include "gpCore/World/ForceField.h"
-#include "gpCore/Shapes/Circle.h"
+#include "gpCore/Algorithm/CollisionDetection.h"
+#include "gpCore/Shapes.h"
 #include "gpCore/Shapes/Rectangle.h"
 #include "gpCore/Task.h"
-#include "gpCore/World/RigidBody.h"
 #include "gpCore/Utilities/RandomNumbers.h"
 
 namespace
@@ -69,7 +68,7 @@ ezColor g_SpawnAreaColor(1.0f, 0.0f, 0.0f, 0.1f);
 
 ezStopwatch g_StopWatch;
 
-gpRigidBody* g_pPlayerTarget = nullptr;
+gpEntity* g_pPlayerTarget = nullptr;
 #define playerTarget Deref(g_pPlayerTarget)
 
 ezDynamicArray<gpForceFieldEntity*> g_ForceFields;
@@ -91,10 +90,10 @@ static void SpawnTarget(gpWorld* pWorld)
     // \todo Random position for target.
     gpSet(gpPositionOf(playerTarget), 450, 50, 0);
 
-    gpAddEntityTo(Deref(pWorld), playerTarget);
+    gpAddTo(Deref(pWorld), playerTarget);
     gpDrawInfoOf(Deref(pWorld), playerTarget).m_Color = ezColor::GetYellow();
 
-    gpRadiusOf(static_cast<gpCircleShape&>(gpShapeOf(playerTarget))) = g_fPlayerTargetRadius.GetValue();
+    gpRadiusOf(gpShapeOf(playerTarget)) = g_fPlayerTargetRadius.GetValue();
 
     ezLog::Success("Target spawned.");
 }
@@ -104,26 +103,27 @@ static void DespawnTarget(gpWorld* pWorld)
     if (gpWorldPtrOf(playerTarget) != pWorld)
         return;
 
-    gpRemoveEntityFrom(Deref(pWorld), playerTarget);
+    gpRemoveFrom(Deref(pWorld), playerTarget);
     ezLog::Info("Target despawned.");
 }
 
 static void CreateTarget(gpWorld* pWorld)
 {
-    static gpCircleShape* pCircle;
+    static gpShape* pSphere;
 
-    if(pCircle == nullptr)
+    if(pSphere == nullptr)
     {
-        static gpCircleShape Circle;
-        pCircle = &Circle;
+        static gpSphereShape sphere;
+        gpAddReferenceTo(sphere);
+        pSphere = AddressOf(sphere);
     }
 
-    g_pPlayerTarget = gpCreateEntity<gpRigidBody>(Deref(pWorld));
+    g_pPlayerTarget = gpNew<gpEntity>();
     EZ_ASSERT(g_pPlayerTarget, "Failed to create player target (rigid body)");
 
     gpAddReferenceTo(playerTarget);
-    gpNameOf(playerTarget) = "Target";
-    gpShapePtrOf(playerTarget) = pCircle;
+    gpNameOf(playerTarget)          = "Target";
+    gpShapePtrOf(playerTarget)      = pSphere;
     gpGravityFactorOf(playerTarget) = 0.0f;
 
     ezLog::Success("Created target.");
@@ -338,7 +338,7 @@ void gpAndyForceFieldsApp::CreateForceFields()
 
     for (ezUInt64 i = 0; i < uiNumForceFields; ++i)
     {
-        auto pForceField = gpCreateEntity<gpForceFieldEntity>(world);
+        auto pForceField = gpNew<gpForceFieldEntity>();
         EZ_ASSERT(pForceField, "Failed to create force field.");
 
         auto& forceField = Deref(pForceField);
@@ -355,7 +355,7 @@ void gpAndyForceFieldsApp::CreateForceFields()
 
         gpRandomize(g_Rand, gpValueOf(gpPositionOf(forceField)), MinPosition, MaxPosition);
 
-        gpAddEntityTo(world, forceField);
+        gpAddTo(world, forceField);
     }
 
     ezLog::Success("Created %u force fields", uiNumForceFields);
@@ -363,7 +363,7 @@ void gpAndyForceFieldsApp::CreateForceFields()
 
 void gpAndyForceFieldsApp::CreatePlayer()
 {
-    m_pPlayer = gpCreateEntity<gpParticleEntity>(world);
+    m_pPlayer = gpNew<gpEntity>();
     EZ_ASSERT(m_pPlayer, "Failed to create player (particle)");
 
     gpAddReferenceTo(player);
@@ -397,7 +397,7 @@ void gpAndyForceFieldsApp::SpawnAndFreezePlayer()
     gpLinearVelocityOf(player) = gpLinearVelocity(gpVec3::ZeroVector());
     gpGravityFactorOf(player) = 0.0f;
 
-    auto result = gpAddEntityTo(world, player);
+    auto result = gpAddTo(world, player);
     EZ_ASSERT(result.Succeeded(), "Failed to spawn player");
     auto& DrawInfo = gpDrawInfoOf(world, player);
     DrawInfo.m_Color = ezColor(1, 0, 0, 0.9f);
@@ -435,7 +435,7 @@ void gpAndyForceFieldsApp::DespawnPlayer()
     if(gpWorldPtrOf(player) == nullptr)
         return;
 
-    auto result = gpRemoveEntityFrom(Deref(m_pWorld), player);
+    auto result = gpRemoveFrom(Deref(m_pWorld), player);
     EZ_VERIFY(result.Succeeded(), "Failed to despawn player.");
     ezLog::Info("Despawned player.");
 }
@@ -492,8 +492,7 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
             ezLog::Info("Player left the world");
         }
 
-        if (gpContains(gpPhysicalPropertiesOf(playerTarget), static_cast<gpCircleShape&>(gpShapeOf(playerTarget)),
-                       gpPositionOf(player)))
+        if (gpAreColliding(playerTarget, player))
         {
             ezLog::Info("Player hit the target!");
             ResetWorld();
@@ -536,7 +535,6 @@ void gpAndyForceFieldsApp::ResetWorld()
     CreateForceFields();
     SpawnTarget(m_pWorld);
 
-    gpCollectGarbageOf(world);
     EnableSpawnDataExtraction(true);
 }
 

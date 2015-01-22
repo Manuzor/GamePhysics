@@ -35,7 +35,7 @@ static void DrawHelper(gpDrawData::Base* pDrawData)
     case gpDrawData::Type::Line:    gpDraw(*static_cast<gpDrawData::Line*   >(pDrawData)); return;
     case gpDrawData::Type::Arrow:   gpDraw(*static_cast<gpDrawData::Arrow*  >(pDrawData)); return;
     case gpDrawData::Type::Polygon: gpDraw(*static_cast<gpDrawData::Polygon*>(pDrawData)); return;
-    case gpDrawData::Type::Circle:  gpDraw(*static_cast<gpDrawData::Circle* >(pDrawData)); return;
+    case gpDrawData::Type::Sphere:  gpDraw(*static_cast<gpDrawData::Sphere* >(pDrawData)); return;
     case gpDrawData::Type::Box:     gpDraw(*static_cast<gpDrawData::Box*    >(pDrawData)); return;
     }
 }

@@ -19,9 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\gpCore\Algorithm\Implementation\CollisionDetection.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Algorithm\Implementation\CollisionResponse.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Input.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Application\Implementation\ApplicationBase_Rendering.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Implementation\Allocation.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Implementation\Window.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\PCH.cpp">
@@ -38,21 +41,21 @@
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\RenderExtractor.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\OpenGL\Implementation\OpenGL.cpp" />
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.cpp" />
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Shapes.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\FileSystem.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\RandomNumbers.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\TextFileLogWriter.cpp" />
-    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\EntityBase.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Entity.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\ForceField.cpp" />
-    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Particle.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\PhysicalProperties.cpp" />
-    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\RigidBody.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World_Rendering.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\Integrate.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\CollisionDetection.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\CollisionResponse.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\UnitConversion.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Allocation.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Application\ApplicationBase.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Common.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Config.h" />
@@ -68,39 +71,41 @@
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\Renderer.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\RenderExtractor.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\Rendering.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Circle.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Polygon.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\BoxShape.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\PointShape.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\PolygonShape.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\SphereShape.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Transform.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units\UnitBase.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Units\Units.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\EzMathExtensions.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\FileSystem.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\Pair.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\RandomNumbers.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\ScalarSyncer.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\SmartPtr.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\TextFileLogWriter.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\View.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\World\EntityBase.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\World\EntityType.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\Entity.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\ForceField.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\World\Particle.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\PhysicalProperties.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\World\RigidBody.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\World.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Memory\Implementation\FixedStackAllocator.inl" />
     <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_Async.inl" />
     <None Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer_NonAsync.inl" />
-    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl" />
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Point.inl" />
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.inl" />
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Rectangle.inl" />
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Sphere.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{64B962F4-03D4-491E-8FC7-C10C23595E83}</ProjectGuid>

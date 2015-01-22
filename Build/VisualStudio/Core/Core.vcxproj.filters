@@ -55,13 +55,13 @@
     <Filter Include="Units">
       <UniqueIdentifier>{06560e95-9e7c-405a-a8bf-c916780d294d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Algorithm\Implementation">
+      <UniqueIdentifier>{7c816363-7bc7-4ce6-a871-566b1ec482bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\gpCore\Memory\Implementation\Allocators.cpp">
       <Filter>Memory\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.cpp">
-      <Filter>Shapes\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Implementation\Window.cpp">
       <Filter>Implementation</Filter>
@@ -90,13 +90,7 @@
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\EntityBase.cpp">
-      <Filter>World\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\World_Rendering.cpp">
-      <Filter>World\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Particle.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\PCH.cpp" />
@@ -104,9 +98,6 @@
       <Filter>Utilities\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\ForceField.cpp">
-      <Filter>World\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\RigidBody.cpp">
       <Filter>World\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\RandomNumbers.cpp">
@@ -118,16 +109,25 @@
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\FileSystem.cpp">
       <Filter>Utilities\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.cpp">
+    <ClCompile Include="..\..\..\Code\gpCore\World\Implementation\Entity.cpp">
+      <Filter>World\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Implementation\Allocation.cpp">
+      <Filter>Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Algorithm\Implementation\CollisionDetection.cpp">
+      <Filter>Algorithm\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Algorithm\Implementation\CollisionResponse.cpp">
+      <Filter>Algorithm\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Shapes.cpp">
       <Filter>Shapes\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\gpCore\Memory\Allocators.h">
       <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Circle.h">
-      <Filter>Shapes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\OpenGL\OpenGL.h">
       <Filter>Rendering\OpenGL</Filter>
@@ -168,15 +168,6 @@
     <ClInclude Include="..\..\..\Code\gpCore\World\World.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\EntityBase.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\EntityType.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\Particle.h">
-      <Filter>World</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Common.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Config.h" />
@@ -198,26 +189,11 @@
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h">
       <Filter>Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\RigidBody.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeType.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\RandomNumbers.h">
       <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\FileSystem.h">
       <Filter>Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Shapes\Polygon.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\Integrate.h">
-      <Filter>Algorithm</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Units.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\ScalarSyncer.h">
@@ -227,17 +203,46 @@
     <ClInclude Include="..\..\..\Code\gpCore\Units\UnitBase.h">
       <Filter>Units</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\Units\Algorithms.h">
-      <Filter>Units</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Units\Units.h">
       <Filter>Units</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Allocation.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\Entity.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\Pair.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\CollisionDetection.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\UnitConversion.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Algorithm\CollisionResponse.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\BoxShape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\PolygonShape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\SphereShape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\PointShape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\SmartPtr.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Circle.inl">
-      <Filter>Shapes\Implementation</Filter>
-    </None>
     <None Include="..\..\..\Code\gpCore\Memory\Implementation\FixedStackAllocator.inl">
       <Filter>Memory\Implementation</Filter>
     </None>
@@ -248,6 +253,15 @@
       <Filter>Rendering\Implementation</Filter>
     </None>
     <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Rectangle.inl">
+      <Filter>Shapes\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Polygon.inl">
+      <Filter>Shapes\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Sphere.inl">
+      <Filter>Shapes\Implementation</Filter>
+    </None>
+    <None Include="..\..\..\Code\gpCore\Shapes\Implementation\Point.inl">
       <Filter>Shapes\Implementation</Filter>
     </None>
   </ItemGroup>

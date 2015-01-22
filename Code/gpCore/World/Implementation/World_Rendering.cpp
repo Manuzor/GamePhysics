@@ -7,17 +7,14 @@
 #include "gpCore/Utilities/EzMathExtensions.h"
 
 #include "gpCore/World/World.h"
-#include "gpCore/World/EntityBase.h"
-#include "gpCore/World/Particle.h"
+#include "gpCore/World/Entity.h"
 #include "gpCore/World/ForceField.h"
-#include "gpCore/World/RigidBody.h"
 
-#include "gpCore/Shapes/ShapeBase.h"
-#include "gpCore/Shapes/Circle.h"
-#include "gpCore/Shapes/Polygon.h"
+#include "gpCore/Shapes.h"
 
+// Extract a particle
 static void Extract(gpRenderExtractor* pExtractor,
-                    const gpParticleEntity& particle,
+                    const gpPhysicalProperties& props,
                     const gpEntityDrawInfo& drawInfo)
 {
     if (ezMath::IsZero(drawInfo.m_Color.a))
@@ -26,65 +23,48 @@ static void Extract(gpRenderExtractor* pExtractor,
     auto pData = pExtractor->AllocateRenderData<gpDrawData::Point>();
     pData->m_Color = drawInfo.m_Color;
 
-    pData->m_Position = gpValueOf(gpPositionOf(particle));
+    pData->m_Position = gpValueOf(gpPositionOf(props));
     pData->m_fPointSize = drawInfo.m_fScale;
 
     // If alpha > 0 and speed > 0
     if (!ezMath::IsZero(drawInfo.m_LinearVelocityColor.a)
-        && !gpValueOf(gpLinearVelocityOf(particle)).IsZero())
+        && !gpValueOf(gpLinearVelocityOf(props)).IsZero())
     {
         auto pVel = pExtractor->AllocateRenderData<gpDrawData::Arrow>();
-        pVel->m_Start = gpValueOf(gpPositionOf(particle));
-        pVel->m_End = pVel->m_Start + gpValueOf(gpLinearVelocityOf(particle));
+        pVel->m_Start = gpValueOf(gpPositionOf(props));
+        pVel->m_End = pVel->m_Start + gpValueOf(gpLinearVelocityOf(props));
         pVel->m_Color = drawInfo.m_LinearVelocityColor;
         pVel->m_WingAngle = drawInfo.m_LinearVelocityArrowWingAngle;
         pVel->m_fWingLength = drawInfo.m_fLinearVelocityArrowWingLength;
     }
 }
 
-static void Extract(gpRenderExtractor* pExtractor,
-                    const gpForceFieldEntity& forceField,
-                    const gpEntityDrawInfo& drawInfo)
-{
-    if (ezMath::IsZero(drawInfo.m_Color.a))
-        return;
-
-    auto pData = pExtractor->AllocateRenderData<gpDrawData::Circle>();
-    pData->m_OutlineColor.a = 0.0f; // no outline
-    pData->m_FillColor = drawInfo.m_Color;
-    pData->m_FillColor.a *= 0.1f;
-    pData->m_uiNumLineSegments = 20;
-
-    pData->m_Position = gpValueOf(gpPositionOf(forceField));
-    pData->m_fRadius = gpRadiusOf(forceField);
-}
-
+// Extract a shape
 static void Extract(gpRenderExtractor* pExtractor,
                     const gpPhysicalProperties& props,
-                    const gpShapeBase& shape,
+                    const gpShape& shape,
                     const gpEntityDrawInfo& drawInfo)
 {
     switch(gpTypeOf(shape))
     {
-    case gpShapeType::Circle:
+    case gpShapeType::Sphere:
     {
-        auto pCircle = pExtractor->AllocateRenderData<gpDrawData::Circle>();
-        pCircle->m_Position = gpValueOf(gpPositionOf(props));
-        pCircle->m_fRadius = gpRadiusOf(static_cast<const gpCircleShape&>(shape));
+        auto pSphere = pExtractor->AllocateRenderData<gpDrawData::Sphere>();
+        pSphere->m_Position = gpValueOf(gpPositionOf(props));
+        pSphere->m_fRadius = gpRadiusOf(shape);
 
-        pCircle->m_uiNumLineSegments = 20;
-        pCircle->m_OutlineColor = drawInfo.m_Color;
-        pCircle->m_FillColor = drawInfo.m_Color;
-        pCircle->m_FillColor.a *= 0.5f;
+        pSphere->m_uiNumSegments = 20;
+        pSphere->m_OutlineColor = drawInfo.m_Color;
+        pSphere->m_FillColor = drawInfo.m_Color;
+        pSphere->m_FillColor.a *= 0.5f;
     }
         break;
     case gpShapeType::Polygon:
     {
-        auto& polygon = static_cast<const gpPolygonShape&>(shape);
         auto pPolyData = pExtractor->AllocateRenderData<gpDrawData::Polygon>();
 
         pPolyData->m_Transform = gpTransformOf(props);
-        pPolyData->m_Vertices = gpVerticesOf(polygon);
+        pPolyData->m_Vertices = gpVerticesOf(shape);
         pPolyData->m_OutlineColor = drawInfo.m_Color;
         pPolyData->m_FillColor = drawInfo.m_Color;
         pPolyData->m_FillColor.a *= 0.5f;
@@ -97,11 +77,22 @@ static void Extract(gpRenderExtractor* pExtractor,
     }
 }
 
+// Extract a force field
 static void Extract(gpRenderExtractor* pExtractor,
-                    const gpRigidBody& rigidBody,
+                    const gpForceFieldEntity& forceField,
                     const gpEntityDrawInfo& drawInfo)
 {
-    Extract(pExtractor, gpPhysicalPropertiesOf(rigidBody), Deref(gpShapePtrOf(rigidBody)), drawInfo);
+    if (ezMath::IsZero(drawInfo.m_Color.a))
+        return;
+
+    auto pData = pExtractor->AllocateRenderData<gpDrawData::Sphere>();
+    pData->m_OutlineColor.a = 0.0f; // no outline
+    pData->m_FillColor = drawInfo.m_Color;
+    pData->m_FillColor.a *= 0.1f;
+    pData->m_uiNumSegments = 20;
+
+    pData->m_Position = gpValueOf(gpPositionOf(forceField));
+    pData->m_fRadius = gpRadiusOf(forceField);
 }
 
 void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor)
@@ -110,9 +101,25 @@ void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor)
 
     ezStringBuilder sbStatName;
 
-    for (ezUInt32 i = 0; i < world.m_CreatedEntities.GetCount(); ++i)
+    for (ezUInt32 i = 0; i < world.m_ForceFields.GetCount(); ++i)
     {
-        auto pEntity = world.m_CreatedEntities[i];
+        auto pForceField = world.m_ForceFields[i];
+        if (pForceField == nullptr)
+            continue;
+
+        auto& forceField = Deref(pForceField);
+        const auto* pDrawInfo = gpDefaultDrawInfoPtrOf(world);
+        auto findResult = world.m_EntityDrawInfos.Find(pForceField);
+        if (findResult.IsValid())
+            pDrawInfo = &findResult.Value();
+
+        EZ_ASSERT(pDrawInfo, "");
+        Extract(pExtractor, forceField, Deref(pDrawInfo));
+    }
+
+    for (ezUInt32 i = 0; i < world.m_SimulatedEntities.GetCount(); ++i)
+    {
+        auto pEntity = world.m_SimulatedEntities[i];
         if (pEntity == nullptr || gpWorldPtrOf(Deref(pEntity)) != AddressOf(world))
             continue;
 
@@ -122,39 +129,19 @@ void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor)
         if(FindResult.IsValid())
             pEntityDrawInfo = &FindResult.Value();
 
-        auto EntityType = gpTypeOf(entity);
-
-        sbStatName.Format("%s/%s", gpNameOf(world).GetData(), gpNameOf(entity).GetData());
-        ezStats::SetStat(sbStatName, EntityType.ToString(EntityType));
-
         EZ_ASSERT(pEntityDrawInfo, "");
 
-        switch(EntityType)
+        auto& shape = gpShapeOf(entity);
+
+        if (gpTypeOf(shape) == gpShapeType::Point)
         {
-        case gpEntityType::Particle:
-        {
-            const auto& particle = static_cast<const gpParticleEntity&>(entity);
-            Extract(pExtractor, particle, Deref(pEntityDrawInfo));
-            gpUpdateStats(sbStatName, particle);
-            break;
+            // This is a particle.
+            Extract(pExtractor, gpPhysicalPropertiesOf(entity), Deref(pEntityDrawInfo));
         }
-        case gpEntityType::ForceField:
+        else
         {
-            const auto& forceField = static_cast<const gpForceFieldEntity&>(entity);
-            Extract(pExtractor, forceField, Deref(pEntityDrawInfo));
-            gpUpdateStats(sbStatName, forceField);
-            break;
-        }
-        case gpEntityType::RigidBody:
-        {
-            const auto& rigidBody = static_cast<const gpRigidBody&>(entity);
-            Extract(pExtractor, rigidBody, Deref(pEntityDrawInfo));
-            gpUpdateStats(sbStatName, rigidBody);
-            break;
-        }
-        default:
-            GP_NotImplemented;
-            break;
+            // This is a rigid body.
+            Extract(pExtractor, gpPhysicalPropertiesOf(entity), shape, Deref(pEntityDrawInfo));
         }
     }
 }

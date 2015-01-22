@@ -53,8 +53,8 @@ public:
     EZ_FORCE_INLINE void operator /=(ScalarType factor)        { Self() = Self() / factor; }
 
 private:
-    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(Deref(this)); }
-    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(Deref(this)); }
+    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(self); }
+    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(self); }
 };
 
 #define GP_DefineScalarUnitConstructors(TheUnitName)                                  \
@@ -101,7 +101,7 @@ public:
     EZ_FORCE_INLINE friend ScalarType gpSquaredLengthOf(DerivedType& d) { return gpValueOf(d).GetLengthSquared(); }
     EZ_FORCE_INLINE friend ScalarType* gpDataOf(DerivedType& d) { return gpValueOf(d).GetData(); }
     EZ_FORCE_INLINE friend ScalarType gpLengthOfAndNormalize(DerivedType& d) { return gpValueOf(d).GetLengthAndNormalize(); }
-    EZ_FORCE_INLINE friend DerivedType gpNormalized(const DerivedType& d) { return gpValueOf(d).GetNormalized(); }
+    EZ_FORCE_INLINE friend DerivedType gpNormalized(const DerivedType& d) { return DerivedType(gpValueOf(d).GetNormalized()); }
     EZ_FORCE_INLINE friend void gpNormalize(DerivedType& d) { return gpValueOf(d).Normalize(); }
     EZ_FORCE_INLINE friend ezResult gpNormalizeIfNotZero(DerivedType& d,
                                                          const DerivedType& fallback,
@@ -135,8 +135,8 @@ public:
     EZ_FORCE_INLINE void operator /=(ScalarType factor)        { Self() = Self() / factor; }
 
 private:
-    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(Deref(this)); }
-    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(Deref(this)); }
+    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(self); }
+    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(self); }
 };
 
 #define GP_DefineVec3UnitConstructors(TheUnitName)                                                                                  \
@@ -228,8 +228,8 @@ public:
     EZ_FORCE_INLINE void operator -=(const DerivedType& other) { Self() = Self() - other; }
 
 private:
-    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(Deref(this)); }
-    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(Deref(this)); }
+    EZ_FORCE_INLINE       DerivedType& Self()       { return static_cast<      DerivedType&>(self); }
+    EZ_FORCE_INLINE const DerivedType& Self() const { return static_cast<const DerivedType&>(self); }
 };
 
 #define GP_DefineMat3UnitConstructors(TheUnitName)                                                                                  \

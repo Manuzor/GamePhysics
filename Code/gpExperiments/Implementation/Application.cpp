@@ -8,47 +8,78 @@
 #include "gpCore/Rendering/RenderExtractor.h"
 
 #include "gpCore/World/World.h"
-#include "gpCore/World/RigidBody.h"
-#include "gpCore/Shapes/Polygon.h"
+#include "gpCore/Shapes.h"
 
 static gpWorld* g_pWorld = nullptr;
 
-static gpRigidBody* g_pEntity = nullptr;
+static void RotatingRigidBody(const char* name, gpWorld& world)
+{
+    auto pEntity = gpNew<gpEntity>();
+    auto& entity = Deref(pEntity);
+    gpAddReferenceTo(entity);
+
+    gpNameOf(entity)     = name;
+    gpPositionOf(entity) = gpDisplacement(200, 300, 0);
+    gpMassOf(entity)     = gpMass(5.0f);
+
+    gpVec3 halfExtends(50.0f, 50.0f, 0.0f);
+    gpInverseInertiaOf(entity) = gpInverseInertia::SolidCuboid(gpMassOf(entity), 2.0f * halfExtends);
+
+    gpShapePtrOf(entity) = gpNew<gpBoxShape>(halfExtends);
+
+    EZ_VERIFY(gpAddTo(world, entity).Succeeded(), "Failed to add entity to world.");
+
+    gpApplyForceTo(entity, gpForce(20000, 0, 0), gpTime(1), gpDisplacement(0, 1, 0));
+}
+
+static gpEntity* Particle(gpWorld& world, const char* name, const gpDisplacement& position, const gpLinearVelocity& velocity)
+{
+    auto pParticle = gpNew<gpEntity>();
+    auto& p = Deref(pParticle);
+
+    gpNameOf(p)           = name;
+    gpPositionOf(p)       = position;
+    gpLinearVelocityOf(p) = velocity;
+    gpMassOf(p)           = gpMass(1);
+
+    auto result = gpAddTo(world, p);
+    EZ_VERIFY(result.Succeeded(), "Failed to add particle to world.");
+
+    return pParticle;
+}
 
 static void Populate(gpWorld& world)
 {
     gpGravityOf(world) = gpLinearAcceleration(gpVec3(0, 0.0f, 0));
 
-    g_pEntity = gpCreateEntity<gpRigidBody>(world);
-    EZ_ASSERT(g_pEntity, "Unable to create rigid body entity.");
+    //RotatingRigidBody("Player", world);
 
-    gpMass m(5.0f);
-
-    gpVec3 halfExtends(50.0f, 50.0f, 0.0f);
-    auto invI = gpInverseInertia::SolidCuboid(m, 2.0f * halfExtends);
-
-    gpAddReferenceTo(Deref(g_pEntity));
-    gpNameOf(Deref(g_pEntity)) = "Player";
-    gpMassOf(Deref(g_pEntity)) = m;
-    gpPositionOf(Deref(g_pEntity)) = gpDisplacement(200, 300, 0);
-    auto pShape = EZ_DEFAULT_NEW(gpPolygonShape);
-    gpConvertToBox(Deref(pShape), halfExtends);
-    gpShapePtrOf(Deref(g_pEntity)) = pShape;
-    gpInverseInertiaOf(Deref(g_pEntity)) = invI;
-
-    EZ_VERIFY(gpAddEntityTo(world, Deref(g_pEntity)).Succeeded(), "Failed to add entity to world.");
-
-    gpApplyForceTo(Deref(g_pEntity), gpForce(20000, 0, 0), gpTime(1), gpDisplacement(0, 1, 0));
+    //auto pShape        = gpNew<gpBoxShape>(gpVec3(10, 10, 0));
+    auto pShape        = gpNew<gpSphereShape>(10.0f);
+    gpScalar magnitude = 30.0f;
+    gpScalar offset    = 90.0f;
+    gpScalar padding   = 75.0f;
+    ezStringBuilder name;
+    gpDisplacement center(250, 250, 0);
+    for (ezUInt32 x = 0; x < 5; ++x)
+    {
+        for (ezUInt32 y = 0; y < 5; ++y)
+        {
+            name.Format("particle %d, %d", x, y);
+            gpDisplacement d(padding * x + offset, padding * y + offset, 0);
+            auto velVec = gpValueOf(center - d);
+            if (!velVec.IsZero())
+                velVec.Normalize();
+            gpLinearVelocity v(velVec * magnitude);
+            auto p = Particle(world, name.GetData(), d, v);
+            gpShapePtrOf(Deref(p)) = pShape;
+        }
+    }
 }
 
-static void Cleanup(gpWorld& world, gpRigidBody& entity)
+static void Cleanup()
 {
-    EZ_DEFAULT_DELETE(gpShapePtrOf(entity));
-    gpReleaseReferenceTo(entity);
-    EZ_VERIFY(gpRemoveEntityFrom(world, entity).Succeeded(), "Failed to remove entity from world.");
-
-    g_pEntity = nullptr;
-    EZ_DEFAULT_DELETE(g_pWorld);
+    gpDelete(g_pWorld);
 }
 
 static void OnRenderExtraction(gpRenderExtractor* pExtractor)
@@ -74,13 +105,13 @@ static void OnRenderExtraction(gpRenderExtractor* pExtractor)
     pPoint->m_Color.SetRGB(ezVec3(1.0f, 0.0f, 0.0f));
     pPoint->m_fPointSize = angle.GetRadian() * 2;
 
-    auto pCircle = pExtractor->AllocateRenderData<gpDrawData::Circle>();
-    pCircle->m_Position.Set(100, 300, 0);
-    pCircle->m_FillColor = ezColor(0.0f, 1.0f, 0.0f, 0.75f);
-    pCircle->m_OutlineColor = ezColor(0.0f, 0.0f, 0.0f, 1.0f);
-    pCircle->m_fOutlineWidth = angle.GetRadian() * 2;
-    pCircle->m_fRadius = 50.0f;
-    pCircle->m_uiNumLineSegments = 100;
+    auto pSphere = pExtractor->AllocateRenderData<gpDrawData::Sphere>();
+    pSphere->m_Position.Set(100, 300, 0);
+    pSphere->m_FillColor = ezColor(0.0f, 1.0f, 0.0f, 0.75f);
+    pSphere->m_OutlineColor = ezColor(0.0f, 0.0f, 0.0f, 1.0f);
+    pSphere->m_fOutlineWidth = angle.GetRadian() * 2;
+    pSphere->m_fRadius = 50.0f;
+    pSphere->m_uiNumSegments = 100;
 
     auto pPoly = pExtractor->AllocateRenderData<gpDrawData::Polygon>();
     pPoly->m_FillColor = ezColor(1.0f, 0.0f, 0.0f, 0.5f);
@@ -126,14 +157,13 @@ void gpExperimentsApp::AfterEngineInit()
         gpExtractRenderDataOf(Deref(g_pWorld), pExtractor);
     });
 
-    g_pWorld = EZ_DEFAULT_NEW(gpWorld)("World");
-    EZ_ASSERT(g_pWorld, "Unable to create world.");
+    g_pWorld = gpNew<gpWorld>("World");
     Populate(Deref(g_pWorld));
 }
 
 void gpExperimentsApp::BeforeEngineShutdown()
 {
-    ::Cleanup(Deref(g_pWorld), Deref(g_pEntity));
+    ::Cleanup();
 
     ezStartup::ShutdownEngine();
     Cleanup();

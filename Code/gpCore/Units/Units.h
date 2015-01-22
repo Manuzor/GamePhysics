@@ -2,7 +2,6 @@
 
 // Scalar units
 //////////////////////////////////////////////////////////////////////////
-#include "gpCore/Utilities/ScalarSyncer.h"
 
 class gpMass : public gpScalarUnitBase<gpMass>
 {
@@ -10,7 +9,6 @@ public:
     using BaseType = gpScalarUnitBase<gpMass>;
     GP_DefineScalarUnitConstructors(gpMass);
 };
-using gpMassSyncer = gpScalarSyncerTemplate<gpMass>;
 
 class gpTime : public gpScalarUnitBase<gpTime, double>
 {
@@ -30,9 +28,9 @@ public:
     GP_DefineMat3UnitConstructors(gpOrientation);
     gpOrientation(const gpVec3& v) : BaseType(gpZero)
     {
-        gpValueOf(Deref(this)).Element(0, 0) = v.x;
-        gpValueOf(Deref(this)).Element(1, 1) = v.y;
-        gpValueOf(Deref(this)).Element(2, 2) = v.z;
+        gpValueOf(self).Element(0, 0) = v.x;
+        gpValueOf(self).Element(1, 1) = v.y;
+        gpValueOf(self).Element(2, 2) = v.z;
     }
 };
 
@@ -137,3 +135,8 @@ public:
     using BaseType = gpVec3UnitBase<gpForce>;
     GP_DefineVec3UnitConstructors(gpForce);
 };
+
+// Some goodies
+//////////////////////////////////////////////////////////////////////////
+#include "gpCore/Utilities/ScalarSyncer.h"
+using gpMassSyncer = gpScalarSyncerTemplate<gpMass>;
