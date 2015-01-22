@@ -265,8 +265,8 @@ static void DetectCollision(ezArrayPtr<gpEntity*> entities, Container& out_colli
 template<typename ColliderPairContainer, typename EventType>
 static void ResolveCollisions(ColliderPairContainer& collidingBodies, EventType& evt)
 {
-    gpCollisionEventArgs detected(gpCollisionEventArgs::Detected, nullptr, nullptr);
-    gpCollisionEventArgs resolved(gpCollisionEventArgs::Resolved, nullptr, nullptr);
+    gpCollisionEventData detected(gpCollisionEventData::Detected, nullptr, nullptr);
+    gpCollisionEventData resolved(gpCollisionEventData::Resolved, nullptr, nullptr);
 
     // Resolve collisions between bodies in collidingBodies
     for (ezUInt32 i = 0; i < collidingBodies.GetCount(); ++i)

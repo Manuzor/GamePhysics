@@ -241,7 +241,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\SmartPtr.h">
       <Filter>Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\gpCore\World\CollisionEvent.h">
+    <ClInclude Include="..\..\..\Code\gpCore\World\CollisionEventData.h">
       <Filter>World</Filter>
     </ClInclude>
   </ItemGroup>

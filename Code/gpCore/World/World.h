@@ -1,6 +1,6 @@
 #pragma once
 #include "gpCore/World/Entity.h"
-#include "gpCore/World/CollisionEvent.h"
+#include "gpCore/World/CollisionEventData.h"
 #include "gpCore/Utilities/Pair.h"
 
 class gpRenderExtractor;
@@ -9,7 +9,7 @@ class gpForceFieldEntity;
 class GP_CoreAPI gpWorld
 {
 public: // Data structures
-    using CollisionEvent = ezEvent<const gpCollisionEventArgs&>;
+    using CollisionEvent = ezEvent<const gpCollisionEventData&>;
 
 public: // Construction
     gpWorld(const char* szName);

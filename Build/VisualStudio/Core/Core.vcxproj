@@ -93,7 +93,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\TextFileLogWriter.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\View.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Window.h" />
-    <ClInclude Include="..\..\..\Code\gpCore\World\CollisionEvent.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\World\CollisionEventData.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\Entity.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\ForceField.h" />
     <ClInclude Include="..\..\..\Code\gpCore\World\PhysicalProperties.h" />
