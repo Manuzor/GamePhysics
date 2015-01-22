@@ -1,0 +1,8 @@
+# Normalize everything git thinks is a source file.
+* text=auto
+
+# Visual Studio related files.
+*.vc*    text=crlf
+*.sln    text=crlf
+*.props  text=crlf
+*.natvis text=crlf
