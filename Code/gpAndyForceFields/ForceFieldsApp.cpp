@@ -228,7 +228,9 @@ void gpAndyForceFieldsApp::AfterEngineInit()
         SetupInput();
         RegisterInputAction("Game", "Spawn", ezInputSlot_MouseButton0);
         RegisterInputAction("Game", "CancelSpawn", ezInputSlot_MouseButton1);
-        RegisterInputAction("Game", "Reset", ezInputSlot_KeySpace);
+        RegisterInputAction("Game", "Reset", ezInputSlot_KeyBackspace);
+        RegisterInputAction("Game", "Pause", ezInputSlot_KeySpace);
+        RegisterInputAction("Game", "Step", ezInputSlot_KeyReturn);
         // Poll once to finish input initialization
         ezInputManager::PollHardware();
         SetupRendering();
@@ -305,7 +307,6 @@ ezApplication::ApplicationExecution gpAndyForceFieldsApp::Run()
         else
         {
             Update(tUpdateInterval);
-            gpStepSimulationOf(world, tUpdateInterval);
         }
 
         m_LastUpdate += tUpdateInterval;
@@ -443,6 +444,31 @@ void gpAndyForceFieldsApp::DespawnPlayer()
 
 void gpAndyForceFieldsApp::Update(ezTime dt)
 {
+    // Control Pause/Resumed state
+    //////////////////////////////////////////////////////////////////////////
+
+    static bool s_simulationPaused = false;
+
+    if(ezInputManager::GetInputActionState("Game", "Pause") == ezKeyState::Pressed)
+    {
+        s_simulationPaused = !s_simulationPaused;
+        if (s_simulationPaused)
+        {
+            ezLog::Info("Pausing simulation.");
+        }
+        else
+        {
+            ezLog::Info("Resuming simulation.");
+        }
+    }
+
+    bool forceStep = ezInputManager::GetInputActionState("Game", "Step") == ezKeyState::Pressed;
+
+    if (s_simulationPaused && !forceStep)
+        return;
+
+    //////////////////////////////////////////////////////////////////////////
+
     if(g_StopWatch.GetRunningTotal() > ezTime::Milliseconds(500))
     {
         g_StopWatch.StopAndReset();
@@ -524,6 +550,8 @@ void gpAndyForceFieldsApp::Update(ezTime dt)
         EZ_REPORT_FAILURE("Should never reach this code.");
         break;
     }
+
+    gpStepSimulationOf(world, dt);
 }
 
 void gpAndyForceFieldsApp::ResetWorld()
