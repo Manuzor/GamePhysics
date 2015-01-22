@@ -174,8 +174,8 @@ static void Update(gpTime dt)
 
     if (ezInputManager::GetInputActionState("Game", "ApplyLinearImpulse") == ezKeyState::Pressed)
     {
-        auto f = gpForce(1000.0f, 0, 0);
-        auto p = gpDisplacement(0, 100, 0);
+        auto f = gpForce(5000.0f, 0, 0);
+        auto p = gpDisplacement(0, 50, 0);
         ezLog::Info("Applying force of { %f, %f, %f } over %f seconds at local { %f, %f, %f }.",
                     gpX(f), gpY(f), gpZ(f),
                     dt,
