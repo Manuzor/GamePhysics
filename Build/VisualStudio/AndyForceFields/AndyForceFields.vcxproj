@@ -23,7 +23,7 @@
     <ClInclude Include="..\..\..\Code\gpAndyForceFields\PCH.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\gpAndyForceFields\Implementation\ForceFieldsApp.cpp" />
+    <ClCompile Include="..\..\..\Code\gpAndyForceFields\ForceFieldsApp.cpp" />
     <ClCompile Include="..\..\..\Code\gpAndyForceFields\Main.cpp" />
     <ClCompile Include="..\..\..\Code\gpAndyForceFields\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

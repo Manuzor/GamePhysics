@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\gpRotationSample\Application.cpp" />
     <ClCompile Include="..\..\..\Code\gpRotationSample\Main.cpp" />
     <ClCompile Include="..\..\..\Code\gpRotationSample\PCH.cpp" />
+    <ClCompile Include="..\..\..\Code\gpRotationSample\RotationApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\gpRotationSample\Application.h" />
     <ClInclude Include="..\..\..\Code\gpRotationSample\PCH.h" />
+    <ClInclude Include="..\..\..\Code\gpRotationSample\RotationApp.h" />
   </ItemGroup>
 </Project>

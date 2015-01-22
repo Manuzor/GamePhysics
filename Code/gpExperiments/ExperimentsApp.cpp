@@ -2,7 +2,7 @@
 
 #include <Core/Input/InputManager.h>
 
-#include "gpExperiments/Application.h"
+#include "gpExperiments/ExperimentsApp.h"
 
 #include "gpCore/Rendering/Rendering.h"
 #include "gpCore/Rendering/RenderExtractor.h"

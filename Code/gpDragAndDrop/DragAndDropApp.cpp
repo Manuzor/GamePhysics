@@ -2,7 +2,7 @@
 
 #include <Core/Input/InputManager.h>
 
-#include "gpDragAndDrop/Application.h"
+#include "gpDragAndDrop/DragAndDropApp.h"
 
 #include "gpCore/Rendering/Rendering.h"
 #include "gpCore/Rendering/RenderExtractor.h"

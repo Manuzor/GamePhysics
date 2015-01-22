@@ -2,6 +2,6 @@
 #include <Core/Application/Application.h>
 #include "gpCore/Application/ApplicationBase.h"
 
-#include "gpAndyParticles/Application.h"
+#include "gpAndyParticles/ParticlesApp.h"
 
 EZ_CONSOLEAPP_ENTRY_POINT(gpAndyParticlesApp, "Game Physics -- Particles Sample");

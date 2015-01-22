@@ -19,15 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\gpRotationSample\Application.cpp" />
+    <ClCompile Include="..\..\..\Code\gpRotationSample\RotationApp.cpp" />
     <ClCompile Include="..\..\..\Code\gpRotationSample\Main.cpp" />
     <ClCompile Include="..\..\..\Code\gpRotationSample\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\gpRotationSample\Application.h" />
+    <ClInclude Include="..\..\..\Code\gpRotationSample\RotationApp.h" />
     <ClInclude Include="..\..\..\Code\gpRotationSample\PCH.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -136,7 +138,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>gpExperiments/PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>gpRotationSample/PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,7 +155,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>gpExperiments/PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>gpRotationSample/PCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

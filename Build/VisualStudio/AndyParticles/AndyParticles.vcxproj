@@ -155,11 +155,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\gpAndyParticles\Application.h" />
+    <ClInclude Include="..\..\..\Code\gpAndyParticles\ParticlesApp.h" />
     <ClInclude Include="..\..\..\Code\gpAndyParticles\PCH.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\gpAndyParticles\Implementation\Application.cpp" />
+    <ClCompile Include="..\..\..\Code\gpAndyParticles\ParticlesApp.cpp" />
     <ClCompile Include="..\..\..\Code\gpAndyParticles\Main.cpp" />
     <ClCompile Include="..\..\..\Code\gpAndyParticles\PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

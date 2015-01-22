@@ -4,7 +4,7 @@
 #include <Foundation/Communication/Telemetry.h>
 #include <Foundation/Utilities/Stats.h>
 
-#include "gpAndyParticles/Application.h"
+#include "gpAndyParticles/ParticlesApp.h"
 #include "gpCore/Rendering/Rendering.h"
 #include "gpCore/Rendering/RenderExtractor.h"
 #include "gpCore/World/World.h"

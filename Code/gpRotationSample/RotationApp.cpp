@@ -2,7 +2,7 @@
 
 #include <Core/Input/InputManager.h>
 
-#include "gpRotationSample/Application.h"
+#include "gpRotationSample/RotationApp.h"
 
 #include "gpCore/Rendering/Rendering.h"
 #include "gpCore/Rendering/RenderExtractor.h"
@@ -152,10 +152,30 @@ static void Cleanup()
 
 static void Update(gpTime dt)
 {
+    static bool s_simulationPaused = false;
+
+    if(ezInputManager::GetInputActionState("Game", "Pause") == ezKeyState::Pressed)
+    {
+        s_simulationPaused = !s_simulationPaused;
+        if (s_simulationPaused)
+        {
+            ezLog::Info("Pausing simulation.");
+        }
+        else
+        {
+            ezLog::Info("Resuming simulation.");
+        }
+    }
+
+    bool forceStep = ezInputManager::GetInputActionState("Game", "Step") == ezKeyState::Pressed;
+
+    if (s_simulationPaused && !forceStep)
+        return;
+
     if (ezInputManager::GetInputActionState("Game", "ApplyLinearImpulse") == ezKeyState::Pressed)
     {
-        auto f = gpForce(100000.0f, 0, 0);
-        auto p = gpDisplacement(0, 1, 0);
+        auto f = gpForce(1000.0f, 0, 0);
+        auto p = gpDisplacement(0, 100, 0);
         ezLog::Info("Applying force of { %f, %f, %f } over %f seconds at local { %f, %f, %f }.",
                     gpX(f), gpY(f), gpZ(f),
                     dt,
@@ -167,7 +187,7 @@ static void Update(gpTime dt)
         }
     }
 
-    if (ezInputManager::GetInputActionState("Game", "ResetEntities") == ezKeyState::Pressed)
+    if (ezInputManager::GetInputActionState("Game", "Reset") == ezKeyState::Pressed)
     {
         ezLog::Info("Resetting entities.");
         for (ezUInt32 i = 0; i < g_entities.GetCount(); ++i)
@@ -177,6 +197,8 @@ static void Update(gpTime dt)
             gpRotationOf(entity) = gpOrientation(gpIdentity);
         }
     }
+
+    gpStepSimulationOf(Deref(g_pWorld), dt);
 }
 
 void gpRotationSampleApp::AfterEngineInit()
@@ -201,9 +223,10 @@ void gpRotationSampleApp::AfterEngineInit()
         ezClock::Get()->SetTimeStepSmoothing(AddressOf(m_TimeStepSmoother));
         m_LastUpdate = ezTime::Now();
         SetupInput();
-        RegisterInputAction("Game", "ApplyLinearImpulse", ezInputSlot_MouseButton0);
-        RegisterInputAction("Game", "ResetEntities", ezInputSlot_MouseButton1);
+        RegisterInputAction("Game", "ApplyLinearImpulse", ezInputSlot_Key1);
+        RegisterInputAction("Game", "Reset", ezInputSlot_KeyBackspace);
         RegisterInputAction("Game", "Pause", ezInputSlot_KeySpace);
+        RegisterInputAction("Game", "Step", ezInputSlot_KeyReturn);
         // Poll once to finish input initialization;
         ezInputManager::PollHardware();
         SetupRendering();
@@ -247,23 +270,7 @@ ezApplication::ApplicationExecution gpRotationSampleApp::Run()
         bInputUpdated = true;
 
         UpdateInput(tUpdateInterval);
-        auto state = ezInputManager::GetInputActionState("Game", "Pause");
-        switch(state)
-        {
-        case ezKeyState::Released:
-            ezLog::Info("Resuming simulation");
-        case ezKeyState::Up:
-            Update(tUpdateInterval);
-            gpStepSimulationOf(Deref(g_pWorld), tUpdateInterval);
-            break;
-        case ezKeyState::Pressed:
-            ezLog::Info("Pausing simulation");
-            break;
-        case ezKeyState::Down: break;
-        default:
-            EZ_REPORT_FAILURE("Invalid state.");
-            break;
-        }
+        Update(tUpdateInterval);
 
         m_LastUpdate += tUpdateInterval;
     }
