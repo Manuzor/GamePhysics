@@ -61,4 +61,23 @@ public: // Construction
 template<>
 struct gpTypeAllocator<gpShape> {};
 
-GP_CoreAPI void gpReleaseReferenceTo(gpShape& shape);
+struct gpRefCountReleaseResult
+{
+    enum Outcome
+    {
+        Nothing,
+        Deleted
+    };
+
+    Outcome value;
+
+    gpRefCountReleaseResult(Outcome value) : value(value) {}
+
+    bool WasDeleted() { return value == Deleted; }
+};
+
+/// \brief Not implemented on purpose. Use the other function.
+void gpHandleUnreferencedObject(gpShape& shape);
+
+/// \brief Deleted the shape and sets \a pShape to nullptr.
+GP_CoreAPI void gpHandleUnreferencedObject(gpShape*& pShape);

@@ -131,9 +131,9 @@ void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor)
 
         EZ_ASSERT(pEntityDrawInfo, "");
 
-        auto pShape = gpShapePtrOf(entity);
+        auto& shape = gpShapeOf(entity);
 
-        if (gpTypeOf(Deref(pShape)) == gpShapeType::Point)
+        if (gpTypeOf(shape) == gpShapeType::Point)
         {
             // This is a particle.
             Extract(pExtractor, gpPhysicalPropertiesOf(entity), Deref(pEntityDrawInfo));
@@ -141,7 +141,7 @@ void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor)
         else
         {
             // This is a rigid body.
-            Extract(pExtractor, gpPhysicalPropertiesOf(entity), Deref(pShape), Deref(pEntityDrawInfo));
+            Extract(pExtractor, gpPhysicalPropertiesOf(entity), shape, Deref(pEntityDrawInfo));
         }
     }
 }

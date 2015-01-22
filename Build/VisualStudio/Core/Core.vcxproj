@@ -41,7 +41,7 @@
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\Renderer.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\Implementation\RenderExtractor.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Rendering\OpenGL\Implementation\OpenGL.cpp" />
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\ShapeCreation.cpp" />
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Shapes.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\FileSystem.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\RandomNumbers.cpp" />
     <ClCompile Include="..\..\..\Code\gpCore\Utilities\Implementation\TextFileLogWriter.cpp" />
@@ -72,8 +72,12 @@
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\RenderExtractor.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Rendering\Rendering.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\BoxShape.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\PointShape.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\PolygonShape.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\Rectangle.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Shapes\ShapeBase.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\SphereShape.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Task.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Transform.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Types.h" />
@@ -85,6 +89,7 @@
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\Pair.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\RandomNumbers.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\ScalarSyncer.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\SmartPtr.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\TextFileLogWriter.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Utilities\View.h" />
     <ClInclude Include="..\..\..\Code\gpCore\Window.h" />

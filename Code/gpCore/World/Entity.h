@@ -2,6 +2,8 @@
 #include "gpCore/Shapes.h"
 #include "gpCore/World/PhysicalProperties.h"
 
+#include <gpCore/Utilities/SmartPtr.h>
+
 class gpWorld;
 
 /// \note By default, every entity is a particle, i.e. has a gpShape of gpShapeType::Point.
@@ -10,7 +12,7 @@ class GP_CoreAPI gpEntity : public ezRefCounted
 {
 private: // Data
     gpWorld* m_pWorld = nullptr;
-    ezScopedRefPointer<gpShape> m_pShape = nullptr;
+    gpSmartPtr<gpShape> m_pShape = nullptr;
 
     gpPhysicalProperties m_PhysicalProperties;
     ezString m_sName;
@@ -25,8 +27,8 @@ public: // Accessors / Friends
     EZ_FORCE_INLINE friend       gpPhysicalProperties& gpPhysicalPropertiesOf(      gpEntity& entity) { return entity.m_PhysicalProperties; }
     EZ_FORCE_INLINE friend const gpPhysicalProperties& gpPhysicalPropertiesOf(const gpEntity& entity) { return entity.m_PhysicalProperties; }
 
-    EZ_FORCE_INLINE friend ezScopedRefPointer<gpShape>& gpShapePtrOf(      gpEntity& entity) { return entity.m_pShape; }
-    EZ_FORCE_INLINE friend const gpShape*               gpShapePtrOf(const gpEntity& entity) { return entity.m_pShape; }
+    EZ_FORCE_INLINE friend gpSmartPtr<gpShape>& gpShapePtrOf(      gpEntity& entity) { return entity.m_pShape; }
+    EZ_FORCE_INLINE friend const gpShape*       gpShapePtrOf(const gpEntity& entity) { return entity.m_pShape; }
 
     /// \remark Assumes a valid shape ptr is set
     EZ_FORCE_INLINE friend gpShape& gpShapeOf(gpEntity& entity)
@@ -93,6 +95,12 @@ struct GP_CoreAPI gpTypeAllocator<gpEntity>
 {
     static gpEntity* New();
 };
+
+/// \brief Not implemented on purpose. Instead use gpHandleUnreferencedObject(gpEntity*& pEntity).
+void gpHandleUnreferencedObject(gpEntity& entity);
+
+/// \brief Deletes the entity and sets \a pEntity to nullptr.
+GP_CoreAPI void gpHandleUnreferencedObject(gpEntity*& pEntity);
 
 // Utility functions
 //////////////////////////////////////////////////////////////////////////

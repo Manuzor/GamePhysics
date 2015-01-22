@@ -53,4 +53,4 @@ void gpDeleteArray(ezArrayPtr<T>& arr)
 ///              // handle gc ...
 ///          }
 /// \note Do NOT use this macro GP_Core_GarbageCollectionEvent directly, but the string it contains.
-GP_CoreAPI void gpTriggerGarbageCollection();
+//GP_CoreAPI void gpTriggerGarbageCollection();

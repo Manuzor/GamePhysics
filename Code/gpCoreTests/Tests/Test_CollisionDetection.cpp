@@ -21,8 +21,6 @@ EZ_CREATE_SIMPLE_TEST(Collision, Particle_Particle)
         gpPositionOf(right) = gpDisplacement(1, 0, 0);
         EZ_TEST_BOOL(!gpAreColliding(left, right));
     }
-
-    gpTriggerGarbageCollection();
 }
 
 EZ_CREATE_SIMPLE_TEST(Collision, Particle_Sphere)
@@ -41,8 +39,6 @@ EZ_CREATE_SIMPLE_TEST(Collision, Particle_Sphere)
         gpPositionOf(right) = gpDisplacement(2, 0, 0);
         EZ_TEST_BOOL(!gpAreColliding(left, right));
     }
-
-    gpTriggerGarbageCollection();
 }
 
 EZ_CREATE_SIMPLE_TEST(Collision, Sphere_Sphere)
@@ -64,6 +60,4 @@ EZ_CREATE_SIMPLE_TEST(Collision, Sphere_Sphere)
         gpPositionOf(right) = gpDisplacement( 2, 0, 0);
         EZ_TEST_BOOL(!gpAreColliding(left, right));
     }
-
-    gpTriggerGarbageCollection();
 }

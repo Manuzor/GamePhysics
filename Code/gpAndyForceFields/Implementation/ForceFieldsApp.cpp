@@ -535,7 +535,6 @@ void gpAndyForceFieldsApp::ResetWorld()
     CreateForceFields();
     SpawnTarget(m_pWorld);
 
-    gpTriggerGarbageCollection();
     EnableSpawnDataExtraction(true);
 }
 

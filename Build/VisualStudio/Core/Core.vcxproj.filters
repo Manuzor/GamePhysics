@@ -121,7 +121,7 @@
     <ClCompile Include="..\..\..\Code\gpCore\Algorithm\Implementation\CollisionResponse.cpp">
       <Filter>Algorithm\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\ShapeCreation.cpp">
+    <ClCompile Include="..\..\..\Code\gpCore\Shapes\Implementation\Shapes.cpp">
       <Filter>Shapes\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
@@ -226,6 +226,21 @@
       <Filter>Shapes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\gpCore\Shapes.h" />
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\BoxShape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\PolygonShape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\SphereShape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Shapes\PointShape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\gpCore\Utilities\SmartPtr.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\gpCore\Memory\Implementation\FixedStackAllocator.inl">

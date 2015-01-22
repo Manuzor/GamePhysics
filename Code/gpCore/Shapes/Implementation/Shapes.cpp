@@ -5,18 +5,30 @@
 
 namespace
 {
-    gpPointShape g_point;
-    ezDynamicArray<gpPolygonShape*> g_polygons;
-    ezDynamicArray<gpSphereShape*>  g_spheres;
+    gpPointShape* GlobalPointInstance()
+    {
+        static gpPointShape* pPoint = nullptr;
+
+        if (pPoint == nullptr)
+        {
+            static gpPointShape point;
+            gpAddReferenceTo(point);
+            pPoint = AddressOf(point);
+        }
+
+        return pPoint;
+    }
+
+    ezDynamicArray<gpShape*> g_allShapes;
 }
 
-gpPointShape* gpTypeAllocator<gpPointShape>::New() { return AddressOf(g_point); }
+gpPointShape* gpTypeAllocator<gpPointShape>::New() { return GlobalPointInstance(); }
 
 gpSphereShape* gpTypeAllocator<gpSphereShape>::New(gpScalar radius)
 {
     auto pShere = EZ_DEFAULT_NEW(gpSphereShape);
     gpRadiusOf(Deref(pShere)) = radius;
-    g_spheres.PushBack(pShere);
+    g_allShapes.PushBack(pShere);
     return pShere;
 }
 
@@ -26,40 +38,15 @@ gpBoxShape* gpTypeAllocator<gpBoxShape>::New(const gpVec3& halfExtents)
 {
     auto pBox = EZ_DEFAULT_NEW(gpBoxShape);
     gpConvertToBox(Deref(pBox), halfExtents);
-    g_polygons.PushBack(pBox);
+    g_allShapes.PushBack(pBox);
     return pBox;
 }
 
-void gpReleaseReferenceTo(gpShape& shape)
+void gpHandleUnreferencedObject(gpShape*& pShape)
 {
-    ezLog::Success("Releasing reference to shape type!");
-    shape.ReleaseRef();
-}
+    EZ_ASSERT(pShape != GlobalPointInstance(), "The point is not supposed to be unreferenced at all!");
+    EZ_ASSERT(g_allShapes.Contains(pShape), "Invalid or double freeing of shape ptr!");
 
-
-EZ_ON_GLOBAL_EVENT(gpCore_GarbageCollectionEvent)
-{
-    ezUInt32 numCollectedSpheres = 0;
-    for (ezUInt32 i = 0; i < g_spheres.GetCount(); ++i)
-    {
-        auto& pSphere = g_spheres[i];
-        if (pSphere && !gpIsReferenced(pSphere))
-        {
-            EZ_DEFAULT_DELETE(pSphere);
-            ++numCollectedSpheres;
-        }
-    }
-    ezLog::Dev("Collected sphere shapes: %u", numCollectedSpheres);
-
-    ezUInt32 numCollectedPolygons = 0;
-    for (ezUInt32 i = 0; i < g_polygons.GetCount(); ++i)
-    {
-        auto& pPolygon = g_polygons[i];
-        if (pPolygon && !gpIsReferenced(pPolygon))
-        {
-            EZ_DEFAULT_DELETE(pPolygon);
-            ++numCollectedPolygons;
-        }
-    }
-    ezLog::Dev("Collected polygon shapes: %u", numCollectedPolygons);
+    g_allShapes.RemoveSwap(pShape);
+    EZ_DEFAULT_DELETE(pShape);
 }

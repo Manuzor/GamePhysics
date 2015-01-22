@@ -145,7 +145,6 @@ void gpAndyParticlesApp::Update(ezTime dt)
                     pos.x, pos.y, pos.z);
         gpReleaseReferenceTo(currentParticle);
         m_pCurrentParticle = nullptr;
-        gpTriggerGarbageCollection();
     }
 
     if (ezInputManager::GetInputActionState("Game", "Spawn") != ezKeyState::Pressed)

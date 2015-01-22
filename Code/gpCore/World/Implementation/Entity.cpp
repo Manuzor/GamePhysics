@@ -21,22 +21,9 @@ gpEntity* gpTypeAllocator<gpEntity>::New()
     return pEntity;
 }
 
-EZ_ON_GLOBAL_EVENT(gpCore_GarbageCollectionEvent)
+void gpHandleUnreferencedObject(gpEntity*& pEntity)
 {
-    ezUInt32 numCollected = 0;
-    for (ezUInt32 i = 0; i < g_entities.GetCount(); ++i)
-    {
-        auto& pEntity = g_entities[i];
-        if (pEntity && !pEntity->IsReferenced())
-        {
-            EZ_DEFAULT_DELETE(pEntity); // This call also nulls pEntity
-            ++numCollected;
-        }
-    }
-
-    /// \todo Clean up g_entities using the following algorithm:
-    ///       1) Sort it, so all nullptr entries are at the back. Make sure to count the nullptr instances.
-    ///       2) Set count of g_entities to originalSize - numNullPtrs
-
-    ezLog::Dev("Collected entities: %u", numCollected);
+    EZ_ASSERT(g_entities.Contains(pEntity), "Invalid or double free.");
+    g_entities.RemoveSwap(pEntity);
+    EZ_DEFAULT_DELETE(pEntity);
 }

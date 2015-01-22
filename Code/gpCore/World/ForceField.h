@@ -32,6 +32,12 @@ struct GP_CoreAPI gpTypeAllocator<gpForceFieldEntity>
     static gpForceFieldEntity* New();
 };
 
+/// \brief Not implemented on purpose. Instead use gpHandleUnreferencedObject(gpForceFieldEntity*& pForceField).
+void gpHandleUnreferencedObject(gpForceFieldEntity& forceField);
+
+/// \brief Deletes the force field and sets \a pForceField to nullptr.
+GP_CoreAPI void gpHandleUnreferencedObject(gpForceFieldEntity*& pForceField);
+
 // Functions
 //////////////////////////////////////////////////////////////////////////
 
