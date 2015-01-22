@@ -4,40 +4,19 @@
 #include "gpCore/World/Entity.h"
 #include "gpCore/Shapes.h"
 
-// Collision detection algorithms
+// Collision response algorithms
 //////////////////////////////////////////////////////////////////////////
 namespace
 {
-    void Point_Point(gpPhysicalProperties& lhs, gpPhysicalProperties& rhs)
-    {
-        GP_NotImplemented;
-    }
-
-    void Point_Sphere(gpPhysicalProperties& pointProps,
-                      gpPhysicalProperties& sphereProps, const gpShape& sphere)
-    {
-        GP_NotImplemented;
-    }
-
-    void Point_Polygon(gpPhysicalProperties& sphereProps,
-                       gpPhysicalProperties& polygonProps,
-                       const gpShape& polygon)
-    {
-        GP_NotImplemented;
-    }
-
-    void Sphere_Point(gpPhysicalProperties& sphereProps, const gpShape& sphere,
-                      gpPhysicalProperties& pointProps)
-    {
-        return Point_Sphere(pointProps, sphereProps, sphere);
-    }
-
-    void Sphere_Sphere(gpPhysicalProperties& lhsProps, const gpShape& lhsShape,
-                       gpPhysicalProperties& rhsProps, const gpShape& rhsShape)
+    void Sphere_Sphere(gpPhysicalProperties& lhsProps,
+                       gpPhysicalProperties& rhsProps)
     {
         // Algorithm from http://www.gamasutra.com/view/feature/131424/pool_hall_lessons_fast_accurate_.php
 
         auto d = gpPositionOf(lhsProps) - gpPositionOf(rhsProps);
+        if (gpIsZero(d))
+            return;
+
         auto n = gpValueOf(d).GetNormalized();
 
         auto& v1 = gpValueOf(gpLinearVelocityOf(lhsProps));
@@ -45,6 +24,9 @@ namespace
 
         const gpScalar m1 = gpValueOf(gpMassOf(lhsProps));
         const gpScalar m2 = gpValueOf(gpMassOf(rhsProps));
+
+        EZ_ASSERT(!gpIsZero(m1), "Invalid mass!");
+        EZ_ASSERT(!gpIsZero(m2), "Invalid mass!");
 
         auto a1 = v1.Dot(n);
         auto a2 = v2.Dot(n);
@@ -57,8 +39,32 @@ namespace
         v2 += p * m1 * n;
     }
 
+    void Sphere_Point(gpPhysicalProperties& sphereProps,
+                      gpPhysicalProperties& pointProps)
+    {
+        return Sphere_Sphere(sphereProps, pointProps);
+    }
+
     void Sphere_Polygon(gpPhysicalProperties& sphereProps,  const gpShape& sphere,
                         gpPhysicalProperties& polygonProps, const gpShape& polygon)
+    {
+        GP_NotImplemented;
+    }
+
+    void Point_Point(gpPhysicalProperties& lhs, gpPhysicalProperties& rhs)
+    {
+        Sphere_Sphere(lhs, rhs);
+    }
+
+    void Point_Sphere(gpPhysicalProperties& pointProps,
+                      gpPhysicalProperties& sphereProps)
+    {
+        return Sphere_Point(sphereProps, pointProps);
+    }
+
+    void Point_Polygon(gpPhysicalProperties& sphereProps,
+                       gpPhysicalProperties& polygonProps,
+                       const gpShape& polygon)
     {
         GP_NotImplemented;
     }
@@ -108,15 +114,15 @@ void gpResolveCollision(gpPhysicalProperties& lhsProps, const gpShape& lhsShape,
         switch(gpTypeOf(rhsShape))
         {
         case gpShapeType::Point:   return Point_Point(  lhsProps, rhsProps);
-        case gpShapeType::Sphere:  return Point_Sphere( lhsProps, rhsProps, rhsShape);
+        case gpShapeType::Sphere:  return Point_Sphere( lhsProps, rhsProps);
         case gpShapeType::Polygon: return Point_Polygon(lhsProps, rhsProps, rhsShape);
         default: break;
         }
     case gpShapeType::Sphere:
         switch(gpTypeOf(rhsShape))
         {
-        case gpShapeType::Point:   return Sphere_Point(  lhsProps, lhsShape, rhsProps);
-        case gpShapeType::Sphere:  return Sphere_Sphere( lhsProps, lhsShape, rhsProps, rhsShape);
+        case gpShapeType::Point:   return Sphere_Point(  lhsProps, rhsProps);
+        case gpShapeType::Sphere:  return Sphere_Sphere( lhsProps, rhsProps);
         case gpShapeType::Polygon: return Sphere_Polygon(lhsProps, lhsShape, rhsProps, rhsShape);
         default: break;
         }

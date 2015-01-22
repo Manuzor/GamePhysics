@@ -119,12 +119,13 @@ static void CreateTarget(gpWorld* pWorld)
     }
 
     g_pPlayerTarget = gpNew<gpEntity>();
-    EZ_ASSERT(g_pPlayerTarget, "Failed to create player target (rigid body)");
+    EZ_ASSERT(g_pPlayerTarget, "Failed to create player target");
 
     gpAddReferenceTo(playerTarget);
     gpNameOf(playerTarget)          = "Target";
     gpShapePtrOf(playerTarget)      = pSphere;
     gpGravityFactorOf(playerTarget) = 0.0f;
+    gpIsTrigger(playerTarget)       = true;
 
     ezLog::Success("Created target.");
 

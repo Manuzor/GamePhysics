@@ -16,6 +16,7 @@ private: // Data
 
     gpPhysicalProperties m_PhysicalProperties;
     ezString m_sName;
+    bool m_isTrigger = false;
 
 public: // Accessors / Friends
     EZ_FORCE_INLINE friend       gpWorld*& gpWorldPtrOf(      gpEntity& entity) { return entity.m_pWorld; }
@@ -43,6 +44,9 @@ public: // Accessors / Friends
         EZ_ASSERT(entity.m_pShape, "");
         return Deref(entity.m_pShape);
     }
+
+    EZ_FORCE_INLINE friend bool& gpIsTrigger(      gpEntity& entity) { return entity.m_isTrigger; }
+    EZ_FORCE_INLINE friend bool  gpIsTrigger(const gpEntity& entity) { return entity.m_isTrigger; }
 
 public: // Construction
     gpEntity() : m_pShape(gpNew<gpPointShape>()) {}

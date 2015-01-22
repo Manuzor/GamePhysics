@@ -1,5 +1,6 @@
 #pragma once
 #include "gpCore/World/Entity.h"
+#include "gpCore/World/CollisionEvent.h"
 #include "gpCore/Utilities/Pair.h"
 
 class gpRenderExtractor;
@@ -7,21 +8,14 @@ class gpForceFieldEntity;
 
 class GP_CoreAPI gpWorld
 {
-public:
+public: // Data structures
+    using CollisionEvent = ezEvent<const gpCollisionEventArgs&>;
+
+public: // Construction
     gpWorld(const char* szName);
     gpWorld(const gpWorld&) = delete;
     void operator=(const gpWorld&) = delete;
     ~gpWorld();
-
-    /// \remark Don't call this directly, use gpNew<gpEntity>(...) instead!
-    template<typename Type, typename... Args>
-    Type* _NewEntity(Args&&... args)
-    {
-        /// \todo Use better memory management here.
-        auto pEntity = EZ_DEFAULT_NEW(Type)(args...);
-        InsertCreatedEntity(pEntity);
-        return pEntity;
-    }
 
 private: // Data
     ezString m_sName;
@@ -37,6 +31,7 @@ private: // Data
     gpEntityDrawInfo m_EntityDrawInfo_HardDefault;
     gpEntityDrawInfo* m_pEntityDrawInfoDefault = &m_EntityDrawInfo_HardDefault;
 
+    CollisionEvent m_CollisionEvent;
     ezDynamicArray<gpEntity*> m_ResolvedBodies;
     ezDynamicArray<gpPair<gpEntity*, gpEntity*>> m_CollidingBodies;
 
@@ -55,6 +50,7 @@ private:
     friend GP_CoreAPI void gpStepSimulationOf(gpWorld& world, gpTime dt);
     friend gpEntityDrawInfo*& gpDefaultDrawInfoPtrOf(gpWorld& world);
     friend GP_CoreAPI void gpExtractRenderDataOf(const gpWorld& world, gpRenderExtractor* pExtractor);
+    EZ_FORCE_INLINE friend CollisionEvent& gpCollisionEventOf(gpWorld& world) { world.m_CollisionEvent; }
 };
 
 EZ_FORCE_INLINE const ezString& gpNameOf(const gpWorld& world) { return world.m_sName; }

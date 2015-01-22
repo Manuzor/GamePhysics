@@ -262,15 +262,34 @@ static void DetectCollision(ezArrayPtr<gpEntity*> entities, Container& out_colli
     }
 }
 
-template<typename ColliderPairContainer>
-static void ResolveCollisions(ColliderPairContainer& collidingBodies)
+template<typename ColliderPairContainer, typename EventType>
+static void ResolveCollisions(ColliderPairContainer& collidingBodies, EventType& evt)
 {
+    gpCollisionEventArgs detected(gpCollisionEventArgs::Detected, nullptr, nullptr);
+    gpCollisionEventArgs resolved(gpCollisionEventArgs::Resolved, nullptr, nullptr);
+
     // Resolve collisions between bodies in collidingBodies
     for (ezUInt32 i = 0; i < collidingBodies.GetCount(); ++i)
     {
-        auto& pair  = collidingBodies[i];
-        gpResolveCollision(Deref(gpFirstOf (pair)),
-                           Deref(gpSecondOf(pair)));
+        auto& pair   = collidingBodies[i];
+        auto pFirst  = gpFirstOf (pair);
+        auto pSecond = gpSecondOf(pair);
+
+        // Trigger "Detected" collision event.
+        gpFirstEntityPtrOf(detected)  = pFirst;
+        gpSecondEntityPtrOf(detected) = pSecond;
+        evt.Broadcast(detected);
+
+        // If neither of the colliding bodies are triggers, we actually resolve the collision
+        if (!gpIsTrigger(Deref(pFirst)) & !gpIsTrigger(Deref(pSecond)))
+        {
+            gpResolveCollision(Deref(pFirst), Deref(pSecond));
+
+            // Trigger "Resolved" collision event.
+            gpFirstEntityPtrOf(resolved)  = pFirst;
+            gpSecondEntityPtrOf(resolved) = pSecond;
+            evt.Broadcast(resolved);
+        }
     }
 }
 
@@ -288,6 +307,6 @@ void gpStepSimulationOf(gpWorld& world, gpTime dt)
     IntegrateEtities(world.m_SimulatedEntities, gpGetConstView(world.m_ForceFields), gpGravityOf(world), dt);
 
     DetectCollision(world.m_SimulatedEntities, world.m_CollidingBodies);
-    ResolveCollisions(world.m_CollidingBodies);
+    ResolveCollisions(world.m_CollidingBodies, world.m_CollisionEvent);
     world.m_CollidingBodies.Clear();
 }
