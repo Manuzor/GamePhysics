@@ -35,6 +35,9 @@ void gpAndyParticlesApp::AfterEngineInit()
         ezInputManager::PollHardware();
         RegisterInputAction("Game", "Spawn", ezInputSlot_MouseButton0);
         RegisterInputAction("Game", "CancelSpawn", ezInputSlot_MouseButton1);
+        //RegisterInputAction("Game", "Reset", ezInputSlot_KeyBackspace);
+        RegisterInputAction("Game", "Pause", ezInputSlot_KeySpace);
+        RegisterInputAction("Game", "Step", ezInputSlot_KeyReturn);
         SetupRendering();
     }
 
@@ -86,8 +89,32 @@ ezApplication::ApplicationExecution gpAndyParticlesApp::Run()
         bInputUpdated = true;
 
         UpdateInput(tUpdateInterval);
-        Update(tUpdateInterval);
-        gpStepSimulationOf(Deref(m_pWorld), tUpdateInterval);
+
+        // Control Pause/Resumed state
+        //////////////////////////////////////////////////////////////////////////
+
+        static bool s_simulationPaused = false;
+
+        if(ezInputManager::GetInputActionState("Game", "Pause") == ezKeyState::Pressed)
+        {
+            s_simulationPaused = !s_simulationPaused;
+            if (s_simulationPaused)
+            {
+                ezLog::Info("Pausing simulation.");
+            }
+            else
+            {
+                ezLog::Info("Resuming simulation.");
+            }
+        }
+
+        bool forceStep = ezInputManager::GetInputActionState("Game", "Step") == ezKeyState::Pressed;
+
+        if (forceStep || !s_simulationPaused)
+        {
+            Update(tUpdateInterval);
+            gpStepSimulationOf(Deref(m_pWorld), tUpdateInterval);
+        }
 
         m_LastUpdate += tUpdateInterval;
     }
