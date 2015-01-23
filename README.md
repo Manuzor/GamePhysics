@@ -31,10 +31,16 @@ The Future
 If I find the time, I will try to make this project run on Linux using GCC or Clang.
 
 Third Party Software
-====================
+--------------------
 
 * [ezEngine][ezEngine]
 * OpenGL and GLEW 1.11.0
 
 [ezEngine]: https://github.com/ezEngine/ezEngine
 [Manuzor]: https://github.com/Manuzor
+
+Screenshots
+===========
+
+The sample I built. You simply click to spawn a particle, and click again to give it some linear velocity, according to the mouse position and the particle position.
+![Particles](http://manuzor.github.io/GamePhysics/images/v0.1.0-exam_Experiments.png)
