@@ -42,5 +42,32 @@ Third Party Software
 Screenshots
 ===========
 
-The sample I built. You simply click to spawn a particle, and click again to give it some linear velocity, according to the mouse position and the particle position.
-![Particles](http://manuzor.github.io/GamePhysics/images/v0.1.0-exam_Experiments.png)
+Particles Sample
+----------------
+
+The first sample I built. You simply click to spawn a particle, and click again to give it some linear velocity, according to the mouse position and the particle position.
+
+![Particles](http://manuzor.github.io/GamePhysics/images/v0.1.0-exam_Particles.png)
+
+
+Force Fields Sample
+-------------------
+
+The idea is to spawn a particle in the lower left spawn area, marked in red, and trying to hit the yellow circle on the top-right (the sun, if you want). The challenge here is that those gray circle are applying a linear acceleration to you particle, as long as you touch them.
+
+![Force Fields](http://manuzor.github.io/GamePhysics/images/v0.1.0-exam_ForceFieldsSample.png)
+
+Rotation Sample
+---------------
+
+This sample demonstrates the effect of different inertia tensors for the same shape. They use the same inertia tensor (solid cuboids) but with different mass and spatial distribution values, according to their size and the column row they're located in. Of course, the screenshot doesn't say much about how fast each object is rotating because, well, it is just a screenshot. :smiley:
+
+![Rotating Bodies](http://manuzor.github.io/GamePhysics/images/v0.1.0-exam_RotationSample.png)
+
+
+Sphere-Sphere Collision
+-----------------------
+
+Some spheres colliding with each other!
+
+![Spheres](http://manuzor.github.io/GamePhysics/images/v0.1.0-exam_Experiments.png)
