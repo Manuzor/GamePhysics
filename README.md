@@ -12,7 +12,7 @@ Requirements
 * Python 3.4 or later
 * Visual Studio 2013 or later
 * [ezEngine][ezEngine] Milestone 5, i.e. commit 3fe9867d6da8d46af99c5a8c864ee4b8f19148e7
-  * Needs CMake version 1.x
+  * Needs CMake version 2.x (2.8 recommended)
   * Either `Debug` or `RelWithDebInfo` builds
 * OpenGL 2.0 or later
 * GLEW 1.11.0 or later
@@ -28,7 +28,7 @@ Instructions
 The Future
 ==========
 
-If I find the time, I will try to make this project run on Linux using GCC or Clang.
+If I find the time, I will try to make this project run on Linux using GCC or Clang. Using CMake, of course...
 
 Third Party Software
 --------------------
